@@ -8,7 +8,7 @@ const pool = mysql.createPool({
     host: 'localhost',  
     user: 'root', 
     password: 'newsroot123456',  
-    database: 'news_app',
+    database: 'news_web_app',
     port: 3306  
 });
 
@@ -67,7 +67,6 @@ app.use('/api/work_status_detail', Work_Status_DetailRouter);
 
 const Work_StatusRouter = require('./routes/Work_Status');
 app.use('/api/work_status', Work_StatusRouter);
-
 
 // Start server
 app.listen(port, () => {

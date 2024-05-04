@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql
--- Generation Time: May 03, 2024 at 02:06 PM
+-- Host: db:3306
+-- Generation Time: May 04, 2024 at 05:31 PM
 -- Server version: 8.4.0
 -- PHP Version: 8.2.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `news_app`
+-- Database: `news_web_app`
 --
 
 -- --------------------------------------------------------
@@ -28,14 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Admin` (
-  `Adm_Id` char(7) NOT NULL,
-  `Adm_Fname` varchar(50) DEFAULT NULL,
-  `Adm_Lname` varchar(50) DEFAULT NULL,
-  `Adm_Username` varchar(20) DEFAULT NULL,
-  `Adm_Email` varchar(50) DEFAULT NULL,
-  `Adm_Password` varchar(20) DEFAULT NULL,
-  `Adm_Phone` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Adm_Id` int NOT NULL,
+  `Adm_Fname` varchar(50) NOT NULL,
+  `Adm_Lname` varchar(50) NOT NULL,
+  `Adm_Username` varchar(20) NOT NULL,
+  `Adm_Password` varchar(20) NOT NULL,
+  `Adm_Email` varchar(50) NOT NULL,
+  `Adm_Phone` char(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Admin`
+--
+
+INSERT INTO `Admin` (`Adm_Id`, `Adm_Fname`, `Adm_Lname`, `Adm_Username`, `Adm_Password`, `Adm_Email`, `Adm_Phone`) VALUES
+(1, 'testadmfname', 'testadnlname', 'admtestuser', 'admtestpass', 'admtest@gmail.com', '0980960857'),
+(2, 'testadm2fname', 'testadm2lname', 'testadm2User', 'testadm2Pass', 'testadm2@gmail.com', '0796651134');
 
 -- --------------------------------------------------------
 
@@ -44,9 +52,17 @@ CREATE TABLE `Admin` (
 --
 
 CREATE TABLE `Category` (
-  `Cat_Id` char(7) NOT NULL,
-  `Cat_Name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Cat_Id` int NOT NULL,
+  `Cat_Name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Category`
+--
+
+INSERT INTO `Category` (`Cat_Id`, `Cat_Name`) VALUES
+(1, 'กีฬา'),
+(2, 'การเมือง');
 
 -- --------------------------------------------------------
 
@@ -55,9 +71,17 @@ CREATE TABLE `Category` (
 --
 
 CREATE TABLE `Favorite_Category` (
-  `Mem_Id` char(7) NOT NULL,
-  `Cat_Id` char(7) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Mem_Id` int NOT NULL,
+  `Cat_Id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Favorite_Category`
+--
+
+INSERT INTO `Favorite_Category` (`Mem_Id`, `Cat_Id`) VALUES
+(1, 1),
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -66,9 +90,17 @@ CREATE TABLE `Favorite_Category` (
 --
 
 CREATE TABLE `Major` (
-  `Major_Id` char(2) NOT NULL,
-  `Major_Level` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Major_Id` int NOT NULL,
+  `Major_Level` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Major`
+--
+
+INSERT INTO `Major` (`Major_Id`, `Major_Level`) VALUES
+(1, 0),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -77,15 +109,21 @@ CREATE TABLE `Major` (
 --
 
 CREATE TABLE `Member` (
-  `Mem_Id` char(7) NOT NULL,
-  `Mem_Fname` varchar(50) DEFAULT NULL,
-  `Mem_Lname` varchar(50) DEFAULT NULL,
-  `Mem_Username` varchar(20) DEFAULT NULL,
-  `Mem_Email` varchar(50) DEFAULT NULL,
-  `Mem_Password` varchar(20) DEFAULT NULL,
-  `Mem_Phone` varchar(10) DEFAULT NULL,
-  `Mem_Status` char(1) DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Mem_Id` int NOT NULL,
+  `Mem_Fname` varchar(50) NOT NULL,
+  `Mem_Lname` varchar(50) NOT NULL,
+  `Mem_Username` varchar(20) NOT NULL,
+  `Mem_Password` varchar(20) NOT NULL,
+  `Mem_Phone` char(10) NOT NULL,
+  `Mem_Status` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Member`
+--
+
+INSERT INTO `Member` (`Mem_Id`, `Mem_Fname`, `Mem_Lname`, `Mem_Username`, `Mem_Password`, `Mem_Phone`, `Mem_Status`) VALUES
+(1, 'memtestFname', 'memtestLname', 'memtestUser', 'memtestPass', '0967893698', 1);
 
 -- --------------------------------------------------------
 
@@ -94,13 +132,21 @@ CREATE TABLE `Member` (
 --
 
 CREATE TABLE `News` (
-  `News_Id` char(8) NOT NULL,
-  `News_Name` varchar(255) DEFAULT NULL,
-  `News_Detail` text,
-  `Date_Added` timestamp NULL DEFAULT NULL,
-  `Cat_Id` char(4) DEFAULT NULL,
-  `Major_Id` char(2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `News_Id` int NOT NULL,
+  `News_Name` varchar(255) NOT NULL,
+  `News_Details` text NOT NULL,
+  `Date_Added` timestamp NOT NULL,
+  `Cat_Id` int NOT NULL,
+  `Major_Id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `News`
+--
+
+INSERT INTO `News` (`News_Id`, `News_Name`, `News_Details`, `Date_Added`, `Cat_Id`, `Major_Id`) VALUES
+(1, 'โอ้มายก้อตโตะ', 'oh my god it\'s ธาตุทอง desu.', '2024-05-04 16:34:24', 1, 1),
+(2, 'แง้นๆๆๆๆๆๆๆๆ', 'และนี่คือธาตุทองซาวนด์', '2024-05-04 16:57:50', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -109,10 +155,17 @@ CREATE TABLE `News` (
 --
 
 CREATE TABLE `News_Rating` (
-  `Mem_Id` char(7) NOT NULL,
-  `News_Id` char(8) NOT NULL,
-  `Rating_Score` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Mem_Id` int NOT NULL,
+  `News_Id` int NOT NULL,
+  `Rating_Score` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `News_Rating`
+--
+
+INSERT INTO `News_Rating` (`Mem_Id`, `News_Id`, `Rating_Score`) VALUES
+(1, 1, 4.99);
 
 -- --------------------------------------------------------
 
@@ -121,9 +174,16 @@ CREATE TABLE `News_Rating` (
 --
 
 CREATE TABLE `Picture` (
-  `News_Id` char(8) NOT NULL,
+  `News_Id` int NOT NULL,
   `News_Pic` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Picture`
+--
+
+INSERT INTO `Picture` (`News_Id`, `News_Pic`) VALUES
+(1, 'momoi.jpg');
 
 -- --------------------------------------------------------
 
@@ -132,11 +192,18 @@ CREATE TABLE `Picture` (
 --
 
 CREATE TABLE `Read_History` (
-  `Read_Id` char(10) NOT NULL,
-  `Read_Date` timestamp NULL DEFAULT NULL,
-  `Mem_Id` char(7) DEFAULT NULL,
-  `News_Id` char(8) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Mem_Id` int NOT NULL,
+  `News_Id` int NOT NULL,
+  `Read_Date` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Read_History`
+--
+
+INSERT INTO `Read_History` (`Mem_Id`, `News_Id`, `Read_Date`) VALUES
+(1, 1, '2024-05-04 17:31:03'),
+(1, 2, '2024-05-04 17:31:18');
 
 -- --------------------------------------------------------
 
@@ -145,9 +212,17 @@ CREATE TABLE `Read_History` (
 --
 
 CREATE TABLE `Read_Later` (
-  `Mem_Id` char(7) NOT NULL,
-  `News_Id` char(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Mem_Id` int NOT NULL,
+  `News_Id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Read_Later`
+--
+
+INSERT INTO `Read_Later` (`Mem_Id`, `News_Id`) VALUES
+(1, 1),
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -156,10 +231,18 @@ CREATE TABLE `Read_Later` (
 --
 
 CREATE TABLE `Sub_Category` (
-  `Sub_Cat_Id` char(7) NOT NULL,
-  `Sub_Cat_Name` varchar(50) DEFAULT NULL,
-  `Cat_Id` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Sub_Cat_Id` int NOT NULL,
+  `Sub_Cat_Name` varchar(50) NOT NULL,
+  `Cat_Id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Sub_Category`
+--
+
+INSERT INTO `Sub_Category` (`Sub_Cat_Id`, `Sub_Cat_Name`, `Cat_Id`) VALUES
+(1, 'ฟุตบอล', 1),
+(2, 'บาสเกตบอล', 1);
 
 -- --------------------------------------------------------
 
@@ -168,9 +251,19 @@ CREATE TABLE `Sub_Category` (
 --
 
 CREATE TABLE `Total_Read` (
-  `News_Id` char(8) NOT NULL,
-  `Count_Id` char(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Count_Id` int NOT NULL,
+  `News_Id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Total_Read`
+--
+
+INSERT INTO `Total_Read` (`Count_Id`, `News_Id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1);
 
 -- --------------------------------------------------------
 
@@ -180,8 +273,16 @@ CREATE TABLE `Total_Read` (
 
 CREATE TABLE `Work_Status` (
   `Status_Id` int NOT NULL,
-  `Adm_Status` int NOT NULL COMMENT '1 = Working 0 = Resign'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Adm_Status` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Work_Status`
+--
+
+INSERT INTO `Work_Status` (`Status_Id`, `Adm_Status`) VALUES
+(1, 0),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -190,11 +291,19 @@ CREATE TABLE `Work_Status` (
 --
 
 CREATE TABLE `Work_Status_Detail` (
-  `Adm_Id` char(7) NOT NULL,
+  `Adm_Id` int NOT NULL,
   `Status_Id` int NOT NULL,
   `Start_Date` date NOT NULL,
   `End_Date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `Work_Status_Detail`
+--
+
+INSERT INTO `Work_Status_Detail` (`Adm_Id`, `Status_Id`, `Start_Date`, `End_Date`) VALUES
+(1, 2, '2024-05-01', NULL),
+(2, 1, '2024-04-15', '2024-05-05');
 
 --
 -- Indexes for dumped tables
@@ -204,16 +313,13 @@ CREATE TABLE `Work_Status_Detail` (
 -- Indexes for table `Admin`
 --
 ALTER TABLE `Admin`
-  ADD PRIMARY KEY (`Adm_Id`),
-  ADD UNIQUE KEY `Adm_Username` (`Adm_Username`),
-  ADD UNIQUE KEY `Adm_Email` (`Adm_Email`);
+  ADD PRIMARY KEY (`Adm_Id`);
 
 --
 -- Indexes for table `Category`
 --
 ALTER TABLE `Category`
-  ADD PRIMARY KEY (`Cat_Id`),
-  ADD UNIQUE KEY `Cat_Name` (`Cat_Name`);
+  ADD PRIMARY KEY (`Cat_Id`);
 
 --
 -- Indexes for table `Favorite_Category`
@@ -226,16 +332,13 @@ ALTER TABLE `Favorite_Category`
 -- Indexes for table `Major`
 --
 ALTER TABLE `Major`
-  ADD PRIMARY KEY (`Major_Id`),
-  ADD UNIQUE KEY `Major_Level` (`Major_Level`);
+  ADD PRIMARY KEY (`Major_Id`);
 
 --
 -- Indexes for table `Member`
 --
 ALTER TABLE `Member`
-  ADD PRIMARY KEY (`Mem_Id`),
-  ADD UNIQUE KEY `Mem_Username` (`Mem_Username`),
-  ADD UNIQUE KEY `Mem_Email` (`Mem_Email`);
+  ADD PRIMARY KEY (`Mem_Id`);
 
 --
 -- Indexes for table `News`
@@ -262,8 +365,7 @@ ALTER TABLE `Picture`
 -- Indexes for table `Read_History`
 --
 ALTER TABLE `Read_History`
-  ADD PRIMARY KEY (`Read_Id`),
-  ADD KEY `Mem_Id` (`Mem_Id`),
+  ADD PRIMARY KEY (`Mem_Id`,`News_Id`),
   ADD KEY `News_Id` (`News_Id`);
 
 --
@@ -278,14 +380,14 @@ ALTER TABLE `Read_Later`
 --
 ALTER TABLE `Sub_Category`
   ADD PRIMARY KEY (`Sub_Cat_Id`),
-  ADD UNIQUE KEY `Sub_Cat_Name` (`Sub_Cat_Name`),
   ADD KEY `Cat_Id` (`Cat_Id`);
 
 --
 -- Indexes for table `Total_Read`
 --
 ALTER TABLE `Total_Read`
-  ADD PRIMARY KEY (`News_Id`,`Count_Id`);
+  ADD PRIMARY KEY (`Count_Id`),
+  ADD KEY `News_Id` (`News_Id`);
 
 --
 -- Indexes for table `Work_Status`
@@ -305,10 +407,52 @@ ALTER TABLE `Work_Status_Detail`
 --
 
 --
+-- AUTO_INCREMENT for table `Admin`
+--
+ALTER TABLE `Admin`
+  MODIFY `Adm_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `Category`
+--
+ALTER TABLE `Category`
+  MODIFY `Cat_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `Major`
+--
+ALTER TABLE `Major`
+  MODIFY `Major_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `Member`
+--
+ALTER TABLE `Member`
+  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `News`
+--
+ALTER TABLE `News`
+  MODIFY `News_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `Sub_Category`
+--
+ALTER TABLE `Sub_Category`
+  MODIFY `Sub_Cat_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `Total_Read`
+--
+ALTER TABLE `Total_Read`
+  MODIFY `Count_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `Work_Status`
 --
 ALTER TABLE `Work_Status`
-  MODIFY `Status_Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Status_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
