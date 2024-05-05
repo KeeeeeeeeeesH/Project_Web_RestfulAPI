@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: May 04, 2024 at 05:31 PM
+-- Generation Time: May 05, 2024 at 02:44 PM
 -- Server version: 8.4.0
 -- PHP Version: 8.2.8
 
@@ -43,7 +43,8 @@ CREATE TABLE `Admin` (
 
 INSERT INTO `Admin` (`Adm_Id`, `Adm_Fname`, `Adm_Lname`, `Adm_Username`, `Adm_Password`, `Adm_Email`, `Adm_Phone`) VALUES
 (1, 'testadmfname', 'testadnlname', 'admtestuser', 'admtestpass', 'admtest@gmail.com', '0980960857'),
-(2, 'testadm2fname', 'testadm2lname', 'testadm2User', 'testadm2Pass', 'testadm2@gmail.com', '0796651134');
+(2, 'testadm2fname', 'testadm2lname', 'testadm2User', 'testadm2Pass', 'testadm2@gmail.com', '0796651134'),
+(3, 'fnameapi1', 'lastnameapi', 'userapi', 'passwordapi', 'admtestapi1@gmail.com', '1111111111');
 
 -- --------------------------------------------------------
 
@@ -81,6 +82,7 @@ CREATE TABLE `Favorite_Category` (
 
 INSERT INTO `Favorite_Category` (`Mem_Id`, `Cat_Id`) VALUES
 (1, 1),
+(2, 1),
 (1, 2);
 
 -- --------------------------------------------------------
@@ -114,16 +116,18 @@ CREATE TABLE `Member` (
   `Mem_Lname` varchar(50) NOT NULL,
   `Mem_Username` varchar(20) NOT NULL,
   `Mem_Password` varchar(20) NOT NULL,
+  `Mem_Email` varchar(50) NOT NULL,
   `Mem_Phone` char(10) NOT NULL,
-  `Mem_Status` int NOT NULL
+  `Mem_Status` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `Member`
 --
 
-INSERT INTO `Member` (`Mem_Id`, `Mem_Fname`, `Mem_Lname`, `Mem_Username`, `Mem_Password`, `Mem_Phone`, `Mem_Status`) VALUES
-(1, 'memtestFname', 'memtestLname', 'memtestUser', 'memtestPass', '0967893698', 1);
+INSERT INTO `Member` (`Mem_Id`, `Mem_Fname`, `Mem_Lname`, `Mem_Username`, `Mem_Password`, `Mem_Email`, `Mem_Phone`, `Mem_Status`) VALUES
+(1, 'memFtest1', 'memLtest1', 'memUname1', 'memPsword1', 'mem1@email.com', '0987654321', 1),
+(2, 'memFtest2', 'memLtest2', 'memUname2', 'memPsword2', 'mem2@email.com', '0987654327', 0);
 
 -- --------------------------------------------------------
 
@@ -165,7 +169,9 @@ CREATE TABLE `News_Rating` (
 --
 
 INSERT INTO `News_Rating` (`Mem_Id`, `News_Id`, `Rating_Score`) VALUES
-(1, 1, 4.99);
+(1, 1, 4.37),
+(1, 2, 4.89),
+(2, 2, 3.56);
 
 -- --------------------------------------------------------
 
@@ -202,8 +208,8 @@ CREATE TABLE `Read_History` (
 --
 
 INSERT INTO `Read_History` (`Mem_Id`, `News_Id`, `Read_Date`) VALUES
-(1, 1, '2024-05-04 17:31:03'),
-(1, 2, '2024-05-04 17:31:18');
+(1, 1, '2024-05-05 14:43:45'),
+(1, 2, '2024-05-05 14:43:56');
 
 -- --------------------------------------------------------
 
@@ -221,7 +227,6 @@ CREATE TABLE `Read_Later` (
 --
 
 INSERT INTO `Read_Later` (`Mem_Id`, `News_Id`) VALUES
-(1, 1),
 (1, 2);
 
 -- --------------------------------------------------------
@@ -410,7 +415,7 @@ ALTER TABLE `Work_Status_Detail`
 -- AUTO_INCREMENT for table `Admin`
 --
 ALTER TABLE `Admin`
-  MODIFY `Adm_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Adm_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Category`
@@ -428,7 +433,7 @@ ALTER TABLE `Major`
 -- AUTO_INCREMENT for table `Member`
 --
 ALTER TABLE `Member`
-  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `News`

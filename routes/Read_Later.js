@@ -13,4 +13,33 @@ router.get('/', (req, res) => {
     });
   });
 
+  router.post('/', (req, res) => {
+    const { Mem_Id, News_Id } = req.body;
+    const query = 'INSERT INTO Read_Later (Mem_Id, News_Id) VALUES (?, ?)';
+    pool.query(query, [Mem_Id, News_Id], (error, results) => {
+        if (error) {
+            res.status(500).send(error.toString());
+            return;
+        }
+        res.status(201).send('Added to Read Later successfully.');
+    });
+});
+
+router.delete('/', (req, res) => {
+  const { Mem_Id, News_Id } = req.body;
+  const query = 'DELETE FROM Read_Later WHERE Mem_Id = ? AND News_Id = ?';
+  pool.query(query, [Mem_Id, News_Id], (error, results) => {
+      if (error) {
+          console.error('Error removing from Read Later: ', error);
+          res.status(500).send(error.toString());
+          return;
+      }
+      if (results.affectedRows === 0) {
+          return res.status(404).send('No entry found in Read Later with the specified member and news ID.');
+      }
+      res.send('Removed from Read Later successfully.');
+  });
+});
+
+
 module.exports = router;

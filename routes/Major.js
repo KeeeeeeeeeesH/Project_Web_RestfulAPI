@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 
   router.post("/", function (req, res) {
     const { Level } = req.body;
-    const query = 'INSERT INTO major (Major_Level) VALUES (?)';
+    const query = 'INSERT INTO Major (Major_Level) VALUES (?)';
     pool.query(query, [ Level ], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
   router.delete('/:id', function(req, res) {
     const { id } = req.params;  
  
-    const query = 'DELETE FROM major WHERE Major_Id = ?';
+    const query = 'DELETE FROM Major WHERE Major_Id = ?';
     pool.query(query, [id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());
@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
     const { id } = req.params;  // Get the ID from the URL parameter
     const { Level } = req.body;
   
-    const query = 'UPDATE major SET Major_Level = ? WHERE Major_Id = ?';
+    const query = 'UPDATE Major SET Major_Level = ? WHERE Major_Id = ?';
     pool.query(query, [Level ,id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());

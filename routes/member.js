@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
   });
 
   router.post("/", function (req, res) {
-    const { firstname, lastname, username, password, phonenumber, status } = req.body;
+    const { firstname, lastname, username, password, email, phonenumber, status } = req.body;
   
-    const query = 'INSERT INTO member (Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Phone, Mem_Status) VALUES ( ?, ?, ?, ?, ?, ?)';
-    pool.query(query, [ firstname, lastname, username, password, phonenumber, status], function(error, results) {
+    const query = 'INSERT INTO Member (Mem_Id, Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)';
+    pool.query(query, [ firstname, lastname, username, password, email, phonenumber, status], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
       } else {
@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
         return res.status(400).send('ID is required for deletion.');
     }
   
-    const query = 'DELETE FROM member WHERE Mem_Id = ?';
+    const query = 'DELETE FROM Member WHERE Mem_Id = ?';
     pool.query(query, [id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());
@@ -47,10 +47,10 @@ router.get('/', (req, res) => {
   
   router.put('/:id', function(req, res) {
     const { id } = req.params;  // Get the ID from the URL parameter
-    const { firstname, lastname, username, email, password, phonenumber, status } = req.body;
+    const { firstname, lastname, username, password, email, phonenumber, status } = req.body;
   
-    const query = 'UPDATE member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Password = ?, Mem_Phone = ?, Mem_Status = ? WHERE Mem_Id = ?';
-    pool.query(query, [firstname, lastname, username, password, phonenumber, status, id], function(error, results) {
+    const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Password = ?, Mem_Email = ?, Mem_Phone = ?, Mem_Status = ? WHERE Mem_Id = ?';
+    pool.query(query, [firstname, lastname, username, password, email, phonenumber, status, id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());
         }
