@@ -4,22 +4,22 @@ const app = express();
 const port = process.env.PORT || 5000;
 const mysql = require('mysql2');
 
+// const pool = mysql.createPool({
+//     host: 'localhost',  
+//     user: 'root', 
+//     password: 'newsroot123456',  
+//     database: 'news_web_app',
+//     port: 3306  
+// });
+
+// set-up พรี่แชมป์
 const pool = mysql.createPool({
     host: 'localhost',  
     user: 'root', 
-    password: 'newsroot123456',  
+    password: '',  
     database: 'news_web_app',
     port: 3306  
 });
-
-// set-up พรี่แชมป์
-// const pool = mysql.createPool({
-//     host: '',  
-//     user: '', 
-//     password: '',  
-//     database: '',
-//     port: 3306  
-// });
 
 module.exports = pool
 
