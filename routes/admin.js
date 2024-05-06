@@ -61,6 +61,23 @@ router.get('/', (req, res) => {
     });
   });
 
+  // GET a specific admin by ID
+  router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    pool.query('SELECT * FROM Admin WHERE Adm_Id = ?', [id], (error, results) => {
+        if (error) {
+            console.error('Error fetching admin by ID:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).send('No admin found with the specified ID.');
+        }
+    });
+  });
+
 
   
   
