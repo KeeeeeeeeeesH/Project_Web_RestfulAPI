@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: May 05, 2024 at 02:44 PM
+-- Generation Time: May 06, 2024 at 01:13 PM
 -- Server version: 8.4.0
 -- PHP Version: 8.2.8
 
@@ -44,7 +44,7 @@ CREATE TABLE `Admin` (
 INSERT INTO `Admin` (`Adm_Id`, `Adm_Fname`, `Adm_Lname`, `Adm_Username`, `Adm_Password`, `Adm_Email`, `Adm_Phone`) VALUES
 (1, 'testadmfname', 'testadnlname', 'admtestuser', 'admtestpass', 'admtest@gmail.com', '0980960857'),
 (2, 'testadm2fname', 'testadm2lname', 'testadm2User', 'testadm2Pass', 'testadm2@gmail.com', '0796651134'),
-(3, 'fnameapi1', 'lastnameapi', 'userapi', 'passwordapi', 'admtestapi1@gmail.com', '1111111111');
+(5, 'testadmFnnn', 'testadmLnnn', 'usradmtest', 'pswadmtest', 'apiadm@gmail.com', '0320354341');
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,8 @@ CREATE TABLE `Category` (
 
 INSERT INTO `Category` (`Cat_Id`, `Cat_Name`) VALUES
 (1, 'กีฬา'),
-(2, 'การเมือง');
+(2, 'การเมือง'),
+(4, 'ต่างประเทศ');
 
 -- --------------------------------------------------------
 
@@ -127,7 +128,7 @@ CREATE TABLE `Member` (
 
 INSERT INTO `Member` (`Mem_Id`, `Mem_Fname`, `Mem_Lname`, `Mem_Username`, `Mem_Password`, `Mem_Email`, `Mem_Phone`, `Mem_Status`) VALUES
 (1, 'memFtest1', 'memLtest1', 'memUname1', 'memPsword1', 'mem1@email.com', '0987654321', 1),
-(2, 'memFtest2', 'memLtest2', 'memUname2', 'memPsword2', 'mem2@email.com', '0987654327', 0);
+(2, 'memFtestEdited', 'memLtest2', 'memUname2', 'memPsword2', 'mem2@email.com', '0987654327', 1);
 
 -- --------------------------------------------------------
 
@@ -170,8 +171,8 @@ CREATE TABLE `News_Rating` (
 
 INSERT INTO `News_Rating` (`Mem_Id`, `News_Id`, `Rating_Score`) VALUES
 (1, 1, 4.37),
-(1, 2, 4.89),
-(2, 2, 3.56);
+(1, 2, 3.55),
+(2, 1, 4.35);
 
 -- --------------------------------------------------------
 
@@ -189,7 +190,8 @@ CREATE TABLE `Picture` (
 --
 
 INSERT INTO `Picture` (`News_Id`, `News_Pic`) VALUES
-(1, 'momoi.jpg');
+(1, 'momoi.jpg'),
+(2, 'testadd.jpg');
 
 -- --------------------------------------------------------
 
@@ -209,7 +211,8 @@ CREATE TABLE `Read_History` (
 
 INSERT INTO `Read_History` (`Mem_Id`, `News_Id`, `Read_Date`) VALUES
 (1, 1, '2024-05-05 14:43:45'),
-(1, 2, '2024-05-05 14:43:56');
+(1, 2, '2024-05-06 01:36:48'),
+(2, 1, '2024-05-06 01:36:53');
 
 -- --------------------------------------------------------
 
@@ -227,7 +230,9 @@ CREATE TABLE `Read_Later` (
 --
 
 INSERT INTO `Read_Later` (`Mem_Id`, `News_Id`) VALUES
-(1, 2);
+(1, 1),
+(2, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -405,6 +410,7 @@ ALTER TABLE `Work_Status`
 --
 ALTER TABLE `Work_Status_Detail`
   ADD PRIMARY KEY (`Adm_Id`,`Status_Id`),
+  ADD UNIQUE KEY `Adm_Id` (`Adm_Id`),
   ADD KEY `Status_Id` (`Status_Id`);
 
 --
@@ -415,49 +421,49 @@ ALTER TABLE `Work_Status_Detail`
 -- AUTO_INCREMENT for table `Admin`
 --
 ALTER TABLE `Admin`
-  MODIFY `Adm_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Adm_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `Category`
 --
 ALTER TABLE `Category`
-  MODIFY `Cat_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Cat_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Major`
 --
 ALTER TABLE `Major`
-  MODIFY `Major_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Major_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Member`
 --
 ALTER TABLE `Member`
-  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `News`
 --
 ALTER TABLE `News`
-  MODIFY `News_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `News_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `Sub_Category`
 --
 ALTER TABLE `Sub_Category`
-  MODIFY `Sub_Cat_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Sub_Cat_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Total_Read`
 --
 ALTER TABLE `Total_Read`
-  MODIFY `Count_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Count_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `Work_Status`
 --
 ALTER TABLE `Work_Status`
-  MODIFY `Status_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Status_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
