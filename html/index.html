@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- นำเข้า Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- นำเข้าแบบอักษรที่กำหนดเอง -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
+    <!-- นำเข้าไฟล์ CSS ที่กำหนดเอง -->
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mt-5">Admin Dashboard</h1>
+        <!-- เนื้อหาเพิ่มเติมที่นี่ -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Adm_Id</th>
+                    <th>Adm_Fname</th>
+                    <th>Adm_Lname</th>
+                    <th>Adm_Username</th>
+                    <th>Adm_Password</th>
+                    <th>Adm_Email</th>
+                    <th>Adm_Phone</th>
+                </tr>
+            </thead>
+            <tbody id="data-rows">
+                <!-- ข้อมูลจะถูกแทรกที่นี่ -->
+            </tbody>
+    </div>
+
+    <!-- นำเข้า Bootstrap JS และความต้องการ -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- <script>document.addEventListener('DOMContentLoaded', function () {
+            fetch('/api/admin')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('data-rows');
+                    data.forEach(admin => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `<td>${admin.Adm_Id}</td><td>${admin.Adm_Fname}</td><td>${admin.Adm_Lname}</td><td>${admin.Adm_Username}</td><td>${admin.Adm_Password}</td><td>${admin.Adm_Email}</td><td>${admin.Adm_Phone}</td>`;
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Error loading the admin data:', error));
+        });
+    </script> -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('http://localhost:5000/api/admin')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.getElementById('data-rows');
+                    data.forEach(admin => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `<td>${admin.Adm_Id}</td>
+                                        <td>${admin.Adm_Fname}</td>
+                                        <td>${admin.Adm_Lname}</td>
+                                        <td>${admin.Adm_Username}</td>
+                                        <td>${admin.Adm_Password}</td>
+                                        <td>${admin.Adm_Email}</td>
+                                        <td>${admin.Adm_Phone}</td>
+                                        <td>
+                                            <button onclick="editAdmin('${admin.Adm_Id}')" class="btn btn-primary">Edit</button>
+                                            <button onclick="deleteAdmin('${admin.Adm_Id}', this)" class="btn btn-danger">Delete</button>
+                                        </td>`;
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading the admin data:', error);
+                    const tableBody = document.getElementById('data-rows');
+                    tableBody.innerHTML = '<tr><td colspan="8">Failed to load data</td></tr>';
+                });
+        });
+
+    </script>
+
+    <script>
+
+        function deleteAdmin(id, element) {
+            if (confirm('Are you sure you want to delete this admin?')) {
+                // ส่งคำขอไปยังเซิร์ฟเวอร์เพื่อลบข้อมูล
+                fetch(`http://localhost:5000/api/admin/${id}`, {
+                    method: 'DELETE'
+                })
+                location.reload()
+                .then(response => response.json())
+                .then(data => {
+                    alert('Admin deleted successfully');
+                    // ลบแถวจากตาราง
+                })
+                .catch(error => {
+                    console.error('Error deleting the admin:', error);
+                    alert('Failed to delete the admin');
+                });
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
