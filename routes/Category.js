@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
   });
 
   router.post("/", function (req, res) {
-    const { name } = req.body;
+    const { Cat_Name } = req.body;
     const query = 'INSERT INTO Category (Cat_Id, Cat_Name ) VALUES (NULL, ?)';
   
-    pool.query(query, [name], function(error, results) {
+    pool.query(query, [Cat_Name], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
       } else {
@@ -28,10 +28,10 @@ router.get('/', (req, res) => {
 
   router.put('/:id', function(req, res) {
     const { id } = req.params;  // Get the ID from the URL parameter
-    const { name } = req.body;
+    const { Cat_Name } = req.body;
   
     const query = 'UPDATE Category SET Cat_Name = ? WHERE Cat_Id = ?';
-    pool.query(query, [name, id], function(error, results) {
+    pool.query(query, [Cat_Name, id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());
         }

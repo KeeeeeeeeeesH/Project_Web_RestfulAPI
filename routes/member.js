@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
   });
 
   router.post("/", function (req, res) {
-    const { firstname, lastname, username, password, email, phonenumber, status } = req.body;
+    const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status } = req.body;
   
     const query = 'INSERT INTO Member (Mem_Id, Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)';
-    pool.query(query, [ firstname, lastname, username, password, email, phonenumber, status], function(error, results) {
+    pool.query(query, [ Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
       } else {
@@ -46,11 +46,11 @@ router.get('/', (req, res) => {
   });
   
   router.put('/:id', function(req, res) {
-    const { id } = req.params;  // Get the ID from the URL parameter
-    const { firstname, lastname, username, password, email, phonenumber, status } = req.body;
+    const { id } = req.params; 
+    const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status } = req.body;
   
     const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Password = ?, Mem_Email = ?, Mem_Phone = ?, Mem_Status = ? WHERE Mem_Id = ?';
-    pool.query(query, [firstname, lastname, username, password, email, phonenumber, status, id], function(error, results) {
+    pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status, id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());
         }

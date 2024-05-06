@@ -14,9 +14,9 @@ router.get('/', (req, res) => {
   });
 
   router.post("/", function (req, res) {
-    const {  firstname, lastname, username , password, email, phonenumber } = req.body;
+    const {  Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone } = req.body;
     const query = 'INSERT INTO Admin (Adm_Id, Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
-    pool.query(query, [ firstname, lastname, username, password, email, phonenumber], function(error, results) {
+    pool.query(query, [ Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
       } else {
@@ -27,10 +27,10 @@ router.get('/', (req, res) => {
 
   router.put('/:id', function(req, res) {
     const { id } = req.params;  // Get the ID from the URL parameter
-    const { firstname, lastname, username , password, email, phonenumber } = req.body;
+    const { Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone } = req.body;
   
     const query = 'UPDATE Admin SET Adm_Fname = ?, Adm_Lname = ?, Adm_Username = ?, Adm_Password = ?, Adm_Email = ?, Adm_Phone = ? WHERE Adm_Id = ?';
-    pool.query(query, [firstname, lastname, username , password, email, phonenumber, id], function(error, results) {
+    pool.query(query, [Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone, id], function(error, results) {
         if (error) {
             return res.status(500).send(error.toString());
         }
