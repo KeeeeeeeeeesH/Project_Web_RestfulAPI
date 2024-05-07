@@ -4,31 +4,33 @@ const app = express();
 const port = process.env.PORT || 5000;
 const mysql = require('mysql2');
 const cors = require('cors');
+const path = require('path');
 
-// const pool = mysql.createPool({
-//     host: 'localhost',  
-//     user: 'root', 
-//     password: 'newsroot123456',  
-//     database: 'news_web_app',
-//     port: 3306  
-// });
-
-// set-up พรี่แชมป์
 const pool = mysql.createPool({
     host: 'localhost',  
     user: 'root', 
-    password: '',  
+    password: 'newsroot123456',  
     database: 'news_web_app',
     port: 3306  
 });
+
+// set-up พรี่แชมป์
+// const pool = mysql.createPool({
+//     host: 'localhost',  
+//     user: 'root', 
+//     password: '',  
+//     database: 'news_web_app',
+//     port: 3306  
+// });
 
 module.exports = pool
 
 app.use(cors());
 app.use(express.json());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/html', express.static(path.join(__dirname, 'html')));
 
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
