@@ -30,7 +30,20 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use('/views', express.static(path.join(__dirname, 'views/admin')));
+app.use('/views', express.static(path.join(__dirname, 'views/category')));
+app.use('/views', express.static(path.join(__dirname, 'views/favorite_category')));
+app.use('/views', express.static(path.join(__dirname, 'views/major')));
+app.use('/views', express.static(path.join(__dirname, 'views/member')));
+app.use('/views', express.static(path.join(__dirname, 'views/news')));
+app.use('/views', express.static(path.join(__dirname, 'views/news_rating')));
+app.use('/views', express.static(path.join(__dirname, 'views/read_history')));
+app.use('/views', express.static(path.join(__dirname, 'views/read_later')));
+app.use('/views', express.static(path.join(__dirname, 'views/total_read')));
+app.use('/views', express.static(path.join(__dirname, 'views/work_status')));
+app.use('/views', express.static(path.join(__dirname, 'views/work_status_detail')));
+
 
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
