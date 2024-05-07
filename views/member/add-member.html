@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Admin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Add New Admin</h1>
+        <form id="addMemberForm">
+            <div class="form-group">
+                <label for="fname">First Name:</label>
+                <input type="text" class="form-control" id="fname" required>
+            </div>
+            <div class="form-group">
+                <label for="lname">Last Name:</label>
+                <input type="text" class="form-control" id="lname" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="text" class="form-control" id="phone" required>
+            </div>
+                <label for="status">Status:</label>
+                <select class="form-control" id="status" name="Mem_Status" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addMemberForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = {
+                Mem_Fname: document.getElementById('fname').value,
+                Mem_Lname: document.getElementById('lname').value,
+                Mem_Username: document.getElementById('username').value,
+                Mem_Password: document.getElementById('password').value,
+                Mem_Email: document.getElementById('email').value,
+                Mem_Phone: document.getElementById('phone').value,
+                Mem_Status: document.getElementById('status').value
+            };
+            fetch('http://localhost:5000/api/member', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            window.location.href = 'member.html';
+        }); 
+    </script>
+
+        
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

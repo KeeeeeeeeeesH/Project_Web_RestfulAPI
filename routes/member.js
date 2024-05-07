@@ -60,4 +60,20 @@ router.get('/', (req, res) => {
         res.send('Member updated successfully.');
     });
   });
+
+  router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    pool.query('SELECT * FROM member WHERE Mem_Id = ?', [id], (error, results) => {
+        if (error) {
+            console.error('Error fetching member by ID:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).send('No member found with the specified ID.');
+        }
+    });
+  });
 module.exports = router;
