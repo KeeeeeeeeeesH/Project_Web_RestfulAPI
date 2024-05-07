@@ -30,6 +30,10 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
 app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use('/views', express.static(path.join(__dirname, 'views/admin')));
 app.use('/views', express.static(path.join(__dirname, 'views/category')));
@@ -44,6 +48,9 @@ app.use('/views', express.static(path.join(__dirname, 'views/total_read')));
 app.use('/views', express.static(path.join(__dirname, 'views/work_status')));
 app.use('/views', express.static(path.join(__dirname, 'views/work_status_detail')));
 
+
+const LoginRouter = require('./routes/Login');
+app.use('/api', LoginRouter);
 
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
