@@ -1,0 +1,27 @@
+ข้อมูลแต่ละโฟลเดอร์ + ไฟล์หลังบ้าน
+
+***จะมีบางหน้าที่จะรวมไฟล์หลังบ้านมาไว้ในหน้าเดียว เช่น news กับ category
+***พวกที่มีกลุ่มคือ ในส่วนหน้าบ้านจะอยู่ในกลุ่ม nav bar เดียวกัน แต่ยังสร้างตาราง/ไฟล์แยกอยู่
+
+admin -> ส่วนแอดมิน CRUD = admin.js
+
+category -> หมวดหมู่หลัก และ รอง(รวมตารางกัน) CRUD = category.js + sub_category.js
+
+major -> ระดับความสำคัญ CRUD = major.js
+
+///กลุ่ม member
+member -> ข้อมูลสมาชิก CRUD +  = member.js
+favorite_category -> ข้อมูลสิ่งที่สมาชิกชอบ เฉพาะ select+delete = favorite_category.js
+read_later -> ข้อมูลข่าวอ่านภายหลัง เฉพาะ select+delete = read_later.js
+read_history -> ข้อมูลประวัติการอ่านข่าว เฉพาะ select = read_history.js
+
+///กลุ่ม news
+news -> CRUD ข้อมูลข่าว + ข้อมูลรูปภาพ(รวมตารางกับข้อมูลข่าว) = news.js + picture.js
+news_rating -> ข้อมูลคะแนนข่าว เฉพาะ select = news_rating.js 
+total_read -> ข้อมูลข่าวที่ถูกอ่านไปแล้ว เฉพาะ select = total_read.js
+
+///กลุ่ม work status
+work_status -> ข้อมูลสถานะการทำงาน CRUD = work_status.js 
+work_status_detail -> ข้อมูลรายละเอียดการทำงาน CRUD = work_status_detail.js
+
+export/login/recovery ตรงตัว ไม่ต้องเก็บในโฟลเดอร์

@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/html', express.static(path.join(__dirname, 'html')));
+app.use('/views', express.static(path.join(__dirname, 'views/admin')));
 
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
