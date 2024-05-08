@@ -59,4 +59,21 @@ router.get('/', (req, res) => {
         res.send('Category deleted successfully.');
     });
   });
+
+  router.get('/categories_with_sub', (req, res) => {
+    const query = `
+    SELECT Category.Cat_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Id, Sub_Category.Sub_Cat_Name 
+    FROM Category
+    LEFT JOIN Sub_Category ON Category.Cat_Id = Sub_Category.Cat_Id
+    ORDER BY Category.Cat_Id, Sub_Category.Sub_Cat_Id`;
+
+    pool.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching combined Category and Sub Category data: ', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
 module.exports = router;
