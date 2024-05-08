@@ -6,22 +6,22 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
 
-// const pool = mysql.createPool({
-//     host: 'localhost',  
-//     user: 'root', 
-//     password: 'newsroot123456',  
-//     database: 'news_web_app',
-//     port: 3306  
-// });
-
-// set-up พรี่แชมป์
 const pool = mysql.createPool({
     host: 'localhost',  
     user: 'root', 
-    password: '',  
+    password: 'newsroot123456',  
     database: 'news_web_app',
     port: 3306  
 });
+
+// set-up พรี่แชมป์
+// const pool = mysql.createPool({
+//     host: 'localhost',  
+//     user: 'root', 
+//     password: '',  
+//     database: 'news_web_app',
+//     port: 3306  
+// });
 
 module.exports = pool
 
@@ -87,9 +87,6 @@ app.use('/api/sub_category', Sub_CategoryRouter);
 
 const Total_ReadRouter = require('./routes/Total_Read');
 app.use('/api/total_read', Total_ReadRouter);
-
-const Work_Status_DetailRouter = require('./routes/Work_Status_Detail');
-app.use('/api/work_status_detail', Work_Status_DetailRouter);
 
 const Work_StatusRouter = require('./routes/Work_Status');
 app.use('/api/work_status', Work_StatusRouter);

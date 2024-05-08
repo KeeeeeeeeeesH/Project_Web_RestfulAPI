@@ -14,10 +14,9 @@ router.get('/', (req, res) => {
   });
 
   router.post("/", function (req, res) {
-    const { status } = req.body;
-    
-    const query = 'INSERT INTO Work_Status (Adm_Status) VALUES (?)';
-    pool.query(query, [status], function(error, results) {
+    const { Adm_Id, Adm_Status, Start_Date, End_Date } = req.body;
+    const query = 'INSERT INTO Work_Status (Adm_Id, Adm_Status, Start_Date, End_Date) VALUES (?, ?, ?, ?)';
+    pool.query(query, [Adm_Id, Adm_Status, Start_Date, End_Date], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
       } else {
@@ -26,12 +25,12 @@ router.get('/', (req, res) => {
     });
   });
   
-  router.put('/:id', function(req, res) {
-    const { id } = req.params;  
-    const { status } = req.body;
+  router.put('/:Adm_Id', function(req, res) {
+    const { Adm_Id } = req.params;  
+    const { Adm_Status, Start_Date, End_Date } = req.body;
   
-    const query = 'UPDATE Work_Status SET Adm_Status = ? WHERE Status_Id = ?';
-    pool.query(query, [status , id], function(error, results) {
+    const query = 'UPDATE Work_Status SET Adm_Status = ?, Start_Date = ?, End_Date = ? WHERE Adm_Id = ?';
+    pool.query(query, [ Adm_Status, Start_Date, End_Date || null, Adm_Id], (error, results) => {
         if (error) {
             return res.status(500).send(error.toString());
         }
@@ -42,22 +41,18 @@ router.get('/', (req, res) => {
     });
   });
 
-  router.delete('/:id', function(req, res) {
-    const { id } = req.params;  
-  
-    if (!id) {
-        return res.status(400).send('ID is required for deletion.');
-    }
-  
-    const query = 'DELETE FROM Work_Status WHERE Status_Id = ?';
-    pool.query(query, [id], function(error, results) {
+  router.delete('/:Adm_Id', (req, res) => {
+    const { Adm_Id } = req.params;
+    const query = 'DELETE FROM Work_Status WHERE Adm_Id = ?';
+    pool.query(query, [Adm_Id], (error, results) => {
         if (error) {
-            return res.status(500).send(error.toString());
+            res.status(500).send(error.toString());
+            return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No work_status found with the specified ID.');
+            return res.status(404).send('No Work Status found with the specified Admin ID and Status ID.');
         }
-        res.send('Work_status deleted successfully.');
+        res.send('Work Status deleted successfully.');
     });
   });
   
