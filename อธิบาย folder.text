@@ -22,6 +22,18 @@ total_read -> ข้อมูลข่าวที่ถูกอ่านไป
 
 ///กลุ่ม work status
 work_status -> ข้อมูลสถานะการทำงาน CRUD = work_status.js 
-work_status_detail -> ข้อมูลรายละเอียดการทำงาน CRUD = work_status_detail.js
 
-export/login/recovery ตรงตัว ไม่ต้องเก็บในโฟลเดอร์
+export
+login ////
+recovery 
+
+อัพเดทเรื่อง work_status
+จากเดิม จะมี work_status ที่เก็บ status_id กับ adm_status
+แล้วจะมี work_status_detail ที่เก็บ adm_id กับ status_id เพื่อบอกว่า admin คนนี้ มี status_id ที่มีค่า adm_status คืออะไร และพวกวันที่เริ่ม/จบงาน
+เช่น status_id = 1 จะมี adm_status = 0 (ลาออก) หรือ status_id = 2 จะมี adm_status = 1 (กำลังทำงาน) 
+ทีนี้เวลาจะล็อคอิน หรือ เพิ่มแอดมิน จะต้องไปเซ็ทค่า status_id ใน work_status_detail ให้ = 2 ซึ่ง status_id = 2 จะมี adm_status คือ 1 หรือ Working
+โดยที่ในระบบ การจะเพิ่มแอดมินหรือการล็อคอิน ควรจะตรวจว่า adm_status = 1 ตรงๆเลย ไม่ควรที่จะตรวจจาก status_id เพราะ id เป็น primary key โดดๆ 
+จะมีการ auto increment(รันเลขเรื่อยๆ) หากเพิ่มข้อมูล adm_status ผิดแล้วเผลอลบเลขที่รันตาม logic ที่สร้างไว้ อาจจะทำให้ระบบพัง ต้องแก้ logic อีกหลายส่วนจำนวนมาก
+เช่น ถ้าตั้ง logic ให้ status_id = 2 เท่านั้น ถึงจะล้อคอินผ่าน แต่เผลอลบข้อมูลที่มี status_id = 2 ไปแล้ว
+ทำให้ต้องไปแก้ logic ทุกอย่าง ให้เปลี่ยนค่า status_id = 2 ถึงจะล้อคอินผ่าน เป็นค่าอื่นแทน
+และการเซ็ตให้ตรวจค่าจาก id จะยิ่งทำให้ระบบซับซ้อน เพราะต้องไปหาค่าข้างในของ id มาดูอีกทีว่าทำไมถึงต้องเซ็ตให้ค่าตรงกับไอดีนั้นๆ เท่านั่น
