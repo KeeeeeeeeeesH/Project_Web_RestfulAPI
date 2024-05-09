@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Category</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Edit Category</h2>
+    <form id="editCategoryForm">
+        <div class="form-group">
+            <label for="catName">Category Name:</label>
+            <input type="text" class="form-control" id="catName" name="catName" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Category</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const catId = new URLSearchParams(window.location.search).get('id');
+    fetch(`http://localhost:5000/api/category/${catId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('catName').value = data.Cat_Name;
+        })
+        .catch(error => console.error('Error:', error));
+
+    document.getElementById('editCategoryForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const updatedData = {
+            Cat_Name: document.getElementById('catName').value
+        };
+
+        fetch(`http://localhost:5000/api/category/${catId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updatedData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Category updated successfully');
+                window.location.href = 'category.html'; // Redirect back to category dashboard
+            } else {
+                throw new Error('Failed to update category');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating category:', error);
+            alert('Error updating category: ' + error.message);
+        });
+    });
+});
+
+</script>
+
+</body>
+</html>

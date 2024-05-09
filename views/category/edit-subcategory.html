@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Sub-Category</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Edit Sub-Category</h2>
+    <form id="editSubCategoryForm">
+        <div class="form-group">
+            <label for="subCatName">Sub-Category Name:</label>
+            <input type="text" class="form-control" id="subCatName" name="subCatName" required>
+        </div>
+        <div class="form-group">
+            <label for="catId">Category ID:</label>
+            <select class="form-control" id="catId" required>
+                <!-- Category IDs will be populated here -->
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Sub-Category</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const subCatId = new URLSearchParams(window.location.search).get('id');
+    fetch(`http://localhost:5000/api/sub_category/${subCatId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('subCatName').value = data.Sub_Cat_Name;
+            document.getElementById('catId').value = data.Cat_Id;
+        })
+        .catch(error => console.error('Error:', error));
+
+    document.getElementById('editSubCategoryForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const updatedData = {
+            Sub_Cat_Name: document.getElementById('subCatName').value,
+            Cat_Id: document.getElementById('catId').value
+        };
+
+        fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updatedData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Sub-Category updated successfully');
+                window.location.href = 'subcatagory.html';
+            } else {
+                throw new Error('Failed to update sub-category');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating sub-category:', error);
+            alert('Error updating sub-category: ' + error.message);
+        });
+    });
+});
+
+</script>
+
+<script>
+    // Load categories to populate the select dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://localhost:5000/api/category')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('catId');
+                data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.Cat_Id;
+                    option.textContent = category.Cat_Name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Failed to load categories:', error));
+    });
+</script>
+</body>
+</html>

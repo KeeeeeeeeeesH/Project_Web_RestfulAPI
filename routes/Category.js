@@ -76,4 +76,22 @@ router.get('/', (req, res) => {
         res.json(results);
     });
 });
+
+  // GET a specific admin by ID
+  router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    pool.query('SELECT * FROM category WHERE Cat_Id  = ?', [id], (error, results) => {
+        if (error) {
+            console.error('Error fetching category by ID:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).send('No category found with the specified ID.');
+        }
+    });
+  });
+
 module.exports = router;

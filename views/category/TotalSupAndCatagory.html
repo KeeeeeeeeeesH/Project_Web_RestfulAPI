@@ -21,10 +21,8 @@
   <body>
     <div class="container">
       <h1 class="text-center mt-5">Category Dashboard</h1>
-
-      <a href="add-category.html" class="btn btn-success">Add New Category</a>
-      <a href="TotalSupAndCatagory.html" class="btn btn-success">Back</a>
-
+      <a href="category.html" class="btn btn-success">Go to Category</a>
+      <a href="subcatagory.html" class="btn btn-success">Go to SubCatagory</a>
       <!-- เนื้อหาเพิ่มเติมที่นี่ -->
       <div class="card-body">
         <table class="table table-bordered">
@@ -32,7 +30,8 @@
             <tr>
               <th>Category ID</th>
               <th>Category Name</th>
-              <th></th>
+              <th>Sub-Category ID</th>
+              <th>Sub-Category Name</th>
             </tr>
           </thead>
           <tbody id="category-rows">
@@ -49,18 +48,16 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        fetch("http://localhost:5000/api/category")
+        fetch("http://localhost:5000/api/category/categories_with_sub")
           .then((response) => response.json())
           .then((data) => {
             const tableBody = document.getElementById("category-rows");
             data.forEach((item) => {
               const row = document.createElement("tr");
               row.innerHTML = `<td>${item.Cat_Id}</td>
-                               <td>${item.Cat_Name}</td>
-                               <td>
-                                  <button onclick="editCategory('${item.Cat_Id}')" class="btn btn-primary">Edit</button>
-                                  <button onclick="deleteCategory('${item.Cat_Id}')" class="btn btn-danger">Delete</button>
-                               </td>`;
+                                     <td>${item.Cat_Name}</td>
+                                     <td>${item.Sub_Cat_Id || "N/A"}</td>
+                                     <td>${item.Sub_Cat_Name || "N/A"}</td>`;
               tableBody.appendChild(row);
             });
           })
@@ -68,31 +65,53 @@
             console.error("Error:", error);
             const tableBody = document.getElementById("category-rows");
             tableBody.innerHTML =
-              '<tr><td colspan="3">Failed to load data</td></tr>';
+              '<tr><td colspan="5">Failed to load data</td></tr>';
           });
       });
 
-      function deleteCategory(categoryId) {
-        if (confirm("Are you sure you want to delete this category?")) {
-          fetch(`http://localhost:5000/api/category/${categoryId}`, {
-            method: "DELETE",
-          })
-            .then((response) => {
-              if (!response.ok) 
-                throw new Error("Failed to delete the category.");
-              alert("Category deleted successfully");
-              location.reload(); // Reload the page to update the list
-            })
-            .catch((error) => {
-              console.error("Error deleting the category:", error);
-              alert(error.message);
-            });
-        }
-      }
-      
-      function editCategory(categoryId) {
-        window.location.href = `edit-category.html?id=${categoryId}`;
-      }
+      // function deleteCategory(categoryId) {
+      //   if (confirm("Are you sure you want to delete this category?")) {
+      //     fetch(`http://localhost:5000/api/category/${categoryId}`, {
+      //       method: "DELETE",
+      //     })
+      //       .then((response) => {
+      //         if (!response.ok)
+      //           throw new Error("Failed to delete the category.");
+      //         alert("Category deleted successfully");
+      //         location.reload(); // Reload the page to update the list
+      //       })
+      //       .catch((error) => {
+      //         console.error("Error deleting the category:", error);
+      //         alert(error.message);
+      //       });
+      //   }
+      // }
+
+      // function deleteSubCategory(subCatId) {
+      //   if (!subCatId) {
+      //     alert("No sub-category ID provided or invalid sub-category ID.");
+      //     return;
+      //   }
+      //   if (confirm("Are you sure you want to delete this sub-category?")) {
+      //     fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
+      //       method: "DELETE",
+      //     })
+      //       .then((response) => {
+      //         if (!response.ok)
+      //           throw new Error("Failed to delete the sub-category.");
+      //         alert("Sub-category deleted successfully");
+      //         location.reload(); // Reload the page to update the list
+      //       })
+      //       .catch((error) => {
+      //         console.error("Error deleting the sub-category:", error);
+      //         alert(error.message);
+      //       });
+      //   }
+      // }
+
+      // function editCategory(categoryId) {
+      //   window.location.href = `edit-category.html?id=${categoryId}`;
+      // }
 
     </script>
   </body>

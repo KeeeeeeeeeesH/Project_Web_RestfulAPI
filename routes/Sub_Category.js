@@ -56,5 +56,21 @@ router.delete('/:id', (req, res) => {
   });
 });
 
+  // GET a specific admin by ID
+  router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [id], (error, results) => {
+        if (error) {
+            console.error('Error fetching sub_category by ID:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).send('No sub_category found with the specified ID.');
+        }
+    });
+  });
 
 module.exports = router;

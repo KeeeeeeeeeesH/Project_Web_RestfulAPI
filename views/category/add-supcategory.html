@@ -60,10 +60,11 @@
                     Cat_Id: catId
                 })
             })
+
             .then(response => {
                 if (response.ok) {
                     alert('Sub-Category added successfully!');
-                    window.location.reload(); // Optionally reload the page or redirect
+                    window.location.href = 'subcatagory.html'; // Optionally reload the page or redirect
                 } else {
                     throw new Error('Failed to add sub-category');
                 }
@@ -73,6 +74,7 @@
                 alert(error.message);
             });
         });
+
     </script>
 
     <!-- Bootstrap JS and dependencies -->
