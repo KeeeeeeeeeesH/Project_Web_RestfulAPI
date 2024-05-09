@@ -59,7 +59,7 @@ router.get('/', (req, res) => {
         res.send('Category deleted successfully.');
     });
   });
-
+  
   router.get('/categories_with_sub', (req, res) => {
     const query = `
     SELECT Category.Cat_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Id, Sub_Category.Sub_Cat_Name 

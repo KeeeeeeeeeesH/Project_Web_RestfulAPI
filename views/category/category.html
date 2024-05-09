@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <!-- นำเข้า Bootstrap CSS -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- นำเข้าแบบอักษรที่กำหนดเอง -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- นำเข้าไฟล์ CSS ที่กำหนดเอง -->
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-5">Category Dashboard</h1>
+      <a href="add-category.html" class="btn btn-success">Add New Category</a>
+      <a href="add-supcategory.html" class="btn btn-success"
+        >Add New supcategory</a
+      >
+      <!-- เนื้อหาเพิ่มเติมที่นี่ -->
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Category ID</th>
+              <th>Category Name</th>
+              <th>Sub-Category ID</th>
+              <th>Sub-Category Name</th>
+            </tr>
+          </thead>
+          <tbody id="category-rows">
+            <!-- ข้อมูลจะถูกแทรกที่นี่ -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- นำเข้า Bootstrap JS และความต้องการ -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("http://localhost:5000/api/category/categories_with_sub")
+          .then((response) => response.json())
+          .then((data) => {
+            const tableBody = document.getElementById("category-rows");
+            data.forEach((item) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `<td>${item.Cat_Id}</td>
+                                     <td>${item.Cat_Name}</td>
+                                     <td>${item.Sub_Cat_Id || "N/A"}</td>
+                                     <td>${item.Sub_Cat_Name || "N/A"}</td>
+                                     <td>
+                                        <button onclick="editCategory('${
+                                          item.Cat_Id
+                                        }')" class="btn btn-primary">Edit</button>
+                                        <button onclick="deleteCategory('${
+                                          item.Cat_Id
+                                        }')" class="btn btn-danger">Delete Category</button>
+                                        <button onclick="deleteSubCategory('${
+                                          item.Sub_Cat_Id
+                                        }')" class="btn btn-danger">Delete Sub-Category</button>
+                                    </td>`;
+              tableBody.appendChild(row);
+            });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            const tableBody = document.getElementById("category-rows");
+            tableBody.innerHTML =
+              '<tr><td colspan="5">Failed to load data</td></tr>';
+          });
+      });
+
+      function deleteCategory(categoryId) {
+        if (confirm("Are you sure you want to delete this category?")) {
+          fetch(`http://localhost:5000/api/category/${categoryId}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (!response.ok)
+                throw new Error("Failed to delete the category.");
+              alert("Category deleted successfully");
+              location.reload(); // Reload the page to update the list
+            })
+            .catch((error) => {
+              console.error("Error deleting the category:", error);
+              alert(error.message);
+            });
+        }
+      }
+
+      function deleteSubCategory(subCatId) {
+        if (!subCatId) {
+          alert("No sub-category ID provided or invalid sub-category ID.");
+          return;
+        }
+        if (confirm("Are you sure you want to delete this sub-category?")) {
+          fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (!response.ok)
+                throw new Error("Failed to delete the sub-category.");
+              alert("Sub-category deleted successfully");
+              location.reload(); // Reload the page to update the list
+            })
+            .catch((error) => {
+              console.error("Error deleting the sub-category:", error);
+              alert(error.message);
+            });
+        }
+      }
+
+      function editCategory(categoryId) {
+        window.location.href = `edit-category.html?id=${categoryId}`;
+      }
+    </script>
+  </body>
+</html>
