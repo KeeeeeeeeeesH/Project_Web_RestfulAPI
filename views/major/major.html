@@ -1,1 +1,77 @@
-.htm
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Majors</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">Majors List</h2>
+    <a href="add-major.html" class="btn btn-success">Add Major</a>
+    <div class="card-body">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Major ID</th>
+                <th>Major Level</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="majorList">
+            <!-- Majors will be loaded here -->
+        </tbody>
+    </table>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:5000/api/major')
+    .then(response => response.json())
+    .then(majors => {
+        const tableBody = document.getElementById('majorList');
+        majors.forEach(major => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${major.Major_Id}</td>
+                <td>${major.Major_Level}</td>
+                <td>
+                    <button class="btn btn-primary" onclick="editMajor(${major.Major_Id})">Edit</button>
+                    <button class="btn btn-danger" onclick="deleteMajor(${major.Major_Id})">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => console.error('Error loading majors:', error));
+});
+
+function editMajor(majorId) {
+    window.location.href = `edit-major.html?id=${majorId}`;
+}
+
+function deleteMajor(majorId) {
+    if (confirm('Are you sure you want to delete this major?')) {
+        fetch(`http://localhost:5000/api/major/${majorId}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to delete major.');
+            alert('Major deleted successfully.');
+            location.reload();
+        })
+        .catch(error => {
+            alert('Error deleting major: ' + error.message);
+        });
+    }
+}
+</script>
+</body>
+</html>

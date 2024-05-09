@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Major</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Edit Major</h2>
+    <form id="editMajorForm">
+        <div class="form-group">
+            <label for="majorId">Major ID:</label>
+            <input type="text" class="form-control" id="majorId" name="majorId" disabled>
+        </div>
+        <div class="form-group">
+            <label for="majorLevel">Major Level:</label>
+            <input type="text" class="form-control" id="majorLevel" name="majorLevel" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Major</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const majorId = new URLSearchParams(window.location.search).get('id');
+    fetch(`http://localhost:5000/api/major/${majorId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('majorId').value = data.Major_Id;
+            document.getElementById('majorLevel').value = data.Major_Level;
+        })
+        .catch(error => console.error('Error:', error));
+
+    document.getElementById('editMajorForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const updatedData = {
+            Major_Level: document.getElementById('majorLevel').value
+        };
+
+        fetch(`http://localhost:5000/api/major/${majorId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updatedData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Major updated successfully');
+                window.location.href = 'major.html'; // Redirect back to majors list
+            } else {
+                throw new Error('Failed to update major');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating major:', error);
+            alert('Error updating major: ' + error.message);
+        });
+    });
+});
+</script>
+
+</body>
+</html>

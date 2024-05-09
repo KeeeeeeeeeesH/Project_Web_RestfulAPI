@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Major</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Add New Major</h2>
+    <form id="addMajorForm">
+        <div class="form-group">
+            <label for="majorLevel">Major Level:</label>
+            <input type="text" class="form-control" id="majorLevel" name="majorLevel" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Major</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('addMajorForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const majorLevel = document.getElementById('majorLevel').value;
+
+        fetch('http://localhost:5000/api/major', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ Major_Level: majorLevel })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('New major added successfully');
+                window.location.href = 'major.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error adding major:', error);
+            alert('Error adding major: ' + error.message);
+        });
+    });
+});
+</script>
+
+</body>
+</html>
