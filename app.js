@@ -5,7 +5,7 @@ const port = process.env.PORT || 5000;
 const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
-
+const session = require('express-session');
 const pool = mysql.createPool({
     host: 'localhost',  
     user: 'root', 
@@ -23,12 +23,20 @@ const pool = mysql.createPool({
 //     port: 3306  
 // });
 
-module.exports = pool
+module.exports = pool;
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: 'U2FsdGVkX19U/Td9EChM/fcQQgP3N6ifViHC2KraJKg=',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: 'auto' }
+}));
+
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
@@ -46,7 +54,8 @@ app.use('/views', express.static(path.join(__dirname, 'views/read_history')));
 app.use('/views', express.static(path.join(__dirname, 'views/read_later')));
 app.use('/views', express.static(path.join(__dirname, 'views/total_read')));
 app.use('/views', express.static(path.join(__dirname, 'views/work_status')));
-app.use('/views', express.static(path.join(__dirname, 'views/work_status_detail')));
+app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
+app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
 
 
 const LoginRouter = require('./routes/Login');
@@ -90,6 +99,12 @@ app.use('/api/total_read', Total_ReadRouter);
 
 const Work_StatusRouter = require('./routes/Work_Status');
 app.use('/api/work_status', Work_StatusRouter);
+
+const RecoveryRouter = require('./routes/Recovery');
+app.use('/api/recovery', RecoveryRouter);
+
+const ResetPasswordRouter = require('./routes/reset_password');
+app.use('/api/reset_password', ResetPasswordRouter);
 
 // Start server
 app.listen(port, () => {
