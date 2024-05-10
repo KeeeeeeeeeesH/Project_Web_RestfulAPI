@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Work Status</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">"WorkStatus Overview</h2>
+        <a href="add-work_status.html" class="btn btn-success">Add New workstatus</a>
+        <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                <th>Admin ID</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="workStatusList">
+            <!-- Work status data will be inserted here -->
+        </tbody>
+    </table>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    fetch('http://localhost:5000/api/work_status')
+    .then(response => response.json())
+    .then(statusItems => {
+        const tableBody = document.getElementById('workStatusList');
+        statusItems.forEach(item => {
+            const row = document.createElement('tr');
+            const startDate = new Date(item.Start_Date).toLocaleDateString(); // Formats date to local format
+            const endDate = new Date(item.End_Date).toLocaleDateString(); // Formats date to local format
+            
+            row.innerHTML = `
+                <td>${item.Adm_Id}</td>
+                <td>${item.Adm_Status}</td>
+                <td>${startDate}</td>
+                <td>${endDate}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => console.error('Error loading work status:', error));
+
+    window.editWorkStatus = function(admId) {
+        window.location.href = `edit-work_status.html?admId=${admId}`;
+    };
+
+    window.deleteWorkStatus = function(admId) {
+        if(confirm('Are you sure you want to delete this work status?')) {
+            fetch(`http://localhost:5000/api/work_status/${admId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert('Work status deleted successfully.');
+                    window.location.reload();
+                } else {
+                    throw new Error('Failed to delete work status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting work status:', error);
+                alert('Error deleting work status: ' + error.message);
+            });
+        }
+    };
+});
+</script>
+</body>
+</html>

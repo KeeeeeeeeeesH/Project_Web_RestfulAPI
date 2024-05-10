@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show News with Pictures</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">News List with Pictures</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Details</th>
+                <th>Date Added</th>
+                <th>Category ID</th>
+                <th>Major ID</th>
+                <th>Picture</th>
+            </tr>
+        </thead>
+        <tbody id="tabletoatal">
+            <!-- News items will be appended here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    fetch('http://localhost:5000/api/news_with_pictures')
+    .then(response => response.json())
+    .then(newsItems => {
+        const tableBody = document.getElementById('tabletoatal');
+        newsItems.forEach(news => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${news.News_Id}</td>
+                <td>${news.News_Name}</td>
+                <td>${news.News_Details}</td>
+                <td>${new Date(news.Date_Added).toLocaleDateString()}</td>
+                <td>${news.Cat_Id}</td>
+                <td>${news.Major_Id}</td>
+                <td>${news.News_Pic ? `<img src="${news.News_Pic}" style="width:100px;">` : 'No image'}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => console.error('Error loading news:', error));
+});
+</script>
+</body>
+</html>

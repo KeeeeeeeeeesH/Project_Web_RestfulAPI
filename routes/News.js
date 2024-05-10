@@ -56,5 +56,37 @@ router.delete('/:id', (req, res) => {
     });
   });
 
+  router.get('/news_with_pictures', (req, res) => {
+    const query = `
+        SELECT  News.News_Id, News.News_Name, News.News_Details, 
+                News.Date_Added, News.Cat_Id, News.Major_Id,
+                Picture.News_Pic 
+        FROM News LEFT JOIN Picture ON News.News_Id = Picture.News_Id;
+    `;
+    pool.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching news with pictures: ', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  pool.query('SELECT * FROM news WHERE News_Id = ?', [id], (error, results) => {
+      if (error) {
+          console.error('Error fetching news by ID:', error);
+          res.status(500).send('Internal Server Error');
+          return;
+      }
+      if (results.length > 0) {
+          res.json(results[0]);
+      } else {
+          res.status(404).send('No news found with the specified ID.');
+      }
+  });
+});
 
 module.exports = router;

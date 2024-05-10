@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add News</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Add New News</h2>
+    <form id="addNewsForm">
+        <div class="form-group">
+            <label for="newsName">News Title:</label>
+            <input type="text" class="form-control" id="newsName" required>
+        </div>
+        <div class="form-group">
+            <label for="newsDetails">Details:</label>
+            <textarea class="form-control" id="newsDetails" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="newsDate">Date:</label>
+            <input type="date" class="form-control" id="newsDate" required>
+        </div>
+        <div class="form-group">
+            <label for="catId">Category ID:</label>
+            <select class="form-control" id="catId" required>
+                <!-- Category options will be loaded here -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="majorId">Major ID:</label>
+            <select class="form-control" id="majorId" required>
+                <!-- Major options will be loaded here -->
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Add News</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Handle form submission
+    document.getElementById('addNewsForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = {
+            News_Name: document.getElementById('newsName').value,
+            News_Details: document.getElementById('newsDetails').value,
+            Date_Added: document.getElementById('newsDate').value,
+            Cat_Id: document.getElementById('catId').value,
+            Major_Id: document.getElementById('majorId').value
+        };
+
+        fetch('http://localhost:5000/api/news', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to add new news.');
+            alert('News added successfully.');
+            window.location.href = 'news.html'; // Reload the page to clear the form
+        })
+        .catch(error => {
+            console.error('Error adding news:', error);
+            alert('Error adding news: ' + error.message);
+        });
+    });
+});
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://localhost:5000/api/category')
+            .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('catId');
+                    data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.Cat_Id;
+                        option.textContent = category.Cat_Name;
+                        select.appendChild(option);
+                    });
+                })
+            .catch(error => console.error('Failed to load categories:', error));
+        });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://localhost:5000/api/major')
+        .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('majorId');
+                data.forEach(major => {
+                    const option = document.createElement('option');
+                    option.value = major.Major_Id;
+                    option.textContent = major.Major_Level;
+                    select.appendChild(option);
+                });
+            })
+        .catch(error => console.error('Failed to load major:', error));
+    });
+
+</script>
+</body>
+</html>

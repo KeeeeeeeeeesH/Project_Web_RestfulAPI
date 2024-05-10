@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show News Ratings</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">News Ratings Overview</h2>
+    <div class="card-body">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Member ID</th>
+                <th>News ID</th>
+                <th>Rating Score</th>
+            </tr>
+        </thead>
+        <tbody id="ratingsList">
+            <!-- News rating data will be inserted here -->
+        </tbody>
+    </table>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    fetch('http://localhost:5000/api/news_rating')
+    .then(response => response.json())
+    .then(ratings => {
+        const tableBody = document.getElementById('ratingsList');
+        ratings.forEach(rating => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${rating.Mem_Id}</td>
+                <td>${rating.News_Id}</td>
+                <td>${rating.Rating_Score}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => console.error('Error loading ratings:', error));
+});
+</script>
+</body>
+</html>
