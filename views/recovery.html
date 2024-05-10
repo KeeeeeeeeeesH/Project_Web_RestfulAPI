@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Password</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Recovery Password</h2>
+        <form id="requestOtpForm" class="mt-4">
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" class="form-control" id="phone" placeholder="Enter phone number" required>
+                <button type="submit" class="btn btn-primary mt-2">Request OTP</button>
+            </div>
+        </form>
+        <form id="verifyOtpForm" class="mt-4">
+            <div class="form-group">
+                <label for="otp">OTP:</label>
+                <input type="text" class="form-control" id="otp" placeholder="Enter OTP" required disabled>
+                <button type="submit" class="btn btn-success mt-2" disabled>OK</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../routes/Recovery.js"></script>
+    <script>
+
+        //Request OTP Button
+        document.getElementById('requestOtpForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const phone = document.getElementById('phone').value;
+            const formData = new FormData();
+            formData.append('phone', phone);
+            const phoneNumber = { phone: phone };
+
+            fetch('/api/recovery/request-otp', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(phoneNumber)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        alert('ส่งรหัส OTP สำเร็จ');
+                        document.getElementById('otp').disabled = false;
+                        document.getElementById('otp').focus();
+                        document.querySelector('button[type="submit"]').disabled = true; // ปิดการใช้งานปุ่ม "Request OTP"
+                        document.getElementById('phone').disabled = true; // ปิดการใช้งานช่องกรอกเบอร์โทรศัพท์
+                        document.querySelector('#verifyOtpForm button[type="submit"]').disabled = false;
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending OTP:', error);
+                    alert('ไม่สามารถส่งรหัส OTP ได้ โปรดลองอีกครั้งภายหลัง');
+                });
+        });
+
+        //OK Button (Verify OTP)
+        document.getElementById('verifyOtpForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const otp = document.getElementById('otp').value;
+            const otpData = { otp: otp };
+
+            fetch('/api/recovery/verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(otpData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        window.location.href = '../views/reset_password.html';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error verifying OTP:', error);
+                    alert('ยืนยันรหัส OTP ไม่ได้ โปรดลองอีกครั้งภายหลัง');
+                });
+        });
+
+    </script>
+</html>
