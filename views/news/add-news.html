@@ -8,8 +8,8 @@
 </head>
 <body>
 <div class="container">
-    <h2>Add New News</h2>
-    <form id="addNewsForm">
+    <h2>Add News</h2>
+    <form id="addNewsForm" enctype="multipart/form-data">
         <div class="form-group">
             <label for="newsName">News Title:</label>
             <input type="text" class="form-control" id="newsName" required>
@@ -23,16 +23,20 @@
             <input type="date" class="form-control" id="newsDate" required>
         </div>
         <div class="form-group">
-            <label for="catId">Category ID:</label>
+            <label for="catId">Category:</label>
             <select class="form-control" id="catId" required>
                 <!-- Category options will be loaded here -->
             </select>
         </div>
         <div class="form-group">
-            <label for="majorId">Major ID:</label>
+            <label for="majorId">Major:</label>
             <select class="form-control" id="majorId" required>
                 <!-- Major options will be loaded here -->
             </select>
+        </div>
+        <div class="form-group">
+            <label for="newsPictures">News Pictures:</label>
+            <input type="file" class="form-control" id="newsPictures" multiple required>
         </div>
         <button type="submit" class="btn btn-success">Add News</button>
     </form>
@@ -44,18 +48,22 @@ $(document).ready(function() {
     // Handle form submission
     document.getElementById('addNewsForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const formData = {
-            News_Name: document.getElementById('newsName').value,
-            News_Details: document.getElementById('newsDetails').value,
-            Date_Added: document.getElementById('newsDate').value,
-            Cat_Id: document.getElementById('catId').value,
-            Major_Id: document.getElementById('majorId').value
-        };
+        const formData = new FormData();
+        formData.append('News_Name', document.getElementById('newsName').value);
+        formData.append('News_Details', document.getElementById('newsDetails').value);
+        formData.append('Date_Added', document.getElementById('newsDate').value);
+        formData.append('Cat_Id', document.getElementById('catId').value);
+        formData.append('Major_Id', document.getElementById('majorId').value);
+        
+        // Add images to FormData
+        const images = document.getElementById('newsPictures').files;
+        for(let i = 0; i < images.length; i++) {
+            formData.append('newsPictures[]', images[i]);
+        }
 
         fetch('http://localhost:5000/api/news', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formData)
+            body: formData
         })
         .then(response => {
             if (!response.ok) throw new Error('Failed to add new news.');

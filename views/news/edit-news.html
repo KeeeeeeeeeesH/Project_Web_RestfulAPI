@@ -81,39 +81,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('http://localhost:5000/api/category')
-            .then(response => response.json())
-                .then(data => {
-                    const select = document.getElementById('catId');
-                    data.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.Cat_Id;
-                        option.textContent = category.Cat_Name;
-                        select.appendChild(option);
-                    });
-                })
-            .catch(error => console.error('Failed to load categories:', error));
-        });
+// Load category options
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://localhost:5000/api/category')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('catId');
+            data.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.Cat_Id;
+                option.textContent = category.Cat_Name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Failed to load categories:', error));
+});
 
-    document.addEventListener('DOMContentLoaded', function() {
+// Load major options
+document.addEventListener('DOMContentLoaded', function() {
     fetch('http://localhost:5000/api/major')
         .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('majorId');
-                data.forEach(major => {
-                    const option = document.createElement('option');
-                    option.value = major.Major_Id;
-                    option.textContent = major.Major_Level;
-                    select.appendChild(option);
-                });
-            })
+        .then(data => {
+            const select = document.getElementById('majorId');
+            data.forEach(major => {
+                const option = document.createElement('option');
+                option.value = major.Major_Id;
+                option.textContent = major.Major_Level;
+                select.appendChild(option);
+            });
+        })
         .catch(error => console.error('Failed to load major:', error));
-    });
-
+});
 </script>
 </body>
 </html>

@@ -21,12 +21,9 @@ router.post('/login', (req, res) => {
 
         const admin = results[0];
 
-        // Check if admin is in the correct status (ตรวจสอบเงื่อนไขใหม่จากฟิลด์ Adm_Status)
         if (admin.Adm_Status !== 1) {
             return res.status(403).json({ message: 'ไม่ได้อยู่ในสถานะผู้ดูแลระบบ' });
         }
-
-        // If everything is okay, proceed to the dashboard or whatever your logic is
         res.json({ success: true, message: 'Login successful' });
     });
 });
