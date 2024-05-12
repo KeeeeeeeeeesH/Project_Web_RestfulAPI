@@ -60,6 +60,8 @@ app.use('/views', express.static(path.join(__dirname, 'views/picture')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
 app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
+app.use('/views', express.static(path.join(__dirname, 'views/picture')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 const AdminRouter = require('./routes/admin');
@@ -106,6 +108,8 @@ app.use('/api/recovery', RecoveryRouter);
 
 const ResetPasswordRouter = require('./routes/reset_password');
 app.use('/api/reset_password', ResetPasswordRouter);
+
+app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(port, () => {
