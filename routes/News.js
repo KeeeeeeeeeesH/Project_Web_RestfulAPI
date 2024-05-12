@@ -1,47 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../app');
-const multer = require('multer'); 
-  
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-      const ext = file.originalname.split('.').pop();
-      cb(null, Date.now() + '.' + ext);
-    }
-  });
-  
-  const upload = multer({ storage: storage });
-  
-  router.post('/', upload.array('newsPictures'), (req, res) => {
-    const { News_Name, News_Details, Date_Added, Cat_Id, Major_Id } = req.body;
-    const newsPics = req.files.map(file => file.filename); 
-  
-    const query = 'INSERT INTO News (News_Id, News_Name, News_Details, Date_Added, Cat_Id, Major_Id) VALUES (NULL, ?, ?, ?, ?, ?)';
-    pool.query(query, [News_Name, News_Details, Date_Added, Cat_Id, Major_Id], (error, results) => {
-      if (error) {
-        res.status(500).send(error.toString());
-        return;
-      }
-      if (!results.insertId) {
-        res.status(500).send('Failed to add new news.');
-        return;
-      }
-  
-      const picValues = newsPics.map(pic => [results.insertId, pic]);
-      const picQuery = 'INSERT INTO Picture (News_Id, News_Pic) VALUES ?';
-      pool.query(picQuery, [picValues], (picError, picResults) => {
-        if (picError) {
-          res.status(500).send(picError.toString());
-          return;
-        }
-        res.status(201).send('News added successfully.');
-      });
-    });
-  });
-  
+
+
   router.put('/:id', (req, res) => {
     const { id } = req.params;
     const { News_Name, News_Details, Cat_Id, Major_Id } = req.body;

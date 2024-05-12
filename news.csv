@@ -1,0 +1,7 @@
+News_Id,News_Name,Date_Added,Cat_Id,Major_Id,Cat_Name,Sub_Cat_Name,Major_Level
+10,ทดสอบกีฬา,Sun May 12 2024 13:49:49 GMT+0700 (Indochina Time),6,1,กีฬา,ฟุตบอล,0
+10,ทดสอบกีฬา,Sun May 12 2024 13:49:49 GMT+0700 (Indochina Time),6,1,กีฬา,วอเล่ย์บอล,0
+12,ทดสอบ 2,Sun May 12 2024 14:10:50 GMT+0700 (Indochina Time),8,1,เศรษฐกิจ,,0
+13,ทดสอบ 3,Sun May 12 2024 14:11:11 GMT+0700 (Indochina Time),10,1,เกมส์,TFT,0
+13,ทดสอบ 3,Sun May 12 2024 14:11:11 GMT+0700 (Indochina Time),10,1,เกมส์,LOL,0
+13,ทดสอบ 3,Sun May 12 2024 14:11:11 GMT+0700 (Indochina Time),10,1,เกมส์,DOTA2,0

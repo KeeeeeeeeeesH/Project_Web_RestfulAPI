@@ -1,3 +1,5 @@
+<!-- dashboard.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,18 +14,30 @@
         <div class="d-flex justify-content-between align-items-center">
             <a href="admin.html" class="btn btn-success mr-2">Admin</a>
             <button id="logoutButton" class="btn btn-danger">Logout</button>
+            <button id="exportNewsButton" class="btn btn-primary">Export News</button>
+            <button id="exportMembersButton" class="btn btn-primary">Export Members</button>
+            <button id="exportAdminsButton" class="btn btn-primary">Export Admins</button>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script> 
-     if (!localStorage.getItem('isLoggedIn')) {  
-         window.location.href = '/views/login.html'; // Adjust the path as needed
-     }
         $(document).ready(function() {
             $('#logoutButton').click(function() {
                 localStorage.removeItem('isLoggedIn');
                 window.location.href = '/views/login.html'; // Adjust the path as needed
+            });
+
+            $('#exportNewsButton').click(function() {
+                window.location.href = '/export/news';
+            });
+
+            $('#exportMembersButton').click(function() {
+                window.location.href = '/export/member';
+            });
+
+            $('#exportAdminsButton').click(function() {
+                window.location.href = '/export/admin';
             });
         });
     </script>

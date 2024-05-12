@@ -25,9 +25,9 @@ picture -> รูปภาพของข่าว เฉพาะ select insert
 work_status -> ข้อมูลสถานะการทำงาน CRUD = work_status.js //เสร็จ
 
 ///กลุ่มระบบใหญ่
-export -> เอาปุ่ม export ไปไว้หน้า dashboard
-login ****
-recovery+reset_password ****
+export -> เอาปุ่ม export ไปไว้หน้า dashboard //เสร็จ
+login //เสร็จ
+recovery+reset_password //เสร็จ
 
 \\\\\\\\\\\\                     งานที่เหลือตอนนี้ (ไม่นับ CRUD)                      //////////////
                         1. ทำให้ทุกหน้า Link หากันได้ ด้วย Navigation Bar / Tab
