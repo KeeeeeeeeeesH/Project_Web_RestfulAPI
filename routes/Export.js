@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-
 router.get('/news', (req, res) => {
     const query = 'SELECT News.News_Id, News.News_Name, News.Date_Added, News.Cat_Id, News.Major_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Name, Major.Major_Level FROM News LEFT JOIN Category ON News.Cat_Id = Category.Cat_Id LEFT JOIN Sub_Category ON News.Cat_Id = Sub_Category.Cat_Id LEFT JOIN Major ON News.Major_Id = Major.Major_Id';
     pool.promise().query(query)

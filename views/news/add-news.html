@@ -34,10 +34,6 @@
                 <!-- Major options will be loaded here -->
             </select>
         </div>
-        <div class="form-group">
-            <label for="newsPictures">News Pictures:</label>
-            <input type="file" class="form-control" id="newsPictures" multiple required>
-        </div>
         <button type="submit" class="btn btn-success">Add News</button>
     </form>
 </div>
@@ -54,12 +50,6 @@ $(document).ready(function() {
         formData.append('Date_Added', document.getElementById('newsDate').value);
         formData.append('Cat_Id', document.getElementById('catId').value);
         formData.append('Major_Id', document.getElementById('majorId').value);
-        
-        // Add images to FormData
-        const images = document.getElementById('newsPictures').files;
-        for(let i = 0; i < images.length; i++) {
-            formData.append('newsPictures[]', images[i]);
-        }
 
         fetch('http://localhost:5000/api/news', {
             method: 'POST',
