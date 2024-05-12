@@ -6,22 +6,23 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
-const pool = mysql.createPool({
-    host: 'localhost',  
-    user: 'root', 
-    password: 'newsroot123456',  
-    database: 'news_web_app',
-    port: 3306  
-});
 
-// set-up พรี่แชมป์
 // const pool = mysql.createPool({
 //     host: 'localhost',  
 //     user: 'root', 
-//     password: '',  
+//     password: 'newsroot123456',  
 //     database: 'news_web_app',
 //     port: 3306  
 // });
+
+// set-up พรี่แชมป์
+const pool = mysql.createPool({
+    host: 'localhost',  
+    user: 'root', 
+    password: '',  
+    database: 'news_web_app',
+    port: 3306  
+});
 
 module.exports = pool;
 
@@ -56,6 +57,8 @@ app.use('/views', express.static(path.join(__dirname, 'views/total_read')));
 app.use('/views', express.static(path.join(__dirname, 'views/work_status')));
 app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
 app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
+app.use('/views', express.static(path.join(__dirname, 'views/picture')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 const LoginRouter = require('./routes/Login');
@@ -105,6 +108,8 @@ app.use('/api/recovery', RecoveryRouter);
 
 const ResetPasswordRouter = require('./routes/reset_password');
 app.use('/api/reset_password', ResetPasswordRouter);
+
+app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(port, () => {
