@@ -3,30 +3,41 @@
 ***จะมีบางหน้าที่จะรวมไฟล์หลังบ้านมาไว้ในหน้าเดียว เช่น news กับ category
 ***พวกที่มีกลุ่มคือ ในส่วนหน้าบ้านจะอยู่ในกลุ่ม nav bar เดียวกัน แต่ยังสร้างตาราง/ไฟล์แยกอยู่
 
-admin -> ส่วนแอดมิน CRUD = admin.js ****
+admin -> ส่วนแอดมิน CRUD = admin.js //เสร็จ
 
-category -> หมวดหมู่หลัก และ รอง(รวมตารางกัน) CRUD = category.js + sub_category.js ****
+category -> หมวดหมู่หลัก และ รอง(รวมตารางกัน) CRUD = category.js + sub_category.js //เสร็จ
 
-major -> ระดับความสำคัญ CRUD = major.js ****
+major -> ระดับความสำคัญ CRUD = major.js //เสร็จ
 
 ///กลุ่ม member
-member -> ข้อมูลสมาชิก CRUD +  = member.js
+member -> ข้อมูลสมาชิก CRUD +  = member.js //เสร็จ
 favorite_category -> ข้อมูลสิ่งที่สมาชิกชอบ เฉพาะ select+delete = favorite_category.js
 read_later -> ข้อมูลข่าวอ่านภายหลัง เฉพาะ select+delete = read_later.js
-read_history -> ข้อมูลประวัติการอ่านข่าว เฉพาะ select = read_history.js ****
+read_history -> ข้อมูลประวัติการอ่านข่าว เฉพาะ select = read_history.js //เสร็จ
 
 ///กลุ่ม news
-news -> CRUD ข้อมูลข่าว + ข้อมูลรูปภาพ(รวมตารางกับข้อมูลข่าว) =s news.js + picture.js ****
-news_rating -> ข้อมูลคะแนนข่าว เฉพาะ select = news_rating.js ****
+news -> CRUD ข้อมูลข่าว + ข้อมูลรูปภาพ = news.js // เหลือเพิ่มหมวดหมู่รองให้ News ด้วย
+news_rating -> ข้อมูลคะแนนข่าว เฉพาะ select = news_rating.js //เสร็จ
 total_read -> ข้อมูลข่าวที่ถูกอ่านไปแล้ว เฉพาะ select = total_read.js
-picture -> รูปภาพของข่าว เฉพาะ select insert delete (เก็บไฟล์รูปเป็น jpg/png เก็บได้มากกว่า 1 รูป)
+picture -> รูปภาพของข่าว เฉพาะ select insert delete (เก็บไฟล์รูปเป็น jpg/png เก็บได้มากกว่า 1 รูป) //เสร็จ
 
 ///กลุ่ม work status
-work_status -> ข้อมูลสถานะการทำงาน CRUD = work_status.js ****
+work_status -> ข้อมูลสถานะการทำงาน CRUD = work_status.js //เสร็จ
 
-export
+///กลุ่มระบบใหญ่
+export -> เอาปุ่ม export ไปไว้หน้า dashboard
 login ****
-recovery ****
+recovery+reset_password ****
+
+\\\\\\\\\\\\                     งานที่เหลือตอนนี้ (ไม่นับ CRUD)                      //////////////
+                        1. ทำให้ทุกหน้า Link หากันได้ ด้วย Navigation Bar / Tab
+                        2. ทำให้หน้าแต่ละหมวด Link หากันได้ตามสมควร
+                        3. ทำ UI ให้อยู่ในเกณฑ์พอใช้ได้
+                        4. ตรวจการ validate แต่ละช่องกรอกข้อมูล
+                        5. เช็ค PK,FK ให้ cascade on delete //เสร็จ
+                        6. โชว์ตัวเลข/ข้อมูล ในหน้า dashboard ให้สมบูรณ์ ได้แก่ จำนวนข่าวทั้งหมด จำนวนการอ่านทั้งหมด จำนวนสมาชิกทั้งหมด ปุ่ม export data
+                        7. ตรวจเรื่องชื่อ/pathสำหรับลิงค์หน้า ให้ถูกต้อง
+
 
 
 อัพเดทเรื่อง work_status
