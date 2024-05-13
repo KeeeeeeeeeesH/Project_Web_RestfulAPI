@@ -1,5 +1,3 @@
-<!-- dashboard.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
     <div class="container mt-5">
@@ -17,6 +16,33 @@
             <button id="exportNewsButton" class="btn btn-primary">Export News</button>
             <button id="exportMembersButton" class="btn btn-primary">Export Members</button>
             <button id="exportAdminsButton" class="btn btn-primary">Export Admins</button>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">จำนวนข่าวทั้งหมดในระบบ</h5>
+                        <h2 id="totalNews" class="text-primary">Loading...</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">ยอดการอ่านข่าวทั้งหมด</h5>
+                        <h2 id="totalRead" class="text-primary">Loading...</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">จำนวนสมาชิกในระบบทั้งหมด</h5>
+                        <h2 id="totalMembers" class="text-primary">Loading...</h2>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -38,6 +64,16 @@
 
             $('#exportAdminsButton').click(function() {
                 window.location.href = '/export/admin';
+            });
+
+            $.get("/dashboard/total-news", function(data) {
+                $("#totalNews").text(data.totalNews);
+            });
+            $.get("/dashboard/total-read", function(data) {
+                $("#totalRead").text(data.totalRead);
+            });
+            $.get("/dashboard/total-members", function(data) {
+                $("#totalMembers").text(data.totalMembers);
             });
         });
     </script>

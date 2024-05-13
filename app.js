@@ -114,6 +114,8 @@ app.use('/uploads', express.static('uploads'));
 const exportRouter = require('./routes/Export');
 app.use('/export', exportRouter);
 
+const dashboardRouter = require('./routes/dashboard');
+app.use('/dashboard', dashboardRouter);
 
 // Start server
 app.listen(port, () => {
