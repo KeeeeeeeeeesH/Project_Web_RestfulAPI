@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Categories</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Favorite Categories</h2>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Member ID</th>
+                    <th>Category Name</th>
+                </tr>
+            </thead>
+            <tbody id="favoriteCategoryTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:5000/api/Favorite_Category')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('favoriteCategoryTable');
+                data.forEach(item => {
+                    const row = `<tr>
+                                    <td>${item.Mem_Id}</td>
+                                    <td>${item.Cat_Id}</td>
+                                </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Error loading the categories:', error));
+        });
+    </script>
+</body>
+</html>
