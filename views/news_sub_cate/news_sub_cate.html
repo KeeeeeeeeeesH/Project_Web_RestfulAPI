@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Sub Categories</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">News Sub Categories</h2>
+    <div class="card-body">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>News ID</th>
+                <th>Sub Category ID</th>
+            </tr>
+        </thead>
+        <tbody id="newsSubCateList">
+        </tbody>
+    </table>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="News_Sub_Cate.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetchNewsSubCategories();
+});
+
+function fetchNewsSubCategories() {
+    fetch('http://localhost:5000/api/news_sub_cate')
+        .then(response => response.json())
+        .then(data => {
+            const newsSubCateList = document.getElementById('newsSubCateList');
+            data.forEach(newsSubCate => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${newsSubCate.News_Id}</td>
+                    <td>${newsSubCate.Sub_Cat_Id}</td>
+                `;
+                newsSubCateList.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error loading news sub categories:', error));
+}
+</script>
+
+</body>
+</html>

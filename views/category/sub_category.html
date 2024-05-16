@@ -11,12 +11,12 @@
   </head>
   <body>
     <div class="container">
-      <h2 class="mt-5">Sub-Categories List</h2>
+      <h2 class="mt-5">Sub Category List</h2>
 
       <div class="card-body">
         
-      <a href="add-supcategory.html" class="btn btn-success">Add New supcategory</a>
-      <a href="TotalSupAndCatagory.html" class="btn btn-success">Back</a>
+      <a href="add-sub_category.html" class="btn btn-success">New Sub Category</a>
+      <a href="Total_CategoryAndSub.html" class="btn btn-success">Back</a>
         <table class="table table-bordered mt-3">
           <thead>
             <tr>
@@ -56,12 +56,12 @@
             });
           })
           .catch((error) =>
-            console.error("Error loading sub-categories:", error)
+            console.error("Error loading sub categories:", error)
           );
       });
 
       function editSubCategory(subCatId) {
-        window.location.href = `edit-subcategory.html?id=${subCatId}`;
+        window.location.href = `edit-sub_category.html?id=${subCatId}`;
       }
 
       function deleteSubCategory(subCatId) {
@@ -72,7 +72,7 @@
             .then((response) => {
               if (!response.ok)
                 throw new Error("Failed to delete sub-category.");
-              alert("Sub-category deleted successfully.");
+              alert("Sub category deleted successfully.");
               location.reload();
             })
             .catch((error) => {

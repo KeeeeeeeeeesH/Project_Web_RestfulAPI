@@ -64,14 +64,14 @@
             .then(response => {
                 if (response.ok) {
                     alert('Sub-Category added successfully!');
-                    window.location.href = 'subcatagory.html'; // Optionally reload the page or redirect
+                    window.location.href = 'sub_category.html'; // Optionally reload the page or redirect
                 } else {
                     throw new Error('Failed to add sub-category');
                 }
             })
             .catch(error => {
                 console.error('Error adding sub-category:', error);
-                alert(error.message);
+                alert('Failed to add Sub Category. Please try again');
             });
         });
 

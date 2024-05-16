@@ -20,20 +20,20 @@ router.get('/', (req, res) => {
     pool.query(query, [Cat_Name], function(error, results) {
       if (error) {
         res.status(500).send(error.toString());
-      } else {
-        res.status(201).send('Category added successfully.');
+        return;
       }
+        res.status(201).send('Category added successfully.');
     });
   });
 
   router.put('/:id', function(req, res) {
     const { id } = req.params;  // Get the ID from the URL parameter
     const { Cat_Name } = req.body;
-  
     const query = 'UPDATE Category SET Cat_Name = ? WHERE Cat_Id = ?';
     pool.query(query, [Cat_Name, id], function(error, results) {
         if (error) {
-            return res.status(500).send(error.toString());
+            res.status(500).send(error.toString());
+            return;
         }
         if (results.affectedRows === 0) {
             return res.status(404).send('No category found with the specified ID.');
@@ -77,10 +77,9 @@ router.get('/', (req, res) => {
     });
 });
 
-  // GET a specific admin by ID
   router.get('/:id', (req, res) => {
     const id = req.params.id;
-    pool.query('SELECT * FROM category WHERE Cat_Id  = ?', [id], (error, results) => {
+    pool.query('SELECT * FROM Category WHERE Cat_Id  = ?', [id], (error, results) => {
         if (error) {
             console.error('Error fetching category by ID:', error);
             res.status(500).send('Internal Server Error');

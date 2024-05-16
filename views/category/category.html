@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
+    <title>Category Dashboard</title>
     <!-- นำเข้า Bootstrap CSS -->
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -23,7 +23,7 @@
       <h1 class="text-center mt-5">Category Dashboard</h1>
 
       <a href="add-category.html" class="btn btn-success">Add New Category</a>
-      <a href="TotalSupAndCatagory.html" class="btn btn-success">Back</a>
+      <a href="Total_CategoryAndSub.html" class="btn btn-success">Back</a>
 
       <!-- เนื้อหาเพิ่มเติมที่นี่ -->
       <div class="card-body">
@@ -51,15 +51,15 @@
       document.addEventListener("DOMContentLoaded", function () {
         fetch("http://localhost:5000/api/category")
           .then((response) => response.json())
-          .then((data) => {
+          .then((Categories) => {
             const tableBody = document.getElementById("category-rows");
-            data.forEach((item) => {
+            Categories.forEach((Category) => {
               const row = document.createElement("tr");
-              row.innerHTML = `<td>${item.Cat_Id}</td>
-                               <td>${item.Cat_Name}</td>
+              row.innerHTML = `<td>${Category.Cat_Id}</td>
+                               <td>${Category.Cat_Name}</td>
                                <td>
-                                  <button onclick="editCategory('${item.Cat_Id}')" class="btn btn-primary">Edit</button>
-                                  <button onclick="deleteCategory('${item.Cat_Id}')" class="btn btn-danger">Delete</button>
+                                  <button onclick="editCategory('${Category.Cat_Id}')" class="btn btn-primary">Edit</button>
+                                  <button onclick="deleteCategory('${Category.Cat_Id}')" class="btn btn-danger">Delete</button>
                                </td>`;
               tableBody.appendChild(row);
             });
@@ -72,9 +72,9 @@
           });
       });
 
-      function deleteCategory(categoryId) {
+      function deleteCategory(catId) {
         if (confirm("Are you sure you want to delete this category?")) {
-          fetch(`http://localhost:5000/api/category/${categoryId}`, {
+          fetch(`http://localhost:5000/api/category/${catId}`, {
             method: "DELETE",
           })
             .then((response) => {
@@ -90,8 +90,8 @@
         }
       }
       
-      function editCategory(categoryId) {
-        window.location.href = `edit-category.html?id=${categoryId}`;
+      function editCategory(catId) {
+        window.location.href = `edit-category.html?id=${catId}`;
       }
 
     </script>

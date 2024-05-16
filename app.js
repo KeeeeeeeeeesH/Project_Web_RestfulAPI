@@ -61,8 +61,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
 app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
 app.use('/views', express.static(path.join(__dirname, 'views/picture')));
+app.use('/views', express.static(path.join(__dirname, 'views/news_sub_cate')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const LoginRouter = require('./routes/Login');
+app.use('/api', LoginRouter);
 
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
@@ -73,8 +76,8 @@ app.use('/api/category', CategoryRouter);
 const Favorite_CategoryRouter = require('./routes/Favorite_Category');
 app.use('/api/favorite_category', Favorite_CategoryRouter);
 
-const MajorRouter = require('./routes/Major');
-app.use('/api/major', MajorRouter);
+const majorRouter = require('./routes/Major');
+app.use('/api/major', majorRouter);
 
 const memberRouter = require('./routes/member');
 app.use('/api/member', memberRouter);
@@ -84,6 +87,9 @@ app.use('/api/news_rating', News_RatingRouter);
 
 const NewsRouter = require('./routes/News');
 app.use('/api/news', NewsRouter);
+
+const newsSubCateRouter = require('./routes/News_Sub_Cate');
+app.use('/api/news_sub_cate', newsSubCateRouter);
 
 const PictureRouter = require('./routes/Picture');
 app.use('/api/picture', PictureRouter);

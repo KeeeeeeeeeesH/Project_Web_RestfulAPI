@@ -8,19 +8,19 @@
 </head>
 <body>
 <div class="container">
-    <h2>Edit Sub-Category</h2>
+    <h2>Edit Sub Category</h2>
     <form id="editSubCategoryForm">
         <div class="form-group">
-            <label for="subCatName">Sub-Category Name:</label>
+            <label for="subCatName">Sub Category Name:</label>
             <input type="text" class="form-control" id="subCatName" name="subCatName" required>
         </div>
         <div class="form-group">
-            <label for="catId">Category ID:</label>
+            <label for="catId">Category :</label>
             <select class="form-control" id="catId" required>
                 <!-- Category IDs will be populated here -->
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Update Sub-Category</button>
+        <button type="submit" class="btn btn-primary">Update Sub Category</button>
     </form>
 </div>
 
@@ -53,14 +53,14 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 alert('Sub-Category updated successfully');
-                window.location.href = 'subcatagory.html';
+                window.location.href = 'sub_category.html';
             } else {
                 throw new Error('Failed to update sub-category');
             }
         })
         .catch(error => {
             console.error('Error updating sub-category:', error);
-            alert('Error updating sub-category: ' + error.message);
+            alert('Error updating sub category: ' + error.message);
         });
     });
 });
@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
-    // Load categories to populate the select dropdown
     document.addEventListener('DOMContentLoaded', function() {
         fetch('http://localhost:5000/api/category')
             .then(response => response.json())
