@@ -9,62 +9,63 @@
 </head>
 <body>
     <div class="header">
-        <button class="toggle-btn" id="toggleButton">☰</button>
+      <button class="toggle-btn" id="toggleButton">☰</button>
+    </div>
+  
+    <div class="sidebar" id="sidebar">
+      <a href="/views/dashboard.html">Dashboard</a>
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
+        <div class="dropdown-content" id="adminDropdownContent">
+          <a class="dropdown-item" href="../admin/admin.html">Admin Dashboard</a>
+        </div>
       </div>
-    
-      <div class="sidebar" id="sidebar">
-        <a href="/views/dashboard.html">Dashboard</a>
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
-          <div class="dropdown-content" id="adminDropdownContent">
-            <a class="dropdown-item" href="../admin/admin.html">Admin Dashboard</a>
-          </div>
+  
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
+        <div class="dropdown-content" id="categoryDropdownContent">
+          <a class="dropdown-item" href="../category/category.html">Category Dashboard</a>
+          <a class="dropdown-item" href="../category/sub_category.html">Sub Category Dashboard</a>
         </div>
-    
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
-          <div class="dropdown-content" id="categoryDropdownContent">
-            <a class="dropdown-item" href="../category/category.html">Category Dashboard</a>
-            <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">SubCategory Dashboard</a>
-          </div>
-        </div>
-    
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
-          <div class="dropdown-content" id="majorDropdownContent">
-            <a class="dropdown-item" href="../major/major.html">Major Dashboard</a>
-          </div>
-        </div>
-    
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
-          <div class="dropdown-content" id="memberDropdownContent">
-            <a class="dropdown-item" href="../member/member.html">Member Dashboard</a>
-            <a class="dropdown-item" href="../favorite_category/favorite_category.html">FavoriteCategory Dashboard</a>
-            <a class="dropdown-item" href="../read_later/read_later.html">Readlater Dashboard</a>
-            <a class="dropdown-item" href="../read_history/read_history.html">Readhistory Dashboard</a>
-          </div>
-        </div>
-    
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
-          <div class="dropdown-content" id="newsDropdownContent">
-            <a class="dropdown-item" href="../news/news.html">News Dashboard</a>
-            <a class="dropdown-item" href="../total_read/total_read.html">total_read Dashboard</a>
-            <a class="dropdown-item" href="../picture/picture.html">picture Dashboard</a>
-            <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">NewsSubCate</a>
-          </div>
-        </div>
-    
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle" id="work_statusDropdown">work status</a>
-          <div class="dropdown-content" id="work_statusContent">
-            <a class="dropdown-item" href="../work_status/work_status.html">work status Dashboard</a>
-          </div>
-        </div>
-    
-        <button id="logoutButton" class="btn btn-danger">Logout</button>
       </div>
+  
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
+        <div class="dropdown-content" id="majorDropdownContent">
+          <a class="dropdown-item" href="../major/major.html">Major Dashboard</a>
+        </div>
+      </div>
+  
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
+        <div class="dropdown-content" id="memberDropdownContent">
+          <a class="dropdown-item" href="../member/member.html">Member Dashboard</a>
+          <a class="dropdown-item" href="../favorite_category/favorite_category.html">Favorite Category Dashboard</a>
+          <a class="dropdown-item" href="../read_later/read_later.html">Read Later Dashboard</a>
+          <a class="dropdown-item" href="../read_history/read_history.html">Read History Dashboard</a>
+        </div>
+      </div>
+  
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
+        <div class="dropdown-content" id="newsDropdownContent">
+          <a class="dropdown-item" href="../news/news.html">News Dashboard</a>
+          <a class="dropdown-item" href="../total_read/total_read.html">Total Read Dashboard</a>
+          <a class="dropdown-item" href="../picture/picture.html">Picture Dashboard</a>
+          <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">News Sub Category</a>
+          <a class="dropdown-item" href="../news_rating/news_rating.html">News Rating Dashboard</a>
+        </div>
+      </div>
+  
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="work_statusDropdown">Work status</a>
+        <div class="dropdown-content" id="work_statusContent">
+          <a class="dropdown-item" href="../work_status/work_status.html">Work status Dashboard</a>
+        </div>
+      </div>
+  
+      <button id="logoutButton" class="btn btn-danger">Logout</button>
+    </div>
     
       <div class="content" id="content">
     <h2 class="text-center mt-5"    >Add News</h2>
