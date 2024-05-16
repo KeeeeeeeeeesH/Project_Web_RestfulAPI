@@ -33,6 +33,8 @@ recovery+reset_password //เสร็จ
                         ตรวจเรื่องการ validate work_status ของ login โดย
                         ให้ขึ้นแจ้งเตือนว่า ไม่ได้อยู่ในสถานะผู้ดูแลระบบ ถ้าล็อคอินแล้ว username password ถูกต้อง แต่ work status ไม่เท่ากับ 1
 
+                        11. แก้ไขการ edit (หน้า sub category) ให้ชื่อหมวดหมู่รอง / ชื่อหมวดหมู่หลัก ที่ถูกต้องไปในหน้า edit
+                    
                         12. แก้ไขเรื่องส่ง work_status ไม่ส่งข้อมูลไปหน้า edit และ
                             วันที่ในหน้า dashboard ของ work status ถ้า status = 1 end date ต้องเป็น Null
 
@@ -50,7 +52,7 @@ recovery+reset_password //เสร็จ
                         8. แก้ไขชื่อ/คำ ในปุ่ม หัวเรื่อง หัวเว็บ ตาราง ภาษาไทย
                         10. เรื่องรูปภาพ เอาปุ่ม Add ออก แล้วให้ปุ่ม add เป็นรูปแบบ action เมื่อกดเข้าไป จะล็อค News Id ไว้ แล้วให้อัพโหลดรูปเข้าไปแทน
                         กรณียังไม่มีภาพ ให้ขึ้น filename เป็น Null/Undefine ไว้ก่อน
-                        11. แก้ไขเรื่องส่ง id ไป edit (หน้า sub category)
+                        
                         
 
 
