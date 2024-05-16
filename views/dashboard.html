@@ -1,24 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="../styles/styles.css">
 </head>
+
 <body>
-    <div class="container mt-5">
-        <h1>News Dashboard</h1>
-        <div class="d-flex justify-content-between align-items-center">
-            <a href="admin.html" class="btn btn-success mr-2">Admin</a>
-            <button id="logoutButton" class="btn btn-danger">Logout</button>
-            <button id="exportNewsButton" class="btn btn-primary">Export News</button>
-            <button id="exportMembersButton" class="btn btn-primary">Export Members</button>
+    <div class="header">
+        <button class="toggle-btn" id="toggleButton">☰</button>
+      </div>
+    
+      <div class="sidebar" id="sidebar">
+        <a href="dashboard.html">Dashboard</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
+          <div class="dropdown-content" id="adminDropdownContent">
+            <a class="dropdown-item" href="../views/admin/admin.html">Admin Dashboard</a>
+          </div>
+        </div>
+    
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
+          <div class="dropdown-content" id="categoryDropdownContent">
+            <a class="dropdown-item" href="/views/category/category.html">Category Dashboard</a>
+            <a class="dropdown-item" href="../views/news_sub_cate/news_sub_cate.html">SubCategory Dashboard</a>
+          </div>
+        </div>
+    
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
+          <div class="dropdown-content" id="majorDropdownContent">
+            <a class="dropdown-item" href="../views/major/major.html">Major Dashboard</a>
+          </div>
+        </div>
+    
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
+          <div class="dropdown-content" id="memberDropdownContent">
+            <a class="dropdown-item" href="../views/member/member.html">Member Dashboard</a>
+            <a class="dropdown-item" href="../views/favorite_category/favorite_category.html">FavoriteCategory Dashboard</a>
+            <a class="dropdown-item" href="../views/read_later/read_later.html">Readlater Dashboard</a>
+            <a class="dropdown-item" href="../views/read_history/read_history.html">Readhistory Dashboard</a>
+          </div>
+        </div>
+    
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
+          <div class="dropdown-content" id="newsDropdownContent">
+            <a class="dropdown-item" href="../views/news/news.html">News Dashboard</a>
+            <a class="dropdown-item" href="../views/total_read/total_read.html">total_read Dashboard</a>
+            <a class="dropdown-item" href="../views/picture/picture.html">picture Dashboard</a>
+            <a class="dropdown-item" href="../views/news_sub_cate/news_sub_cate.html">NewsSubCate Dashboard</a>
+          </div>
+        </div>
+    
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" id="work_statusDropdown">work status</a>
+          <div class="dropdown-content" id="work_statusContent">
+            <a class="dropdown-item" href="../views/work_status/work_status.html">work status Dashboard</a>
+          </div>
+        </div>
+    
+        <button id="logoutButton" class="btn btn-danger">Logout</button>
+      </div>
+    
+      <div class="content" id="content">
+        <h1 class="text-center mt-5">News Dashboard</h1>
+
+        <div class="d-flex justify-content-end mb-4">
+            <button id="exportNewsButton" class="btn btn-primary mr-2">Export News</button>
+            <button id="exportMembersButton" class="btn btn-primary mr-2">Export Members</button>
             <button id="exportAdminsButton" class="btn btn-primary">Export Admins</button>
         </div>
 
-        <div class="row mt-5">
+        <div class="row">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
@@ -46,36 +105,39 @@
         </div>
     </div>
 
+    <script src="../scripts/dropdown.js"></script>
+    <script src="../scripts/sidebar.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script> 
-        $(document).ready(function() {
-            $('#logoutButton').click(function() {
+    <script>
+        $(document).ready(function () {
+            $('#logoutButton').click(function () {
                 localStorage.removeItem('isLoggedIn');
                 window.location.href = '/views/login.html'; // Adjust the path as needed
             });
 
-            $('#exportNewsButton').click(function() {
+            $('#exportNewsButton').click(function () {
                 window.location.href = '/export/news';
             });
 
-            $('#exportMembersButton').click(function() {
+            $('#exportMembersButton').click(function () {
                 window.location.href = '/export/member';
             });
 
-            $('#exportAdminsButton').click(function() {
+            $('#exportAdminsButton').click(function () {
                 window.location.href = '/export/admin';
             });
 
-            $.get("/dashboard/total-news", function(data) {
+            $.get("/dashboard/total-news", function (data) {
                 $("#totalNews").text(data.totalNews);
             });
-            $.get("/dashboard/total-read", function(data) {
+            $.get("/dashboard/total-read", function (data) {
                 $("#totalRead").text(data.totalRead);
             });
-            $.get("/dashboard/total-members", function(data) {
+            $.get("/dashboard/total-members", function (data) {
                 $("#totalMembers").text(data.totalMembers);
             });
         });
     </script>
 </body>
+
 </html>

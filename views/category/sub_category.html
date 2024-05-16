@@ -1,23 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Show Sub-Categories</title>
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <h2 class="mt-5">Sub Category List</h2>
 
-      <div class="card-body">
-        
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Show Sub-Categories</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+  <div class="header">
+    <button class="toggle-btn" id="toggleButton">☰</button>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <a href="/views/dashboard.html">Dashboard</a>
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
+      <div class="dropdown-content" id="adminDropdownContent">
+        <a class="dropdown-item" href="../admin/admin.html">Admin Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
+      <div class="dropdown-content" id="categoryDropdownContent">
+        <a class="dropdown-item" href="../category/category.html">Category Dashboard</a>
+        <a class="dropdown-item" href="../category/sub_category.html">SubCategory Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
+      <div class="dropdown-content" id="majorDropdownContent">
+        <a class="dropdown-item" href="../major/major.html">Major Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
+      <div class="dropdown-content" id="memberDropdownContent">
+        <a class="dropdown-item" href="../member/member.html">Member Dashboard</a>
+        <a class="dropdown-item" href="../favorite_category/favorite_category.html">FavoriteCategory Dashboard</a>
+        <a class="dropdown-item" href="../read_later/read_later.html">Readlater Dashboard</a>
+        <a class="dropdown-item" href="../read_history/read_history.html">Readhistory Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
+      <div class="dropdown-content" id="newsDropdownContent">
+        <a class="dropdown-item" href="../news/news.html">News Dashboard</a>
+        <a class="dropdown-item" href="../total_read/total_read.html">total_read Dashboard</a>
+        <a class="dropdown-item" href="../picture/picture.html">picture Dashboard</a>
+        <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">NewsSubCate</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="work_statusDropdown">work status</a>
+      <div class="dropdown-content" id="work_statusContent">
+        <a class="dropdown-item" href="../work_status/work_status.html">work status Dashboard</a>
+      </div>
+    </div>
+
+    <button id="logoutButton" class="btn btn-danger">Logout</button>
+  </div>
+
+
+  <div class="content" id="content">
+    <h2 class="mt-5">Sub Category List</h2>
+
+    <div class="card-body">
+
       <a href="add-sub_category.html" class="btn btn-success">New Sub Category</a>
-      <a href="Total_CategoryAndSub.html" class="btn btn-success">Back</a>
-        <table class="table table-bordered mt-3">
+      <div class="card-body">
+        <table class="table table-bordered">
           <thead>
             <tr>
               <th>Sub-Category ID</th>
@@ -32,19 +91,22 @@
         </table>
       </div>
     </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        fetch("http://localhost:5000/api/sub_category")
-          .then((response) => response.json())
-          .then((subCategories) => {
-            const tableBody = document.getElementById("subCategoryList");
-            subCategories.forEach((subCategory) => {
-              const row = document.createElement("tr");
-              row.innerHTML = `
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("http://localhost:5000/api/sub_category")
+        .then((response) => response.json())
+        .then((subCategories) => {
+          const tableBody = document.getElementById("subCategoryList");
+          subCategories.forEach((subCategory) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
                 <td>${subCategory.Sub_Cat_Id}</td>
                 <td>${subCategory.Sub_Cat_Name}</td>
                 <td>${subCategory.Cat_Id}</td>
@@ -52,35 +114,36 @@
                     <button class="btn btn-primary" onclick="editSubCategory(${subCategory.Sub_Cat_Id})">Edit</button>
                     <button class="btn btn-danger" onclick="deleteSubCategory(${subCategory.Sub_Cat_Id})">Delete</button>
                 </td>`;
-              tableBody.appendChild(row);
-            });
+            tableBody.appendChild(row);
+          });
+        })
+        .catch((error) =>
+          console.error("Error loading sub categories:", error)
+        );
+    });
+
+    function editSubCategory(subCatId) {
+      window.location.href = `edit-sub_category.html?id=${subCatId}`;
+    }
+
+    function deleteSubCategory(subCatId) {
+      if (confirm("Are you sure you want to delete this sub-category?")) {
+        fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (!response.ok)
+              throw new Error("Failed to delete sub-category.");
+            alert("Sub category deleted successfully.");
+            location.reload();
           })
-          .catch((error) =>
-            console.error("Error loading sub categories:", error)
-          );
-      });
-
-      function editSubCategory(subCatId) {
-        window.location.href = `edit-sub_category.html?id=${subCatId}`;
+          .catch((error) => {
+            alert("Error deleting sub-category: " + error.message);
+          });
       }
+    }
 
-      function deleteSubCategory(subCatId) {
-        if (confirm("Are you sure you want to delete this sub-category?")) {
-          fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
-            method: "DELETE",
-          })
-            .then((response) => {
-              if (!response.ok)
-                throw new Error("Failed to delete sub-category.");
-              alert("Sub category deleted successfully.");
-              location.reload();
-            })
-            .catch((error) => {
-              alert("Error deleting sub-category: " + error.message);
-            });
-        }
-      }
+  </script>
+</body>
 
-    </script>
-  </body>
 </html>

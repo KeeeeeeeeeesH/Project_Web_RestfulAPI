@@ -5,10 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picture Gallery</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/styles.css">
+
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Picture Gallery</h2>
+  <div class="header">
+    <button class="toggle-btn" id="toggleButton">☰</button>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <a href="/views/dashboard.html">Dashboard</a>
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
+      <div class="dropdown-content" id="adminDropdownContent">
+        <a class="dropdown-item" href="../admin/admin.html">Admin Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
+      <div class="dropdown-content" id="categoryDropdownContent">
+        <a class="dropdown-item" href="../category/category.html">Category Dashboard</a>
+        <a class="dropdown-item" href="../category/sub_category.html">SubCategory Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
+      <div class="dropdown-content" id="majorDropdownContent">
+        <a class="dropdown-item" href="../major/major.html">Major Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
+      <div class="dropdown-content" id="memberDropdownContent">
+        <a class="dropdown-item" href="../member/member.html">Member Dashboard</a>
+        <a class="dropdown-item" href="../favorite_category/favorite_category.html">FavoriteCategory Dashboard</a>
+        <a class="dropdown-item" href="../read_later/read_later.html">Readlater Dashboard</a>
+        <a class="dropdown-item" href="../read_history/read_history.html">Readhistory Dashboard</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
+      <div class="dropdown-content" id="newsDropdownContent">
+        <a class="dropdown-item" href="../news/news.html">News Dashboard</a>
+        <a class="dropdown-item" href="../total_read/total_read.html">total_read Dashboard</a>
+        <a class="dropdown-item" href="../picture/picture.html">picture Dashboard</a>
+        <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">NewsSubCate</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#" class="dropdown-toggle" id="work_statusDropdown">work status</a>
+      <div class="dropdown-content" id="work_statusContent">
+        <a class="dropdown-item" href="../work_status/work_status.html">work status Dashboard</a>
+      </div>
+    </div>
+
+    <button id="logoutButton" class="btn btn-danger">Logout</button>
+  </div>
+
+      <div class="content" id="content">
+        <h2 class="text-center mt-5">Picture Gallery</h2>
         <a href="add-picture.html" class="btn btn-success">Add New Picture</a>
         <div class="card-body">
         <table class="table table-bordered">
@@ -28,6 +88,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/scripts/dropdown.js"></script>
+    <script src="/scripts/sidebar.js"></script>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     fetch('http://localhost:5000/api/picture')

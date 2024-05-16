@@ -7,22 +7,22 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 
-const pool = mysql.createPool({
-    host: 'localhost',  
-    user: 'root', 
-    password: 'newsroot123456',  
-    database: 'news_web_app',
-    port: 3306  
-});
-
-// set-up พรี่แชมป์
 // const pool = mysql.createPool({
 //     host: 'localhost',  
 //     user: 'root', 
-//     password: '',  
+//     password: 'newsroot123456',  
 //     database: 'news_web_app',
 //     port: 3306  
 // });
+
+// set-up พรี่แชมป์
+const pool = mysql.createPool({
+    host: 'localhost',  
+    user: 'root', 
+    password: '',  
+    database: 'news_web_app',
+    port: 3306  
+});
 
 module.exports = pool;
 
@@ -42,6 +42,9 @@ app.use(session({
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
+
+app.use('/styles', express.static(path.join(__dirname, 'styles')));
+app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
 
 app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use('/views', express.static(path.join(__dirname, 'views/admin')));
