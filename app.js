@@ -73,20 +73,17 @@ app.use('/api', LoginRouter);
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
 
-const CategoryRouter = require('./routes/Category');
-app.use('/api/category', CategoryRouter);
-
-const Favorite_CategoryRouter = require('./routes/Favorite_Category');
-app.use('/api/favorite_category', Favorite_CategoryRouter);
-
-const majorRouter = require('./routes/Major');
-app.use('/api/major', majorRouter);
+const Work_StatusRouter = require('./routes/Work_Status');
+app.use('/api/work_status', Work_StatusRouter);
 
 const memberRouter = require('./routes/member');
 app.use('/api/member', memberRouter);
 
-const News_RatingRouter = require('./routes/News_Rating');
-app.use('/api/news_rating', News_RatingRouter);
+const CategoryRouter = require('./routes/Category');
+app.use('/api/category', CategoryRouter);
+
+const Sub_CategoryRouter = require('./routes/Sub_Category');
+app.use('/api/sub_category', Sub_CategoryRouter);
 
 const NewsRouter = require('./routes/News');
 app.use('/api/news', NewsRouter);
@@ -97,20 +94,23 @@ app.use('/api/news_sub_cate', newsSubCateRouter);
 const PictureRouter = require('./routes/Picture');
 app.use('/api/picture', PictureRouter);
 
-const Read_HistoryRouter = require('./routes/Read_History');
-app.use('/api/read_history', Read_HistoryRouter);
+const majorRouter = require('./routes/Major');
+app.use('/api/major', majorRouter);
+
+const Favorite_CategoryRouter = require('./routes/Favorite_Category');
+app.use('/api/favorite_category', Favorite_CategoryRouter);
 
 const Read_LaterRouter = require('./routes/Read_Later');
 app.use('/api/read_later', Read_LaterRouter);
 
-const Sub_CategoryRouter = require('./routes/Sub_Category');
-app.use('/api/sub_category', Sub_CategoryRouter);
+const News_RatingRouter = require('./routes/News_Rating');
+app.use('/api/news_rating', News_RatingRouter);
+
+const Read_HistoryRouter = require('./routes/Read_History');
+app.use('/api/read_history', Read_HistoryRouter);
 
 const Total_ReadRouter = require('./routes/Total_Read');
 app.use('/api/total_read', Total_ReadRouter);
-
-const Work_StatusRouter = require('./routes/Work_Status');
-app.use('/api/work_status', Work_StatusRouter);
 
 const RecoveryRouter = require('./routes/Recovery');
 app.use('/api/recovery', RecoveryRouter);
