@@ -63,7 +63,7 @@ router.get('/', (req, res) => {
 
   router.get('/:id', (req, res) => {
     const id = req.params.id;
-    pool.query('SELECT * FROM member WHERE Mem_Id = ?', [id], (error, results) => {
+    pool.query('SELECT * FROM Member WHERE Mem_Id = ?', [id], (error, results) => {
         if (error) {
             console.error('Error fetching member by ID:', error);
             res.status(500).send('Internal Server Error');
