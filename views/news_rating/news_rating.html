@@ -108,5 +108,13 @@ $(document).ready(function() {
     .catch(error => console.error('Error loading ratings:', error));
 });
 </script>
+
+<script>
+  $(document).ready(function () {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = '../views/login.html';
+    }
+  });
+</script>
 </body>
 </html>

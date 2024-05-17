@@ -127,5 +127,13 @@ function deleteImage(newsId, fileName) {
             .catch(error => console.error('Error deleting the image:', error));
         }
     </script>
+
+<script>
+  $(document).ready(function () {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = '../views/login.html';
+    }
+  });
+</script>
 </body>
 </html>

@@ -164,7 +164,16 @@
         window.location.href = "/views/login.html"; // Adjust the path as needed
       });
     });
+    
   </script>
+
+<script>
+  $(document).ready(function () {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = '../views/login.html';
+    }
+  });
+</script>
 </body>
 
 </html>

@@ -81,7 +81,7 @@
             </thead>
             <tbody id="favoriteCategoryTable"></tbody>
         </table>
-        <div
+        </div>
     </div>
 
     <script src="/scripts/dropdown.js"></script>
@@ -103,5 +103,13 @@
             .catch(error => console.error('Error loading the categories:', error));
         });
     </script>
+
+<script>
+  $(document).ready(function () {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = '../views/login.html';
+    }
+  });
+</script>
 </body>
 </html>
