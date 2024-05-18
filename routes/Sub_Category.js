@@ -66,19 +66,20 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    const catId = req.params.id;
-    pool.query('SELECT * FROM Sub_Category WHERE Cat_Id = ?', [catId], (error, results) => {
+    const subCatId = req.params.id;
+    pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [subCatId], (error, results) => {
         if (error) {
-            console.error('Error fetching sub_categories by Category ID:', error);
+            console.error('Error fetching sub category by ID:', error);
             res.status(500).send('Internal Server Error');
             return;
         }
         if (results.length > 0) {
-            res.json(results);
+            res.json(results[0]);
         } else {
-            res.status(404).send('No sub_categories found for the specified Category ID.');
+            res.status(404).send('No sub category found with the specified ID.');
         }
     });
 });
+
   
 module.exports = router;
