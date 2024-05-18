@@ -72,67 +72,72 @@
   <div class="content" id="content">
     <h2>Edit Work Status</h2>
     <form id="editWorkStatusForm">
-      <input type="hidden" id="admId">
-      <div class="form-group">
-        <label for="status">Status:</label>
-        <input type="text" class="form-control" id="status" required>
-      </div>
-      <div class="form-group">
-        <label for="startDate">Start Date:</label>
-        <input type="date" class="form-control" id="startDate" required>
-      </div>
-      <div class="form-group">
-        <label for="endDate">End Date:</label>
-        <input type="date" class="form-control" id="endDate">
-      </div>
-      <button type="submit" class="btn btn-primary">Update Status</button>
+        <input type="hidden" id="admId">
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control" id="status" required>
+                <option value="1">Working</option>
+                <option value="0">Resign</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" class="form-control" id="startDate" required>
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" class="form-control" id="endDate">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Status</button>
     </form>
-  </div>
-  <script src="/scripts/dropdown.js"></script>
+</div>
+
+<script src="/scripts/dropdown.js"></script>
 <script src="/scripts/sidebar.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-$(document).ready(function() {
-    const admId = new URLSearchParams(window.location.search).get('admId');
-    $('#admId').val(admId);
+    $(document).ready(function() {
+        const admId = new URLSearchParams(window.location.search).get('admId');
+        $('#admId').val(admId);
 
-    // Fetch the existing data and pre-fill the form
-    fetch(`http://localhost:5000/api/work_status/${admId}`)
-    .then(response => response.json())
-    .then(data => {
-        $('#status').val(data.Adm_Status);
-        $('#startDate').val(data.Start_Date);
-        $('#endDate').val(data.End_Date);
-    })
-    .catch(error => console.error('Error fetching work status:', error));
-
-    // Handle the form submission to update the data
-    $('#editWorkStatusForm').submit(function(e) {
-        e.preventDefault();
-        const status = $('#status').val();
-        const updatedData = {
-            Adm_Status: status,
-            Start_Date: $('#startDate').val(),
-            End_Date: status === '1' ? null : $('#endDate').val()
-        };
-
-        fetch(`http://localhost:5000/api/work_status/${admId}`, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updatedData)
+        fetch(`http://localhost:5000/api/work_status/${admId}`)
+        .then(response => response.json())
+        .then(data => {
+            $('#status').val(data.Adm_Status);
+            $('#startDate').val(new Date(data.Start_Date).toISOString().split('T')[0]);
+            if (data.End_Date) {
+                $('#endDate').val(new Date(data.End_Date).toISOString().split('T')[0]);
+            } else {
+                $('#endDate').val('');
+            }
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to update work status.');
-            alert('Work status updated successfully.');
-            window.location.href = 'work_status.html';
-        })
-        .catch(error => {
-            console.error('Error updating work status:', error);
-            alert('Error updating work status: ' + error.message);
+        .catch(error => console.error('Error fetching work status:', error));
+
+        $('#editWorkStatusForm').submit(function(e) {
+            e.preventDefault();
+            const status = $('#status').val();
+            const updatedData = {
+                Adm_Status: status,
+                Start_Date: $('#startDate').val(),
+                End_Date: status === '1' ? null : $('#endDate').val()
+            };
+
+            fetch(`http://localhost:5000/api/work_status/${admId}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updatedData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to update work status.');
+                alert('Work status updated successfully.');
+                window.location.href = '/views/work_status/work_status.html';
+            })
+            .catch(error => {
+                console.error('Error updating work status:', error);
+                alert('Error updating work status: ' + error.message);
+            });
         });
     });
-});
 </script>
 </body>
-
 </html>

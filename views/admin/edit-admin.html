@@ -6,7 +6,6 @@
     <title>Edit Admin</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles/styles.css">
-
 </head>
 <body>
   <div class="header">
@@ -68,84 +67,118 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-    <div class="content" id="content">
-    <h2  class="text-center mt-5">Edit Admin</h2>
+  <div class="content" id="content">
+    <h2 class="text-center mt-5">Edit Admin</h2>
     <form id="editAdminForm">
-        <div class="form-group">
-            <label for="Adm_Fname">First Name:</label>
-            <input type="text" class="form-control" id="Adm_Fname" name="Adm_Fname" required>
-        </div>
-        <div class="form-group">
-            <label for="Adm_Lname">Last Name:</label>
-            <input type="text" class="form-control" id="Adm_Lname" name="Adm_Lname" required>
-        </div>
-        <div class="form-group">
-            <label for="Adm_Username">Username:</label>
-            <input type="text" class="form-control" id="Adm_Username" name="Adm_Username" required>
-        </div>
-        <div class="form-group">
-            <label for="Adm_Email">Email:</label>
-            <input type="email" class="form-control" id="Adm_Email" name="Adm_Email" required>
-        </div>
-        <div class="form-group">
-            <label for="Adm_Phone">Phone:</label>
-            <input type="text" class="form-control" id="Adm_Phone" name="Adm_Phone" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Update Admin</button>
+      <div class="form-group">
+        <label for="Adm_Fname">First Name:</label>
+        <input type="text" class="form-control" id="Adm_Fname" name="Adm_Fname" required>
+      </div>
+      <div class="form-group">
+        <label for="Adm_Lname">Last Name:</label>
+        <input type="text" class="form-control" id="Adm_Lname" name="Adm_Lname" required>
+      </div>
+      <div class="form-group">
+        <label for="Adm_Username">Username:</label>
+        <input type="text" class="form-control" id="Adm_Username" name="Adm_Username" required>
+        <small id="usernameError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="Adm_Email">Email:</label>
+        <input type="email" class="form-control" id="Adm_Email" name="Adm_Email" required>
+        <small id="emailError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="Adm_Phone">Phone:</label>
+        <input type="text" class="form-control" id="Adm_Phone" name="Adm_Phone" required>
+        <small id="phoneError" class="form-text text-danger"></small>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Admin</button>
     </form>
-</div>
+  </div>
 
-<script src="/scripts/dropdown.js"></script>
-<script src="/scripts/sidebar.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const adminId = new URLSearchParams(window.location.search).get('id');
-    // Load existing admin data
-    fetch(`http://localhost:5000/api/admin/${adminId}`)
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const adminId = new URLSearchParams(window.location.search).get('id');
+      
+      // Load existing admin data
+      fetch(`http://localhost:5000/api/admin/${adminId}`)
         .then(response => response.json())
         .then(admin => {
-            document.getElementById('Adm_Fname').value = admin.Adm_Fname;
-            document.getElementById('Adm_Lname').value = admin.Adm_Lname;
-            document.getElementById('Adm_Username').value = admin.Adm_Username;
-            document.getElementById('Adm_Email').value = admin.Adm_Email;
-            document.getElementById('Adm_Phone').value = admin.Adm_Phone;
+          document.getElementById('Adm_Fname').value = admin.Adm_Fname;
+          document.getElementById('Adm_Lname').value = admin.Adm_Lname;
+          document.getElementById('Adm_Username').value = admin.Adm_Username;
+          document.getElementById('Adm_Email').value = admin.Adm_Email;
+          document.getElementById('Adm_Phone').value = admin.Adm_Phone;
         })
         .catch(error => console.error('Error:', error));
- 
-    // Update admin data
-    document.getElementById('editAdminForm').addEventListener('submit', function(e) {
+
+      // Update admin data
+      document.getElementById('editAdminForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
+        const phone = document.getElementById('Adm_Phone').value;
+        if (!/^0\d{9}$/.test(phone)) {
+          document.getElementById('phoneError').textContent = 'Format of Phone Number is Incorrect';
+          return;
+        }
+
         const formData = {
-            Adm_Fname: document.getElementById('Adm_Fname').value,
-            Adm_Lname: document.getElementById('Adm_Lname').value,
-            Adm_Username: document.getElementById('Adm_Username').value,
-            Adm_Email: document.getElementById('Adm_Email').value,
-            Adm_Phone: document.getElementById('Adm_Phone').value
+          Adm_Fname: document.getElementById('Adm_Fname').value,
+          Adm_Lname: document.getElementById('Adm_Lname').value,
+          Adm_Username: document.getElementById('Adm_Username').value,
+          Adm_Email: document.getElementById('Adm_Email').value,
+          Adm_Phone: phone
         };
 
+        document.getElementById('usernameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('phoneError').textContent = '';
+
         fetch(`http://localhost:5000/api/admin/${adminId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
         })
         .then(response => {
-            if (response.ok) {
-                alert('Admin updated successfully');
-                window.location.href = 'admin.html';
-            } else {
-                throw new Error('Failed to update admin');
-            }
+          if (!response.ok) {
+            return response.json().then(error => { throw new Error(error.message); });
+          }
+          return response.json();
+        })
+        .then(data => {
+          alert('Admin updated successfully');
+          window.location.href = '/views/admin/admin.html';
         })
         .catch(error => {
+          if (error.message === 'Username already exists') {
+            document.getElementById('usernameError').textContent = error.message;
+          } else if (error.message === 'Email already exists') {
+            document.getElementById('emailError').textContent = error.message;
+          } else if (error.message === 'Phone number already exists') {
+            document.getElementById('phoneError').textContent = error.message;
+          } else {
             alert('Error updating admin: ' + error.message);
+          }
         });
+      });
     });
-});
 
-</script>
+    $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../views/login.html';
+      }
 
+      $("#logoutButton").click(function () {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "/views/login.html";
+      });
+    });
+  </script>
 </body>
 </html>

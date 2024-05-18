@@ -51,4 +51,17 @@ router.put('/:id', (req, res) => {
     });
 });
 
+router.get('/:catId', (req, res) => {
+    const { catId } = req.params;
+    const query = 'SELECT * FROM Sub_Category WHERE Cat_Id = ?';
+    pool.query(query, [catId], (error, results) => {
+        if (error) {
+            console.error('Error fetching sub categories:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;

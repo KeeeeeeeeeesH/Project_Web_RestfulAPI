@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image</title>
-    <!-- เพิ่ม Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/styles.css">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Image</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/styles.css">
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -69,24 +70,67 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-      <div class="content" id="content">
+  <div class="content" id="content">
     <h2>Upload Image</h2>
-    <form action="http://localhost:5000/api/picture/upload" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="newsId">News ID:</label>
-            <input type="text" class="form-control" id="newsId" name="News_Id" required>
-        </div>
-        <div class="form-group">
-            <label for="image">Select image:</label>
-            <input type="file" class="form-control-file" id="image" name="newsPictures" multiple required>
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="newsId">Select News ID:</label>
+        <select class="form-control" id="newsId" name="News_Id" required>
+          <option value="">Select News</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="image">Select image:</label>
+        <input type="file" class="form-control-file" id="image" name="newsPictures" multiple required>
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
     </form>
-</div>
-<!-- เพิ่ม Bootstrap JS และ jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
-<script src="/scripts/dropdown.js"></script>
-<script src="/scripts/sidebar.js"></script>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Fetch the news list and populate the dropdown
+      fetch('http://localhost:5000/api/news')
+        .then(response => response.json())
+        .then(data => {
+          const newsSelect = document.getElementById('newsId');
+          data.forEach(news => {
+            const option = document.createElement('option');
+            option.value = news.News_Id;
+            option.textContent = `${news.News_Id} - ${news.News_Name}`;
+            newsSelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error loading news:', error));
+
+      document.getElementById('uploadForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('http://localhost:5000/api/picture/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('Image uploaded successfully!');
+              window.location.href = '/views/picture/picture.html';
+            } else {
+              alert('Failed to upload image: ' + data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while uploading the image.');
+          });
+      });
+    });
+  </script>
 </body>
+
 </html>

@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Admin</title>
+    <title>Add New Member</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles -->
     <link rel="stylesheet" href="/styles/styles.css">
 </head>
-
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -71,72 +69,120 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-      <div class="content" id="content">
-        <h1 class="text-center mt-5">Add New Member</h1>
-        <form id="addMemberForm">
-            <div class="form-group">
-                <label for="fname">First Name:</label>
-                <input type="text" class="form-control" id="fname" required>
-            </div>
-            <div class="form-group">
-                <label for="lname">Last Name:</label>
-                <input type="text" class="form-control" id="lname" required>
-            </div>
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="text" class="form-control" id="phone" required>
-            </div>
-            <label for="status">Status:</label>
-            <select class="form-control" id="status" name="Mem_Status" required>
-                <option value="0">0</option>
-                <option value="1">1</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+  <div class="content" id="content">
+    <h1 class="text-center mt-5">Add New Member</h1>
+    <form id="addMemberForm">
+      <div class="form-group">
+        <label for="fname">First Name:</label>
+        <input type="text" class="form-control" id="fname" required>
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name:</label>
+        <input type="text" class="form-control" id="lname" required>
+      </div>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" required>
+        <small id="usernameError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" required>
+        <small id="emailError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" class="form-control" id="phone" required>
+        <small id="phoneError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select class="form-control" id="status" name="Mem_Status" required>
+          <option value="0">0</option>
+          <option value="1">1</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
 
-    <script>
-        document.getElementById('addMemberForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = {
-                Mem_Fname: document.getElementById('fname').value,
-                Mem_Lname: document.getElementById('lname').value,
-                Mem_Username: document.getElementById('username').value,
-                Mem_Password: document.getElementById('password').value,
-                Mem_Email: document.getElementById('email').value,
-                Mem_Phone: document.getElementById('phone').value,
-                Mem_Status: document.getElementById('status').value
-            };
-            fetch('http://localhost:5000/api/member', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-            window.location.href = 'member.html';
-        }); 
-    </script>
+  <script>
+    document.getElementById('addMemberForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const phone = document.getElementById('phone').value;
+      if (!/^0\d{9}$/.test(phone)) {
+        document.getElementById('phoneError').textContent = 'Format of Phone Number is Incorrect';
+        return;
+      }
+
+      const formData = {
+        Mem_Fname: document.getElementById('fname').value,
+        Mem_Lname: document.getElementById('lname').value,
+        Mem_Username: document.getElementById('username').value,
+        Mem_Password: document.getElementById('password').value,
+        Mem_Email: document.getElementById('email').value,
+        Mem_Phone: document.getElementById('phone').value,
+        Mem_Status: document.getElementById('status').value
+      };
+
+      document.getElementById('usernameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('phoneError').textContent = '';
 
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="/scripts/dropdown.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      fetch('http://localhost:5000/api/member', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(error => { throw new Error(error.message); });
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Member added successfully!');
+        window.location.href = '/views/member/member.html';
+      })
+      .catch(error => {
+            if (error.message === 'Username already exists') {
+                document.getElementById('usernameError').textContent = error.message;
+            } else if (error.message === 'Email already exists') {
+                document.getElementById('emailError').textContent = error.message;
+            } else if (error.message === 'Phone number already exists') {
+                document.getElementById('phoneError').textContent = error.message;
+            } else {
+                alert('An error occurred: ' + error.message);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../views/login.html';
+      }
+
+      $("#logoutButton").click(function () {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "/views/login.html";
+      });
+    });
+  </script>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  
 </body>
-
 </html>

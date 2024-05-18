@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles/styles.css">
 </head>
-
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -69,95 +67,127 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-      <div class="content" id="content">
-        <h2 class="text-center mt-5">Edit Member</h2>
-        <form id="editMemberForm">
-            <div class="form-group">
-                <label for="Mem_Fname">First Name:</label>
-                <input type="text" class="form-control" id="Mem_Fname" name="Mem_Fname" required>
-            </div>
-            <div class="form-group">
-                <label for="Mem_Lname">Last Name:</label>
-                <input type="text" class="form-control" id="Mem_Lname" name="Mem_Lname" required>
-            </div>
-            <div class="form-group">
-                <label for="Mem_Username">Username:</label>
-                <input type="text" class="form-control" id="Mem_Username" name="Mem_Username" required>
-            </div>
-            <div class="form-group">
-                <label for="Mem_Email">Email:</label>
-                <input type="email" class="form-control" id="Mem_Email" name="Mem_Email" required>
-            </div>
-            <div class="form-group">
-                <label for="Mem_Phone">Phone:</label>
-                <input type="text" class="form-control" id="Mem_Phone" name="Mem_Phone" required>
-            </div>
-            <div class="form-group">
-                <label for="Mem_Status">Status:</label>
-                <select class="form-control" id="Mem_Status" name="Mem_Status" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Update Member</button>
-        </form>
-    </div>
+  <div class="content" id="content">
+    <h2 class="text-center mt-5">Edit Member</h2>
+    <form id="editMemberForm">
+      <div class="form-group">
+        <label for="Mem_Fname">First Name:</label>
+        <input type="text" class="form-control" id="Mem_Fname" name="Mem_Fname" required>
+      </div>
+      <div class="form-group">
+        <label for="Mem_Lname">Last Name:</label>
+        <input type="text" class="form-control" id="Mem_Lname" name="Mem_Lname" required>
+      </div>
+      <div class="form-group">
+        <label for="Mem_Username">Username:</label>
+        <input type="text" class="form-control" id="Mem_Username" name="Mem_Username" required>
+        <small id="usernameError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="Mem_Email">Email:</label>
+        <input type="email" class="form-control" id="Mem_Email" name="Mem_Email" required>
+        <small id="emailError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="Mem_Phone">Phone:</label>
+        <input type="text" class="form-control" id="Mem_Phone" name="Mem_Phone" required>
+        <small id="phoneError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="Mem_Status">Status:</label>
+        <select class="form-control" id="Mem_Status" name="Mem_Status" required>
+          <option value="0">0</option>
+          <option value="1">1</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Member</button>
+    </form>
+  </div>
 
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const memberId = new URLSearchParams(window.location.search).get('id');
+      
+      // Load existing member data
+      fetch(`http://localhost:5000/api/member/${memberId}`)
+        .then(response => response.json())
+        .then(member => {
+          document.getElementById('Mem_Fname').value = member.Mem_Fname;
+          document.getElementById('Mem_Lname').value = member.Mem_Lname;
+          document.getElementById('Mem_Username').value = member.Mem_Username;
+          document.getElementById('Mem_Email').value = member.Mem_Email;
+          document.getElementById('Mem_Phone').value = member.Mem_Phone;
+          document.getElementById('Mem_Status').value = member.Mem_Status;
+        })
+        .catch(error => console.error('Error:', error));
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="/scripts/dropdown.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const memberId = new URLSearchParams(window.location.search).get('id');
-            // Load existing member data
-            fetch(`http://localhost:5000/api/member/${memberId}`)
-                .then(response => response.json())
-                .then(member => {
-                    document.getElementById('Mem_Fname').value = member.Mem_Fname;
-                    document.getElementById('Mem_Lname').value = member.Mem_Lname;
-                    document.getElementById('Mem_Username').value = member.Mem_Username;
-                    document.getElementById('Mem_Email').value = member.Mem_Email;
-                    document.getElementById('Mem_Phone').value = member.Mem_Phone;
-                    document.getElementById('Mem_Status').value = member.Mem_Status.toLowerCase();
-                })
-                .catch(error => console.error('Error:', error));
+      // Update member data
+      document.getElementById('editMemberForm').addEventListener('submit', function (e) {
+        e.preventDefault();
 
-            // Update member data
-            document.getElementById('editMemberForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-                const formData = {
-                    Mem_Fname: document.getElementById('Mem_Fname').value,
-                    Mem_Lname: document.getElementById('Mem_Lname').value,
-                    Mem_Username: document.getElementById('Mem_Username').value,
-                    Mem_Email: document.getElementById('Mem_Email').value,
-                    Mem_Phone: document.getElementById('Mem_Phone').value,
-                    Mem_Status: document.getElementById('Mem_Status').value.toUpperCase() // Assuming your DB stores this as 'ACTIVE' or 'INACTIVE'
-                };
+        const phone = document.getElementById('Mem_Phone').value;
+        if (!/^0\d{9}$/.test(phone)) {
+          document.getElementById('phoneError').textContent = 'รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง';
+          return;
+        }
 
-                fetch(`http://localhost:5000/api/member/${memberId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Member updated successfully');
-                            window.location.href = 'member.html';
-                        } else {
-                            throw new Error('Failed to update member');
-                        }
-                    })
-                    .catch(error => {
-                        alert('Error updating member: ' + error.message);
-                    });
-            });
+        const formData = {
+          Mem_Fname: document.getElementById('Mem_Fname').value,
+          Mem_Lname: document.getElementById('Mem_Lname').value,
+          Mem_Username: document.getElementById('Mem_Username').value,
+          Mem_Email: document.getElementById('Mem_Email').value,
+          Mem_Phone: phone,
+          Mem_Status: document.getElementById('Mem_Status').value
+        };
+
+        document.getElementById('usernameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('phoneError').textContent = '';
+
+        fetch(`http://localhost:5000/api/member/${memberId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(error => { throw new Error(error.message); });
+          }
+          return response.json();
+        })
+        .then(data => {
+          alert('Member updated successfully');
+          window.location.href = '/views/member/member.html';
+        })
+        .catch(error => {
+          if (error.message === 'Username already exists') {
+            document.getElementById('usernameError').textContent = error.message;
+          } else if (error.message === 'Email already exists') {
+            document.getElementById('emailError').textContent = error.message;
+          } else if (error.message === 'Phone number already exists') {
+            document.getElementById('phoneError').textContent = error.message;
+          } else {
+            alert('Error updating member: ' + error.message);
+          }
         });
+      });
+    });
 
-    </script>
+    $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../views/login.html';
+      }
 
+      $("#logoutButton").click(function () {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "/views/login.html";
+      });
+    });
+  </script>
 </body>
-
 </html>

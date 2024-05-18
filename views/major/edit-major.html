@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 alert('Major updated successfully');
-                window.location.href = 'major.html'; // Redirect back to majors list
+                window.location.href = '/views/major/major.html'; // Redirect back to majors list
             } else {
                 throw new Error('Failed to update major');
             }

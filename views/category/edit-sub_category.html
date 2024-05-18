@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 alert('Sub-Category updated successfully');
-                window.location.href = 'sub_category.html';
+                window.location.href = '/views/category/sub_category.html';
             } else {
                 throw new Error('Failed to update sub-category');
             }

@@ -22,80 +22,60 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+router.get('/', (req, res) => {
+  pool.query('SELECT * FROM Picture', (error, results) => {
+    if (error) {
+      console.error('Error fetching Picture: ', error);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+router.post('/', (req, res) => {
+  const { News_Id, News_Pic } = req.body;
+  const query = 'INSERT INTO Picture (News_Id, News_Pic) VALUES (?, ?)';
+  pool.query(query, [News_Id, News_Pic], (error, results) => {
+    if (error) {
+      res.status(500).send(error.toString());
+      return;
+    }
+    res.status(201).send('Picture added successfully.');
+  });
+});
+
 const upload = multer({ storage: storage, fileFilter: fileFilter });
-
-// router.post('/upload', upload.array('newsPictures', 10), (req, res) => {
-//   if (req.files.length > 0) {
-//       const values = req.files.map(file => [req.body.News_Id, file.filename]);
-
-//       const query = 'INSERT INTO Picture (News_Id, News_Pic) VALUES ?';
-//       pool.query(query, [values], (error, results) => {
-//           if (error) {
-//               res.status(500).send(`Error uploading images: ${error.toString()}`);
-//               return;
-//           }
-//           res.status(201).send(`${req.files.length} images uploaded successfully!`);
-//       });
-//   } else {
-//       res.status(400).send('No images to upload.');
-//   }
-// });
 
 router.post('/upload', upload.array('newsPictures', 10), (req, res) => {
   const { News_Id } = req.body;
 
-  // ตรวจสอบว่ามี News_Id นี้อยู่ในฐานข้อมูลหรือไม่
   pool.query('SELECT News_Id FROM News WHERE News_Id = ?', [News_Id], (error, results) => {
-    if (error) {
-      res.status(500).send(`Error checking news: ${error.toString()}`);
-      return;
-    }
-    if (results.length === 0) {
-      res.status(404).send(`News with ID ${News_Id} not found.`);
-      return;
-    }
+      if (error) {
+          res.status(500).json({ success: false, message: `Error checking news: ${error.toString()}` });
+          return;
+      }
+      if (results.length === 0) {
+          res.status(404).json({ success: false, message: `News with ID ${News_Id} not found.` });
+          return;
+      }
 
-    // ถ้ามี News_Id นี้ จึงทำการอัพโหลดรูปภาพ
-    if (req.files.length > 0) {
-        const values = req.files.map(file => [News_Id, file.filename]);
-        const query = 'INSERT INTO Picture (News_Id, News_Pic) VALUES ?';
-        pool.query(query, [values], (uploadError, uploadResults) => {
-            if (uploadError) {
-                res.status(500).send(`Error uploading images: ${uploadError.toString()}`);
-                return;
-            }
-            res.status(201).send(`${req.files.length} images uploaded successfully!`);
-        });
-    } else {
-        res.status(400).send('No images to upload.');
-    }
+      if (req.files.length > 0) {
+          const values = req.files.map(file => [News_Id, file.filename]);
+          const query = 'INSERT INTO Picture (News_Id, News_Pic) VALUES ?';
+          pool.query(query, [values], (uploadError, uploadResults) => {
+              if (uploadError) {
+                  res.status(500).json({ success: false, message: `Error uploading images: ${uploadError.toString()}` });
+                  return;
+              }
+              res.status(201).json({ success: true, message: `${req.files.length} images uploaded successfully!` });
+          });
+      } else {
+          res.status(400).json({ success: false, message: 'No images to upload.' });
+      }
   });
 });
 
-
-router.get('/', (req, res) => {
-    pool.query('SELECT * FROM Picture', (error, results) => {
-      if (error) {
-        console.error('Error fetching Picture: ', error);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-      res.json(results);
-    });
-  });
-
-  router.post('/', (req, res) => {
-    const { News_Id, News_Pic } = req.body;
-    const query = 'INSERT INTO Picture (News_Id, News_Pic) VALUES (?, ?)';
-    pool.query(query, [News_Id, News_Pic], (error, results) => {
-      if (error) {
-        res.status(500).send(error.toString());
-        return;
-      }
-      res.status(201).send('Picture added successfully.');
-    });
-  });
-  
   router.delete('/:newsId/:newsPic', (req, res) => {
     const { newsId, newsPic } = req.params;
     const path = require('path');
@@ -121,7 +101,5 @@ router.get('/', (req, res) => {
         });
     });
 });
-
-
 
 module.exports = router;

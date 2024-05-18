@@ -67,151 +67,155 @@
       <button id="logoutButton" class="btn btn-danger">Logout</button>
     </div>
     
-      <div class="content" id="content">
-    <h2 class="text-center mt-5"    >Add News</h2>
-    <form id="addNewsForm">
-        <div class="form-group">
-            <label for="newsName">News Title:</label>
-            <input type="text" class="form-control" id="newsName" required>
-        </div>
-        <div class="form-group">
-            <label for="newsDetails">Details:</label>
-            <textarea class="form-control" id="newsDetails" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="newsDate">Date:</label>
-            <input type="date" class="form-control" id="newsDate" required>
-        </div>
-        <div class="form-group">
-            <label for="catId">Category:</label>
-            <select class="form-control" id="catId" required></select>
-        </div>
-        <div id="subCatsContainer" class="mb-3">
-            <!-- Sub Categories will be dynamically added here -->
-        </div>
-        <button type="button" class="btn btn-sm btn-primary mb-3" id="addSubCatBtn">Add Sub Category</button>
-        <div class="form-group">
-            <label for="majorId">Major:</label>
-            <select class="form-control" id="majorId" required></select>
-        </div>
-        <button type="submit" class="btn btn-success">Add News</button>
-    </form>
-</div>
+    <div class="content" id="content">
+        <h2 class="text-center mt-5">Add News</h2>
+        <form id="addNewsForm">
+            <div class="form-group">
+                <label for="newsName">News Title:</label>
+                <input type="text" class="form-control" id="newsName" required>
+            </div>
+            <div class="form-group">
+                <label for="newsDetails">Details:</label>
+                <textarea class="form-control" id="newsDetails" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="newsDate">Date:</label>
+                <input type="date" class="form-control" id="newsDate" required>
+            </div>
+            <div class="form-group">
+                <label for="catId">Category:</label>
+                <select class="form-control" id="catId" required></select>
+            </div>
+            <div id="subCatsContainer" class="mb-3">
+                <!-- Sub Categories will be dynamically added here -->
+            </div>
+            <button type="button" class="btn btn-sm btn-primary mb-3" id="addSubCatBtn">Add Sub Category</button>
+            <div class="form-group">
+                <label for="majorId">Major:</label>
+                <select class="form-control" id="majorId" required></select>
+            </div>
+            <button type="submit" class="btn btn-success">Add News</button>
+        </form>
+    </div>
 
+    <script src="/scripts/dropdown.js"></script>
+    <script src="/scripts/sidebar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:5000/api/category')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('catId');
+                    data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.Cat_Id;
+                        option.textContent = category.Cat_Name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading categories:', error));
+            
+            fetch('http://localhost:5000/api/major')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('majorId');
+                    data.forEach(major => {
+                        const option = document.createElement('option');
+                        option.value = major.Major_Id;
+                        option.textContent = major.Major_Level;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading majors:', error));
+        });
 
-<script src="/scripts/dropdown.js"></script>
-<script src="/scripts/sidebar.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:5000/api/category')
-        .then(response => response.json())
-        .then(data => {
-            const select = document.getElementById('catId');
-            data.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.Cat_Id;
-                option.textContent = category.Cat_Name;
-                select.appendChild(option);
+        document.getElementById('addNewsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const newsName = document.getElementById('newsName').value;
+            const newsDetails = document.getElementById('newsDetails').value;
+            const newsDate = document.getElementById('newsDate').value;
+            const catId = document.getElementById('catId').value;
+            const majorId = document.getElementById('majorId').value;
+            
+            const subCatIds = [];
+            document.querySelectorAll('.subCatSelect').forEach(select => {
+                if (select.value !== '') {
+                    subCatIds.push(select.value);
+                }
             });
-        })
-        .catch(error => console.error('Error loading categories:', error));
-    
-    fetch('http://localhost:5000/api/major')
-        .then(response => response.json())
-        .then(data => {
-            const select = document.getElementById('majorId');
-            data.forEach(major => {
-                const option = document.createElement('option');
-                option.value = major.Major_Id;
-                option.textContent = major.Major_Level;
-                select.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error loading majors:', error));
-});
+            
+            const requestBody = {
+                News_Name: newsName,
+                News_Details: newsDetails,
+                Date_Added: newsDate,
+                Cat_Id: catId,
+                Sub_Cat_Ids: subCatIds,
+                Major_Id: majorId
+            };
 
-document.getElementById('addNewsForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const newsName = document.getElementById('newsName').value;
-    const newsDetails = document.getElementById('newsDetails').value;
-    const newsDate = document.getElementById('newsDate').value;
-    const catId = document.getElementById('catId').value;
-    const majorId = document.getElementById('majorId').value;
-    
-    const subCatIds = [];
-    document.querySelectorAll('.subCatSelect').forEach(select => {
-        if (select.value !== '') {
-            subCatIds.push(select.value);
+            fetch('http://localhost:5000/api/news', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to add news');
+                }
+                alert('News added successfully!');
+                window.location.href = '/views/news/news.html';
+            })
+            .catch(error => {
+                console.error('Error adding news:', error);
+                alert('Failed to add news');
+            });
+        });
+
+        document.getElementById('addSubCatBtn').addEventListener('click', function() {
+            addSubCategory();
+        });
+
+        function addSubCategory(selectedSubCatId = '') {
+            const subCatContainer = document.getElementById('subCatsContainer');
+            
+            const subCatSelect = document.createElement('select');
+            subCatSelect.className = 'form-control subCatSelect';
+            subCatSelect.required = true;
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select Sub Category';
+            subCatSelect.appendChild(defaultOption);
+            
+            const catId = document.getElementById('catId').value;
+            fetch(`http://localhost:5000/api/sub_category?catId=${catId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(subCat => {
+                        const option = document.createElement('option');
+                        option.value = subCat.Sub_Cat_Id;
+                        option.textContent = subCat.Sub_Cat_Name;
+                        subCatSelect.appendChild(option);
+                    });
+                    subCatSelect.value = selectedSubCatId;  // Set the selected value if provided
+                })
+                .catch(error => console.error('Error loading sub categories:', error));
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.className = 'btn btn-sm btn-danger ml-2 mt-2';
+            removeBtn.addEventListener('click', function () {
+                subCatContainer.removeChild(subCatSelect);
+                subCatContainer.removeChild(removeBtn);
+            });
+            
+            subCatContainer.appendChild(subCatSelect);
+            subCatContainer.appendChild(removeBtn);
         }
-    });
-    
-    const requestBody = {
-        News_Name: newsName,
-        News_Details: newsDetails,
-        Date_Added: newsDate,
-        Cat_Id: catId,
-        Sub_Cat_Ids: subCatIds,
-        Major_Id: majorId
-    };
-
-    fetch('http://localhost:5000/api/news', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to add news');
-        }
-        alert('News added successfully!');
-        window.location.href = 'news.html';
-    })
-    .catch(error => {
-        console.error('Error adding news:', error);
-        alert('Failed to add news');
-    });
-});
-
-document.getElementById('addSubCatBtn').addEventListener('click', function() {
-    const subCatContainer = document.getElementById('subCatsContainer');
-    
-    const subCatSelect = document.createElement('select');
-    subCatSelect.className = 'form-control subCatSelect';
-    subCatSelect.required = true;
-    
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = 'Select Sub Category';
-    subCatSelect.appendChild(defaultOption);
-    
-    const catId = document.getElementById('catId').value;
-    fetch(`http://localhost:5000/api/sub_category/${catId}`)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(subCat => {
-                const option = document.createElement('option');
-                option.value = subCat.Sub_Cat_Id;
-                option.textContent = subCat.Sub_Cat_Name;
-                subCatSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error loading sub categories:', error));
-    
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Remove';
-    removeBtn.className = 'btn btn-sm btn-danger ml-2 mt-2';
-    removeBtn.addEventListener('click', function() {
-        subCatContainer.removeChild(subCatSelect);
-        subCatContainer.removeChild(removeBtn);
-    });
-    
-    subCatContainer.appendChild(subCatSelect);
-    subCatContainer.appendChild(removeBtn);
-});
-</script>
+    </script>
 </body>
 </html>
