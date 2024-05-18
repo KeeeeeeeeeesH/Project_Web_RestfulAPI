@@ -127,7 +127,7 @@ $(document).ready(function() {
         .then(response => {
             if (!response.ok) throw new Error('Failed to add new work status.');
             alert('Work status added successfully.');
-            window.location.href = `../views/work_status.html`;
+            window.location.href = `/views/work_status.html`;
         })
         .catch(error => {
             console.error('Error adding work status:', error);

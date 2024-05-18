@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Work Status</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Work Status</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -67,51 +69,51 @@
 
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
-
-      <div class="content" id="content">
+  <div class="content" id="content">
     <h2>Edit Work Status</h2>
-    <div class="form-group">
     <form id="editWorkStatusForm">
-            <label for="status">Status:</label>
-            <input type="text" class="form-control" id="status" required>
-        </div>
-        <div class="form-group">
-            <label for="startDate">Start Date:</label>
-            <input type="date" class="form-control" id="startDate" required>
-        </div>
-        <div class="form-group">
-            <label for="endDate">End Date:</label>
-            <input type="date" class="form-control" id="endDate">
-        </div>
-        <button type="submit" class="btn btn-primary">Update Status</button>
+      <input type="hidden" id="admId">
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <input type="text" class="form-control" id="status" required>
+      </div>
+      <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" class="form-control" id="startDate" required>
+      </div>
+      <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" class="form-control" id="endDate">
+      </div>
+      <button type="submit" class="btn btn-primary">Update Status</button>
     </form>
-</div>
-</div>
-
-<script src="/scripts/dropdown.js"></script>
+  </div>
+  <script src="/scripts/dropdown.js"></script>
 <script src="/scripts/sidebar.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 $(document).ready(function() {
     const admId = new URLSearchParams(window.location.search).get('admId');
-    
+    $('#admId').val(admId);
+
     // Fetch the existing data and pre-fill the form
     fetch(`http://localhost:5000/api/work_status/${admId}`)
     .then(response => response.json())
     .then(data => {
-        document.getElementById('status').value = data.Adm_Status;
-        document.getElementById('startDate').value = data.Start_Date;
-        document.getElementById('endDate').value = data.End_Date;
+        $('#status').val(data.Adm_Status);
+        $('#startDate').val(data.Start_Date);
+        $('#endDate').val(data.End_Date);
     })
     .catch(error => console.error('Error fetching work status:', error));
 
     // Handle the form submission to update the data
-    document.getElementById('editWorkStatusForm').addEventListener('submit', function(e) {
+    $('#editWorkStatusForm').submit(function(e) {
         e.preventDefault();
+        const status = $('#status').val();
         const updatedData = {
-            Adm_Status: document.getElementById('status').value,
-            Start_Date: document.getElementById('startDate').value,
-            End_Date: document.getElementById('endDate').value || null
+            Adm_Status: status,
+            Start_Date: $('#startDate').val(),
+            End_Date: status === '1' ? null : $('#endDate').val()
         };
 
         fetch(`http://localhost:5000/api/work_status/${admId}`, {
@@ -122,7 +124,7 @@ $(document).ready(function() {
         .then(response => {
             if (!response.ok) throw new Error('Failed to update work status.');
             alert('Work status updated successfully.');
-            window.location.href = 'work_status.html'; 
+            window.location.href = 'work_status.html';
         })
         .catch(error => {
             console.error('Error updating work status:', error);
@@ -132,4 +134,5 @@ $(document).ready(function() {
 });
 </script>
 </body>
+
 </html>

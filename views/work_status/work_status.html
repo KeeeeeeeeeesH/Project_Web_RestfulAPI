@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show Work Status</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Work Status</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -67,11 +69,11 @@
 
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
-
-      <div class="content" id="content">
-        <h2 class="mt-5">Work Status Overview</h2>
-        <a href="add-work_status.html" class="btn btn-success">Add New Work Status</a>
-        <div class="card-body">
+  
+  <div class="content" id="content">
+    <h2 class="mt-5">Work Status Overview</h2>
+    <a href="add-work_status.html" class="btn btn-success">Add New Work Status</a>
+    <div class="card-body">
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -97,23 +99,24 @@ $(document).ready(function() {
     fetch('http://localhost:5000/api/work_status')
     .then(response => response.json())
     .then(statusItems => {
-        const tableBody = document.getElementById('workStatusList');
+        const tableBody = $('#workStatusList');
         statusItems.forEach(item => {
-            const row = document.createElement('tr');
-            const startDate = new Date(item.Start_Date).toLocaleDateString(); // Formats date to local format
-            const endDate = new Date(item.End_Date).toLocaleDateString(); // Formats date to local format
-            
-            row.innerHTML = `
-                <td>${item.Adm_Id}</td>
-                <td>${item.Adm_Status}</td>
-                <td>${startDate}</td>
-                <td>${endDate}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">Delete</button>
-                </td>
-            `;
-            tableBody.appendChild(row);
+            const startDate = new Date(item.Start_Date).toLocaleDateString();
+            const endDate = item.End_Date ? new Date(item.End_Date).toLocaleDateString() : 'N/A';
+
+            const row = $(`
+                <tr>
+                    <td>${item.Adm_Id}</td>
+                    <td>${item.Adm_Status}</td>
+                    <td>${startDate}</td>
+                    <td>${endDate}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">Delete</button>
+                    </td>
+                </tr>
+            `);
+            tableBody.append(row);
         });
     })
     .catch(error => console.error('Error loading work status:', error));
@@ -143,13 +146,13 @@ $(document).ready(function() {
     };
 });
 </script>
-
-<script>
-  $(document).ready(function () {
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      window.location.href = '../views/login.html';
-    }
-  });
-</script>
+  <script>
+    $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../views/login.html';
+      }
+    });
+  </script>
 </body>
+
 </html>

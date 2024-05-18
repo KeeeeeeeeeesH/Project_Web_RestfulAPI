@@ -55,5 +55,57 @@ router.get('/', (req, res) => {
         res.send('Work Status deleted successfully.');
     });
   });
-  
+
+router.put("/:Adm_Id", function (req, res) {
+  const { Adm_Id } = req.params;
+  const { Adm_Status, Start_Date, End_Date } = req.body;
+  const endDateValue = Adm_Status == 1 ? null : End_Date;
+
+  const query = "UPDATE Work_Status SET Adm_Status = ?, Start_Date = ?, End_Date = ? WHERE Adm_Id = ?";
+  pool.query(
+    query,
+    [Adm_Status, Start_Date, endDateValue, Adm_Id],
+    (error, results) => {
+      if (error) {
+        return res.status(500).send(error.toString());
+      }
+      if (results.affectedRows === 0) {
+        return res
+          .status(404)
+          .send("No work status found with the specified ID.");
+      }
+      res.send("Work status updated successfully.");
+    }
+  );
+});
+
+router.get('/:Adm_Id', (req, res) => {
+  const { Adm_Id } = req.params;
+  const query = 'SELECT * FROM Work_Status WHERE Adm_Id = ?';
+  pool.query(query, [Adm_Id], (error, results) => {
+    if (error) {
+      console.error('Error fetching Work Status:', error);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).send('No work status found with the specified ID.');
+      return;
+    }
+    res.json(results[0]);
+  });
+});
+
+router.post("/", function (req, res) {
+  const { Adm_Id, Adm_Status, Start_Date, End_Date } = req.body;
+  const query = 'INSERT INTO Work_Status (Adm_Id, Adm_Status, Start_Date, End_Date) VALUES (?, ?, ?, ?)';
+  const endDateValue = Adm_Status === '1' ? null : End_Date;
+  pool.query(query, [Adm_Id, Adm_Status, Start_Date, endDateValue], function(error, results) {
+      if (error) {
+          res.status(500).send(error.toString());
+      } else {
+          res.status(201).send('Work status added successfully.');
+      }
+  });
+})
 module.exports = router;
