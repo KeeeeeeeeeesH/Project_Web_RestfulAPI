@@ -24,7 +24,7 @@ router.put('/:id', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No News found with the specified ID.');
+            return res.status(404).send('No News found with the specified ID');
         }
 
         const deleteSubCategoriesQuery = 'DELETE FROM News_Sub_Cate WHERE News_Id = ?';
@@ -42,10 +42,10 @@ router.put('/:id', (req, res) => {
                         res.status(500).send(insertError.toString());
                         return;
                     }
-                    res.send('News and Sub Category updated successfully.');
+                    res.send('แก้ไข News_Sub_Cate สำเร็จ');
                 });
             } else {
-                res.send('News updated successfully.');
+                res.send('แก้ไข News ID สำเร็จ');
             }
         });
     });

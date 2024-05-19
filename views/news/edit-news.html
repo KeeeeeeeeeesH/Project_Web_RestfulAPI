@@ -87,7 +87,6 @@
                 <select class="form-control" id="catId" required></select>
             </div>
             <div id="subCatsContainer" class="mb-3">
-                <!-- Sub Categories will be dynamically added here -->
             </div>
             <button type="button" class="btn btn-sm btn-primary mb-3" id="addSubCatBtn">Add Sub Category</button>
             <div class="form-group">
@@ -112,21 +111,19 @@
                         document.getElementById('newsDetails').value = data.News_Details;
                         document.getElementById('newsDate').value = data.Date_Added.substr(0, 10);
 
-                        // Load categories and select the current one
+                       
                         fetchCategories().then(() => {
                             document.getElementById('catId').value = data.Cat_Id;
-                            // Load sub categories for the selected category
                             loadSubCategories(data.Cat_Id, data.Sub_Cat_Ids);
                         });
 
-                        // Load majors and select the current one
                         fetchMajors().then(() => {
                             document.getElementById('majorId').value = data.Major_Id;
                         });
                     })
                     .catch(error => console.error('Error loading news:', error));
             } else {
-                console.error('No news ID provided.');
+                console.error('No news ID provided');
             }
 
             document.getElementById('catId').addEventListener('change', function () {
@@ -252,12 +249,12 @@
                     if (!response.ok) {
                         throw new Error('Failed to update news');
                     }
-                    alert('News updated successfully!');
+                    alert('แก้ไขข้อมูลข่าวสำเร็จ');
                     window.location.href = '/views/news/news.html';
                 })
                 .catch(error => {
-                    console.error('Error updating news:', error);
-                    alert('Failed to update news');
+                    console.error('แก้ไขข้อมูลข่าวไม่สำเร็จ:', error);
+                    alert('แก้ไขข้อมูลข่าวไม่สำเร็จ');
                 });
             });
 
@@ -274,5 +271,16 @@
             });
         });
     </script>
+   <script>
+    $(document).ready(function () {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = '../views/login.html';
+        }
+        $('#logoutButton').click(function () {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '/views/login.html'; 
+        });
+    });
+</script>
 </body>
 </html>

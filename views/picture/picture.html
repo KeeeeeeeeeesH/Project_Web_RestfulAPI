@@ -118,21 +118,25 @@ function deleteImage(newsId, fileName) {
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('Image deleted successfully');
+                    console.log('ลบรูปภาพสำเร็จ');
                     window.location.reload();
                 } else {
-                    console.error('Failed to delete the image');
+                    console.error('ลบรูปภาพไม่สำเร็จ');
                 }
             })
-            .catch(error => console.error('Error deleting the image:', error));
+            .catch(error => console.error('ลบรูปภาพไม่สำเร็จ:', error));
         }
     </script>
 
 <script>
   $(document).ready(function () {
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      window.location.href = '../views/login.html';
-    }
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/views/login.html'; 
+      });
   });
 </script>
 </body>

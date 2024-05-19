@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
             res.status(500).send(error.toString());
             return;
         }
-        res.status(201).send('News Rating added successfully.');
+        res.status(201).send('เพิ่มข้อมูลคะแนนข่าวสำเร็จ');
     });
 });
 
@@ -35,9 +35,9 @@ router.put('/:memId/:newsId', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No News Rating found with the specified member and news ID.');
+          return res.status(404).send('No News Rating found with the specified member and news ID');
       }
-      res.send('News Rating updated successfully.');
+      res.send('แก้ไขเพิ่มข้อมูลคะแนนข่าวสำเร็จ');
   });
 });
 
@@ -50,9 +50,9 @@ router.delete('/:memId/:newsId', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No News Rating found with the specified member and news ID.');
+          return res.status(404).send('No News Rating found with the specified member and news ID');
       }
-      res.send('News Rating deleted successfully.');
+      res.send('ลบข้อมูลคะแนนข่าวสำเร็จ');
   });
 });
 

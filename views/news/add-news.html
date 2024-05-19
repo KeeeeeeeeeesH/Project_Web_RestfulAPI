@@ -87,7 +87,6 @@
                 <select class="form-control" id="catId" required></select>
             </div>
             <div id="subCatsContainer" class="mb-3">
-                <!-- Sub Categories will be dynamically added here -->
             </div>
             <button type="button" class="btn btn-sm btn-primary mb-3" id="addSubCatBtn">Add Sub Category</button>
             <div class="form-group">
@@ -164,14 +163,14 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to add news');
+                    throw new Error('เพิ่มข้อมูลข่าวไม่สำเร็จ');
                 }
-                alert('News added successfully!');
+                alert('เพิ่มข้อมูลข่าวสำเร็จ');
                 window.location.href = '/views/news/news.html';
             })
             .catch(error => {
-                console.error('Error adding news:', error);
-                alert('Failed to add news');
+                console.error('เพิ่มข้อมูลข่าวไม่สำเร็จ:', error);
+                alert('เพิ่มข้อมูลข่าวไม่สำเร็จ');
             });
         });
 
@@ -217,5 +216,16 @@
             subCatContainer.appendChild(removeBtn);
         }
     </script>
+   <script>
+    $(document).ready(function () {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = '../views/login.html';
+        }
+        $('#logoutButton').click(function () {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '/views/login.html'; 
+        });
+    });
+</script>
 </body>
 </html>

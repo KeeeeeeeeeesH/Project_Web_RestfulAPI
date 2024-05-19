@@ -30,7 +30,7 @@ router.get('/', (req, res) => {
             res.status(500).send(error.toString());
             return;
         }
-        res.status(201).send('Sub Category added successfully.');
+        res.status(201).send('เพิ่มหมวดหมู่รองสำเร็จ');
     });
 });
 
@@ -44,9 +44,9 @@ router.put('/:id', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Sub Category found with the specified ID.');
+          return res.status(404).send('No Sub Category found with the specified ID');
       }
-      res.send('Sub Category updated successfully.');
+      res.send('แก้ไขหมวดหมู่รองสำเร็จ');
   });
 });
 
@@ -59,9 +59,9 @@ router.delete('/:id', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Sub Category found with the specified ID.');
+          return res.status(404).send('No Sub Category found with the specified ID');
       }
-      res.send('Sub Category deleted successfully.');
+      res.send('ลบหมวดหมู่รองสำเร็จ');
   });
 });
 
@@ -76,7 +76,7 @@ router.get('/:id', (req, res) => {
         if (results.length > 0) {
             res.json(results[0]);
         } else {
-            res.status(404).send('No sub category found with the specified ID.');
+            res.status(404).send('No sub category found with the specified ID');
         }
     });
 });

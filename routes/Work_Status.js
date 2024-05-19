@@ -20,7 +20,7 @@ router.post("/", function (req, res) {
         if (error) {
             res.status(500).send(error.toString());
         } else {
-            res.status(201).send('Work status added successfully.');
+            res.status(201).send('เพิ่มสถานะการทำงานให้ผู้ดูแลระบบสำเร็จ');
         }
     });
 });
@@ -35,9 +35,9 @@ router.put('/:Adm_Id', function(req, res) {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No work status found with the specified ID.');
+            return res.status(404).send('No work status found with the specified ID');
         }
-        res.send('Work status updated successfully.');
+        res.send('แก่ไขสถานะการทำงานเสร็จ');
     });
 });
 
@@ -50,9 +50,9 @@ router.delete('/:Adm_Id', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No Work Status found with the specified Admin ID.');
+            return res.status(404).send('No Work Status found with the specified Admin ID');
         }
-        res.send('Work Status deleted successfully.');
+        res.send('ลบสถานะการทำงานสำเร็จ');
     });
 });
 
@@ -66,7 +66,7 @@ router.get('/:Adm_Id', (req, res) => {
           return;
       }
       if (results.length === 0) {
-          res.status(404).send('No work status found with the specified ID.');
+          res.status(404).send('No work status found with the specified ID');
           return;
       }
       res.json(results[0]);

@@ -43,10 +43,10 @@ router.post('/', (req, res) => {
                     res.status(500).send('Internal Server Error');
                     return;
                 }
-                res.status(201).send('News added successfully');
+                res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
             });
         } else {
-            res.status(201).send('News added successfully');
+            res.status(201).send('เพิ่มข้อมูลหมวดหมู่รองข่าวสำเร็จ');
         }
     });
 });
@@ -65,8 +65,7 @@ router.put('/:id', async (req, res) => {
             const insertValues = Sub_Cat_Ids.map(subCatId => [id, subCatId]);
             await pool.promise().query('INSERT INTO News_Sub_Cate (News_Id, Sub_Cat_Id) VALUES ?', [insertValues]);
         }
-
-        res.send('News updated successfully.');
+        res.send('แก้ไขข้อมูลข่าวสำเร็จ');
     } catch (error) {
         console.error('Error updating news:', error);
         res.status(500).send('Internal Server Error');
@@ -82,9 +81,9 @@ router.delete('/:id', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No News found with the specified ID.');
+            return res.status(404).send('No News found with the specified ID');
         }
-        res.send('News deleted successfully.');
+        res.send('ลบข้อมูลข่าวสำเร็จ');
     });
 });
 
@@ -98,7 +97,7 @@ router.get('/:id', (req, res) => {
             return;
         }
         if (results.length === 0) {
-            return res.status(404).send('News not found');
+            return res.status(404).send('ไม่พบข่าวนี้');
         }
         const news = results[0];
         if (news.Sub_Cat_Ids) {

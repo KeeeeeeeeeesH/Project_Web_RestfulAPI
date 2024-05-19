@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../app");
-const path = require("path");
 
 router.post("/login", (req, res) => {
   const { login, password } = req.body;
@@ -19,7 +18,7 @@ router.post("/login", (req, res) => {
     if (results.length === 0) {
       return res
         .status(401)
-        .json({ message: "Username or email and password do not match." });
+        .json({ message: "ข้อมูลที่ใช้ล็อคอินไม่ถูกต้อง" });
     }
 
     const admin = results[0];
@@ -27,18 +26,18 @@ router.post("/login", (req, res) => {
     if (admin.Adm_Status !== 1) {
       return res.status(403).json({ message: "ไม่ได้อยู่ในสถานะผู้ดูแลระบบ" });
     }
-
     req.session.isLoggedIn = true;
     req.session.adminId = admin.Adm_Id;
-    res.json({ success: true, message: "Login successful" });
+    res.json({ success: true, message: "เข้าสู่ระบบสำเร็จ" });
   });
 });
+
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({ message: "Internal server error" });
     }
-    res.json({ success: true, message: "Logout successful" });
+    res.json({ success: true, message: "ออกจากระบบสำเร็จ" });
   });
 });
 

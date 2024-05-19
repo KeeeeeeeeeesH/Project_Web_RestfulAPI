@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Admin</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Admin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 </head>
 
 <body>
@@ -71,96 +72,96 @@
   <div class="content" id="content">
     <h1 class="text-center mt-5">Add New Admin</h1>
     <form id="addAdminForm">
-        <div class="form-group">
-            <label for="fname">First Name:</label>
-            <input type="text" class="form-control" id="fname" required>
-        </div>
-        <div class="form-group">
-            <label for="lname">Last Name:</label>
-            <input type="text" class="form-control" id="lname" required>
-        </div>
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" required>
-            <small id="usernameError" class="form-text text-danger"></small>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" required>
-            <small id="emailError" class="form-text text-danger"></small>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone:</label>
-            <input type="text" class="form-control" id="phone" required>
-            <small id="phoneError" class="form-text text-danger"></small>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="form-group">
+        <label for="fname">First Name:</label>
+        <input type="text" class="form-control" id="fname" required>
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name:</label>
+        <input type="text" class="form-control" id="lname" required>
+      </div>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" required>
+        <small id="usernameError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" required>
+        <small id="emailError" class="form-text text-danger"></small>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" class="form-control" id="phone" required>
+        <small id="phoneError" class="form-text text-danger"></small>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-</div>
+  </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="/scripts/dropdown.js"></script>
-<script src="/scripts/sidebar.js"></script>
-<script>
-    document.getElementById('addAdminForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.getElementById('addAdminForm').addEventListener('submit', function (event) {
+      event.preventDefault();
 
-        const phone = document.getElementById('phone').value;
+      const phone = document.getElementById('phone').value;
       if (!/^0\d{9}$/.test(phone)) {
         document.getElementById('phoneError').textContent = 'Format of Phone Number is Incorrect';
         return;
       }
 
-      
-        const formData = {
-            Adm_Fname: document.getElementById('fname').value,
-            Adm_Lname: document.getElementById('lname').value,
-            Adm_Username: document.getElementById('username').value,
-            Adm_Password: document.getElementById('password').value,
-            Adm_Email: document.getElementById('email').value,
-            Adm_Phone: document.getElementById('phone').value
-        };
+      const formData = {
+        Adm_Fname: document.getElementById('fname').value,
+        Adm_Lname: document.getElementById('lname').value,
+        Adm_Username: document.getElementById('username').value,
+        Adm_Password: document.getElementById('password').value,
+        Adm_Email: document.getElementById('email').value,
+        Adm_Phone: document.getElementById('phone').value
+      };
 
-        document.getElementById('usernameError').textContent = '';
-        document.getElementById('emailError').textContent = '';
-        document.getElementById('phoneError').textContent = '';
+      document.getElementById('usernameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('phoneError').textContent = '';
 
-        fetch('http://localhost:5000/api/admin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
+      fetch('http://localhost:5000/api/admin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
         .then(response => {
-            if (!response.ok) {
-                return response.json().then(error => { throw error });
-            }
-            return response.json();
+          if (!response.ok) {
+            return response.json().then(error => { throw error });
+          }
+          return response.json();
         })
         .then(data => {
-            alert(data.message);
-            window.location.href = '/views/admin/admin.html';
+          alert(data.message);
+          window.location.href = '/views/admin/admin.html';
         })
         .catch(error => {
-            if (error.message === 'Username already exists') {
-                document.getElementById('usernameError').textContent = error.message;
-            } else if (error.message === 'Email already exists') {
-                document.getElementById('emailError').textContent = error.message;
-            } else if (error.message === 'Phone number already exists') {
-                document.getElementById('phoneError').textContent = error.message;
-            } else {
-                alert('An error occurred: ' + error.message);
-            }
+          if (error.message === 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว') {
+            document.getElementById('usernameError').textContent = error.message;
+          } else if (error.message === 'มีอีเมล์นี้ในระบบแล้ว') {
+            document.getElementById('emailError').textContent = error.message;
+          } else if (error.message === 'มีเบอร์โทรศัพท์นี้ในระบบแล้ว') {
+            document.getElementById('phoneError').textContent = error.message;
+          } else {
+            alert('เกิดข้อผิดพลาดในการเพิ่มข้อมูล : ' + error.message);
+          }
         });
     });
-
+  </script>
+  <script>
     $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
         window.location.href = '../views/login.html';
@@ -171,7 +172,8 @@
         window.location.href = "/views/login.html";
       });
     });
-</script>
+  </script>
 
 </body>
+
 </html>

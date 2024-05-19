@@ -128,16 +128,27 @@
                 body: JSON.stringify(updatedData)
             })
             .then(response => {
-                if (!response.ok) throw new Error('Failed to update work status.');
-                alert('Work status updated successfully.');
+                if (!response.ok) throw new Error('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ');
+                alert('อัพเดทข้อมูลสถานะการทำงานสำเร็จ');
                 window.location.href = '/views/work_status/work_status.html';
             })
             .catch(error => {
-                console.error('Error updating work status:', error);
-                alert('Error updating work status: ' + error.message);
+                console.error('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ:', error);
+                alert('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ: ' + error.message);
             });
         });
     });
+</script>
+<script>
+  $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/views/login.html'; 
+      });
+  });
 </script>
 </body>
 </html>

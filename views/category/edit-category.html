@@ -109,19 +109,29 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => {
             if (response.ok) {
-                alert('Category updated successfully');
+                alert('แก้ไขหมวดหมู่สำเร็จ');
                 window.location.href = '/views/category/category.html'; 
-            } else {
-                throw new Error('Failed to update category');
             }
         })
         .catch(error => {
-            console.error('Error updating category:', error);
-            alert('Error updating category: ' + error.message);
+            console.error('แก้ไขหมวดหมู่ไม่สำเร็จ :', error);
+            alert('แก้ไขหมวดหมู่ไม่สำเร็จ โปรดลองอีกครั้งภายหลัง');
         });
     });
 });
 
+</script>
+<script>
+  $(document).ready(function () {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = '../views/login.html';
+    }
+
+    $("#logoutButton").click(function () {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "/views/login.html";
+    });
+  });
 </script>
 
 </body>

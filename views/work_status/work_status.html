@@ -69,38 +69,37 @@
 
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
-  
+
   <div class="content" id="content">
     <h2 class="mt-5">Work Status Overview</h2>
     <a href="add-work_status.html" class="btn btn-success">Add New Work Status</a>
     <div class="card-body">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                <th>Admin ID</th>
-                <th>Status</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Actions</th>
-            </tr>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Admin ID</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody id="workStatusList">
-            <!-- Work status data will be inserted here -->
         </tbody>
-    </table>
-</div>
-</div>
+      </table>
+    </div>
+  </div>
 
-<script src="/scripts/dropdown.js"></script>
-<script src="/scripts/sidebar.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-$(document).ready(function() {
-    fetch('http://localhost:5000/api/work_status')
-    .then(response => response.json())
-    .then(statusItems => {
-        const tableBody = $('#workStatusList');
-        statusItems.forEach(item => {
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      fetch('http://localhost:5000/api/work_status')
+        .then(response => response.json())
+        .then(statusItems => {
+          const tableBody = $('#workStatusList');
+          statusItems.forEach(item => {
             const startDate = new Date(item.Start_Date).toLocaleDateString();
             const endDate = item.End_Date ? new Date(item.End_Date).toLocaleDateString() : 'N/A';
 
@@ -117,40 +116,42 @@ $(document).ready(function() {
                 </tr>
             `);
             tableBody.append(row);
-        });
-    })
-    .catch(error => console.error('Error loading work status:', error));
+          });
+        })
+        .catch(error => console.error('Error loading work status:', error));
 
-    window.editWorkStatus = function(admId) {
+      window.editWorkStatus = function (admId) {
         window.location.href = `edit-work_status.html?admId=${admId}`;
-    };
+      };
 
-    window.deleteWorkStatus = function(admId) {
-        if(confirm('Are you sure you want to delete this work status?')) {
-            fetch(`http://localhost:5000/api/work_status/${admId}`, {
-                method: 'DELETE'
-            })
+      window.deleteWorkStatus = function (admId) {
+        if (confirm('ต้องการที่จะลบข้อมูลสถานะการทำงานนี้ใช่ไหม ?')) {
+          fetch(`http://localhost:5000/api/work_status/${admId}`, {
+            method: 'DELETE'
+          })
             .then(response => {
-                if(response.ok) {
-                    alert('Work status deleted successfully.');
-                    window.location.reload();
-                } else {
-                    throw new Error('Failed to delete work status.');
-                }
+              if (response.ok) {
+                alert('ลบข้อมูลสถานะการทำงานสำเร็จ');
+                window.location.reload();
+              }
             })
             .catch(error => {
-                console.error('Error deleting work status:', error);
-                alert('Error deleting work status: ' + error.message);
+              console.error('ลบข้อมูลสถานะการทำงานไม่สำเร็จ:', error);
+              alert('ลบข้อมูลสถานะการทำงานไม่สำเร็จ: ' + error.message);
             });
         }
-    };
-});
-</script>
+      };
+    });
+  </script>
   <script>
     $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
         window.location.href = '../views/login.html';
       }
+      $('#logoutButton').click(function () {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/views/login.html';
+      });
     });
   </script>
 </body>

@@ -57,8 +57,8 @@
                         alert('ส่งรหัส OTP สำเร็จ');
                         document.getElementById('otp').disabled = false;
                         document.getElementById('otp').focus();
-                        document.querySelector('button[type="submit"]').disabled = true; // ปิดการใช้งานปุ่ม "Request OTP"
-                        document.getElementById('phone').disabled = true; // ปิดการใช้งานช่องกรอกเบอร์โทรศัพท์
+                        document.querySelector('button[type="submit"]').disabled = true;
+                        document.getElementById('phone').disabled = true; 
                         document.querySelector('#verifyOtpForm button[type="submit"]').disabled = false;
                     } else {
                         alert(data.message);

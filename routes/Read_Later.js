@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
             res.status(500).send(error.toString());
             return;
         }
-        res.status(201).send('Added to Read Later successfully.');
+        res.status(201).send('เพิ่มข่าวอ่านภายหลังสำเร็จ');
     });
 });
 
@@ -35,9 +35,9 @@ router.delete('/', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No entry found in Read Later with the specified member and news ID.');
+          return res.status(404).send('No entry found in Read Later with the specified member and news ID');
       }
-      res.send('Removed from Read Later successfully.');
+      res.send('ลบข่าวอ่านภายหลังสำเร็จ');
   });
 });
 

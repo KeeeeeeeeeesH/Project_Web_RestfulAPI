@@ -88,7 +88,7 @@
     <script src="/scripts/sidebar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/api/Total_Read') // แน่ใจว่า URL ตรงกับ endpoint ของคุณ
+            fetch('http://localhost:5000/api/Total_Read')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('totalReadsTable');
@@ -106,9 +106,13 @@
 
 <script>
   $(document).ready(function () {
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      window.location.href = '../views/login.html';
-    }
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/views/login.html'; 
+      });
   });
 </script>
 </body>

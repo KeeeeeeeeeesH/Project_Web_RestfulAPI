@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
             res.status(500).send(error.toString());
             return;
         }
-        res.status(201).send('Read History added successfully.');
+        res.status(201).send('เพิ่มข้อมูลประวัติการอ่านสำเร็จ');
     });
 });
 
@@ -36,9 +36,9 @@ router.delete('/:memId/:newsId', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Read History found with the specified member and news ID.');
+          return res.status(404).send('No Read History found with the specified member and news ID');
       }
-      res.send('Read History deleted successfully.');
+      res.send('ลบข้อมูลประวัติการอ่านสำเร็จ');
   });
 });
 

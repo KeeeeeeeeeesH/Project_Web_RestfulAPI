@@ -85,13 +85,11 @@
           </tr>
         </thead>
         <tbody id="data-rows">
-          <!-- ข้อมูลจะถูกแทรกที่นี่ -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- นำเข้า Bootstrap JS และความต้องการ -->
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -103,7 +101,7 @@
       fetch("http://localhost:5000/api/admin")
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error("Network response not ok");
           }
           return response.json();
         })
@@ -133,18 +131,18 @@
     });
 
     function deleteAdmin(id, element) {
-      if (confirm("Are you sure you want to delete this admin?")) {
+      if (confirm("ต้องการลบข้อมูลผู้ดูแลระบบคนนี้ ?")) {
         fetch(`http://localhost:5000/api/admin/${id}`, {
           method: "DELETE",
         })
           .then((response) => {
             if (!response.ok) {
-              throw new Error("Network response was not ok.");
+              throw new Error("Network response not ok");
             }
             return response.text(); // เปลี่ยนเป็น text() หากคำตอบไม่ใช่ JSON
           })
           .then((data) => {
-            alert("Admin deleted successfully");
+            alert("ลบข้อมูลผู้ดูแลระบบสำเร็จ");
             element.parentNode.parentNode.remove(); // Removes row from table
           })
           .catch((error) => {
@@ -158,13 +156,6 @@
       window.location.href = `./edit-admin.html?id=${adminId}`;
     }
 
-    $(document).ready(function () {
-      $("#logoutButton").click(function () {
-        localStorage.removeItem("isLoggedIn");
-        window.location.href = "/views/login.html"; // Adjust the path as needed
-      });
-    });
-    
   </script>
 
 <script>
@@ -172,6 +163,11 @@
     if (localStorage.getItem('isLoggedIn') !== 'true') {
       window.location.href = '../views/login.html';
     }
+
+    $("#logoutButton").click(function () {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "/views/login.html";
+    });
   });
 </script>
 </body>

@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
             res.status(500).send(error.toString());
             return;
         }
-        res.status(201).send('Total Read record added successfully.');
+        res.status(201).send('เพิ่มข้อมูลยอดการอ่านสำเร็จ');
     });
 });
 
@@ -36,9 +36,9 @@ router.put('/:id', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Total Read record found with the specified ID.');
+          return res.status(404).send('No Total Read record found with the specified ID');
       }
-      res.send('Total Read record updated successfully.');
+      res.send('แก้ไขข้อมูลยอดการอ่านสำเร็จ');
   });
 });
 
@@ -52,9 +52,9 @@ router.delete('/:id', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Total Read record found with the specified ID.');
+          return res.status(404).send('No Total Read record found with the specified ID');
       }
-      res.send('Total Read record deleted successfully.');
+      res.send('ลบข้อมูลยอดการอ่านสำเร็จ');
   });
 });
 

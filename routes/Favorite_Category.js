@@ -18,10 +18,9 @@ router.get('/', (req, res) => {
     const query = 'INSERT INTO Favorite_Category (Mem_Id, Cat_Id) VALUES (?, ?)';
     pool.query(query, [Mem_Id, Cat_Id], (error, results) => {
         if (error) {
-            console.error('Error adding Favorite Category: ', error);
+            console.error(error);
             return;
         }
-        res.status(201).send('Favorite Category added successfully.');
     });
 });
 
@@ -30,16 +29,14 @@ router.delete('/', (req, res) => {
   const query = 'DELETE FROM Favorite_Category WHERE Mem_Id = ? AND Cat_Id = ?';
   pool.query(query, [Mem_Id, Cat_Id], (error, results) => {
       if (error) {
-          console.error('Error deleting Favorite Category: ', error);
+          console.error(error);
           res.status(500).send(error.toString());
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Favorite Category found with the specified member and category ID.');
+          return res.status(404);
       }
-      res.send('Favorite Category deleted successfully.');
   });
 });
-
 
 module.exports = router;

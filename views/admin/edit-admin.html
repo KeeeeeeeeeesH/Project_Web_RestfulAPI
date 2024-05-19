@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Admin</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Admin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -103,7 +105,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const adminId = new URLSearchParams(window.location.search).get('id');
-      
+
       // Load existing admin data
       fetch(`http://localhost:5000/api/admin/${adminId}`)
         .then(response => response.json())
@@ -145,30 +147,32 @@
           },
           body: JSON.stringify(formData)
         })
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(error => { throw new Error(error.message); });
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert('Admin updated successfully');
-          window.location.href = '/views/admin/admin.html';
-        })
-        .catch(error => {
-          if (error.message === 'Username already exists') {
-            document.getElementById('usernameError').textContent = error.message;
-          } else if (error.message === 'Email already exists') {
-            document.getElementById('emailError').textContent = error.message;
-          } else if (error.message === 'Phone number already exists') {
-            document.getElementById('phoneError').textContent = error.message;
-          } else {
-            alert('Error updating admin: ' + error.message);
-          }
-        });
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(error => { throw new Error(error.message); });
+            }
+            return response.json();
+          })
+          .then(data => {
+            alert(data.message);
+            window.location.href = '/views/admin/admin.html';
+          })
+          .catch(error => {
+            if (error.message === 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว') {
+              document.getElementById('usernameError').textContent = error.message;
+            } else if (error.message === 'มีอีเมล์นี้ในระบบแล้ว') {
+              document.getElementById('emailError').textContent = error.message;
+            } else if (error.message === 'มีเบอร์โทรศัพท์นี้ในระบบแล้ว') {
+              document.getElementById('phoneError').textContent = error.message;
+            } else {
+              alert('เกิดข้อผิดพลาดในการแก้ไขข้อมูล : ' + error.message);
+            }
+          });
       });
     });
 
+  </script>
+  <script>
     $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
         window.location.href = '../views/login.html';
@@ -181,4 +185,5 @@
     });
   </script>
 </body>
+
 </html>

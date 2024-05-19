@@ -16,6 +16,7 @@ router.post('/request-otp', async (req, res) => {
         }
         const otp = Math.floor(100000 + Math.random() * 900000); // สร้าง OTP 6 หลัก
         const message = `Your OTP is ${otp}. Please keep it secret`;
+        
         // สร้างข้อความสำหรับส่ง OTP
         const data = JSON.stringify({
             "accountId": "09809608579971",
@@ -25,12 +26,14 @@ router.post('/request-otp', async (req, res) => {
             "sender": "BulkSMS.Ltd",
             "msg": message
         });
+
         // ส่ง OTP ไปยังเบอร์โทร
         const smsResponse = await axios.post('https://smsapi.deecommerce.co.th:4300/service/SMSWebService', data, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+        
         // ถ้าไม่ ERROR เก็บ OTP และ ID ของ Admin ใน session
         if (smsResponse.data.error === '0') {
             req.session.otp = otp;

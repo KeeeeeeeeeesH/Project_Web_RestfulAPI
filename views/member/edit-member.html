@@ -111,7 +111,6 @@
     document.addEventListener('DOMContentLoaded', function () {
       const memberId = new URLSearchParams(window.location.search).get('id');
       
-      // Load existing member data
       fetch(`http://localhost:5000/api/member/${memberId}`)
         .then(response => response.json())
         .then(member => {
@@ -124,7 +123,6 @@
         })
         .catch(error => console.error('Error:', error));
 
-      // Update member data
       document.getElementById('editMemberForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -161,7 +159,7 @@
           return response.json();
         })
         .then(data => {
-          alert('Member updated successfully');
+          alert('แก้ไขข้อมูลสมาชิกสำเร็จ');
           window.location.href = '/views/member/member.html';
         })
         .catch(error => {
@@ -172,7 +170,7 @@
           } else if (error.message === 'Phone number already exists') {
             document.getElementById('phoneError').textContent = error.message;
           } else {
-            alert('Error updating member: ' + error.message);
+            alert('แก้ไขข้อมูลสมาชิกไม่สำเร็จ: ' + error.message);
           }
         });
       });

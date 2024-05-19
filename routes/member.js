@@ -17,7 +17,7 @@ router.post("/", function (req, res) {
   const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status } = req.body;
   
   if (!/^0\d{9}$/.test(Mem_Phone)) {
-      return res.status(400).json({ message: 'Format of Phone Number is Incorrect' });
+      return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
   }
   
   const query = 'INSERT INTO Member (Mem_Id, Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)';
@@ -25,16 +25,16 @@ router.post("/", function (req, res) {
       if (error) {
           if (error.code === 'ER_DUP_ENTRY') {
               if (error.sqlMessage.includes('Mem_Username')) {
-                  return res.status(409).json({ message: 'Username already exists' });
+                  return res.status(409).json({ message: 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว' });
               } else if (error.sqlMessage.includes('Mem_Email')) {
-                  return res.status(409).json({ message: 'Email already exists' });
+                  return res.status(409).json({ message: 'มีอีเมล์นี้ในระบบแล้ว' });
               } else if (error.sqlMessage.includes('Mem_Phone')) {
-                  return res.status(409).json({ message: 'Phone number already exists' });
+                  return res.status(409).json({ message: 'มีเบอร์โทรศัพท์นี้ในระบบแล้ว' });
               }
           }
           return res.status(500).json({ message: error.toString() });
       }
-      res.status(201).json({ message: 'Member added successfully.' });
+      res.status(201).json({ message: 'เพิ่มข้อมูลสมาชิกสำเร็จ' });
   });
 });
 
@@ -42,7 +42,7 @@ router.delete('/:id', function (req, res) {
     const { id } = req.params;
 
     if (!id) {
-        return res.status(400).send('ID is required for deletion.');
+        return res.status(400).send('ID is required for delete');
     }
 
     const query = 'DELETE FROM Member WHERE Mem_Id = ?';
@@ -51,9 +51,9 @@ router.delete('/:id', function (req, res) {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No member found with the specified ID.');
+            return res.status(404).send('No member found with the specified ID');
         }
-        res.send('Member deleted successfully.');
+        res.send('ลบข้อมูลสมาชิกสำเร็จ');
     });
 });
 
@@ -62,7 +62,7 @@ router.put('/:id', function (req, res) {
     const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone, Mem_Status } = req.body;
 
     if (!/^0\d{9}$/.test(Mem_Phone)) {
-        return res.status(400).json({ message: 'Format of Phone Number is Incorrect' });
+        return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
     }
 
     const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Email = ?, Mem_Phone = ?, Mem_Status = ? WHERE Mem_Id = ?';
@@ -70,19 +70,19 @@ router.put('/:id', function (req, res) {
         if (error) {
             if (error.code === 'ER_DUP_ENTRY') {
                 if (error.sqlMessage.includes('Mem_Username')) {
-                    return res.status(409).json({ message: 'Username already exists' });
+                    return res.status(409).json({ message: 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว' });
                 } else if (error.sqlMessage.includes('Mem_Email')) {
-                    return res.status(409).json({ message: 'Email already exists' });
+                    return res.status(409).json({ message: 'มีอีเมล์นี้ในระบบแล้ว' });
                 } else if (error.sqlMessage.includes('Mem_Phone')) {
-                    return res.status(409).json({ message: 'Phone number already exists' });
+                    return res.status(409).json({ message: 'มีเบอร์โทรศัพท์นี้ในระบบแล้ว' });
                 }
             }
             return res.status(500).json({ message: error.toString() });
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No member found with the specified ID.');
+            return res.status(404).send('No member found with the specified ID');
         }
-        res.json({ message: 'Member updated successfully.' });
+        res.json({ message: 'แก้ไขข้อมูลสมาชิกสำเร็จ' });
     });
 });
 
@@ -97,7 +97,7 @@ router.get('/:id', (req, res) => {
         if (results.length > 0) {
             res.json(results[0]);
         } else {
-            res.status(404).send('No member found with the specified ID.');
+            res.status(404).send('No member found with the specified ID');
         }
     });
 });

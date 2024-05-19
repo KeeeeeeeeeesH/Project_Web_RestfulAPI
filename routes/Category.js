@@ -22,12 +22,12 @@ router.get('/', (req, res) => {
         res.status(500).send(error.toString());
         return;
       }
-        res.status(201).send('Category added successfully.');
+        res.status(201).send('เพิ่มข้อมูลหมวดหมู่สำเร็จ');
     });
   });
 
   router.put('/:id', function(req, res) {
-    const { id } = req.params;  // Get the ID from the URL parameter
+    const { id } = req.params;
     const { Cat_Name } = req.body;
     const query = 'UPDATE Category SET Cat_Name = ? WHERE Cat_Id = ?';
     pool.query(query, [Cat_Name, id], function(error, results) {
@@ -36,9 +36,9 @@ router.get('/', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No category found with the specified ID.');
+            return res.status(404).send('No category found with the specified ID');
         }
-        res.send('Category updated successfully.');
+        res.send('แก้ไขข้อมูลหมวดหมู่สำเร็จ');
     });
   });
 
@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
     const { id } = req.params;  
   
     if (!id) {
-        return res.status(400).send('ID is required for deletion.');
+        return res.status(400).send('ID is required for delete');
     }
     const query = 'DELETE FROM Category WHERE Cat_Id = ?';
     pool.query(query, [id], function(error, results) {
@@ -54,9 +54,9 @@ router.get('/', (req, res) => {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No category found with the specified ID.');
+            return res.status(404).send('No category found with the specified ID');
         }
-        res.send('Category deleted successfully.');
+        res.send('ลบข้อมูลหมวดหมู่สำเร็จ');
     });
   });
   
@@ -88,7 +88,7 @@ router.get('/', (req, res) => {
         if (results.length > 0) {
             res.json(results[0]);
         } else {
-            res.status(404).send('No category found with the specified ID.');
+            res.status(404).send('No category found with the specified ID');
         }
     });
   });

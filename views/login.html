@@ -15,7 +15,6 @@
         <div class="text-center">
             <h2>เข้าสู่ระบบ Admin</h2>
             <img src="../images/logo.png" alt="Admin Logo" class="img-fluid" style="max-width: 200px;">
-            <!-- Adjust the src path as necessary -->
         </div>
         <form id="loginForm" class="mt-4">
             <div class="form-group">
@@ -37,41 +36,48 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function () {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 window.location.href = '../views/dashboard.html';
             }
 
-            $('#loginForm').submit(function (e) {
+            document.getElementById('loginForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-                var loginData = {
-                    login: $('#login').val(),
-                    password: $('#password').val()
+
+                const loginData = {
+                    login: document.getElementById('login').value,
+                    password: document.getElementById('password').value
                 };
-                $.ajax({
-                    url: 'http://localhost:5000/api/login',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(loginData),
-                    success: function (data) {
+
+                fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            if (response.status === 403) {
+                                throw new Error('ไม่ได้อยู่ในสถานะผู้ดูแลระบบ');
+                            }
+                            if (response.status === 401) {
+                                throw new Error('ชื่อผู้ใช้หรืออีเมล์หรือรหัสผ่านไม่ถูกต้อง');
+                            }
+                            throw new Error('เข้าสู่ระบบล้มเหลว โปรดลองอีกครั้งภายหลัง');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
                         if (data.success) {
                             localStorage.setItem('isLoggedIn', true);
-                            alert('Login successful')
+                            alert('เข้าสู่ระบบสำเร็จ');
                             window.location.href = '../views/dashboard.html';
                         }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 403) {
-                            alert('ไม่ได้อยู่ในสถานะผู้ดูแลระบบ');
-                        } 
-                        
-                        if (xhr.status === 401) {
-                            alert('Username or email and password do not match');
-                        } else {
-                            alert('Login failed. Please try again.');
-                        } 
-                    },
-                });
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
             });
         });
     </script>

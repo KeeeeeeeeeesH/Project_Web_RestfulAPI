@@ -97,16 +97,27 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => {
             if (response.ok) {
-                alert('New major added successfully');
+                alert('เพิ่มระดับความสำคัญสำเร็จ');
                 window.location.href = '/views/major/major.html';
             }
         })
         .catch(error => {
-            console.error('Error adding major:', error);
-            alert('Error adding major: ' + error.message);
+            console.error('เพิ่มระดับความสำคัญไม่สำเร็จ:', error);
+            alert('เพิ่มระดับความสำคัญไม่สำเร็จ: ' + error.message);
         });
     });
 });
+</script>
+<script>
+  $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/views/login.html'; 
+      });
+  });
 </script>
 
 </body>

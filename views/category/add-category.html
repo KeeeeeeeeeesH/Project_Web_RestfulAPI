@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Category</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles -->
     <link rel="stylesheet" href="/styles/styles.css">
 </head>
 
@@ -97,26 +95,31 @@
                 body: JSON.stringify(formData)
             }).then(response => {
                 if (response.ok){
-                    alert('Category added successfully!')
+                    alert('เพิ่มหมวดหมู่สำเร็จ')
                     window.location.href = '/views/category/category.html'; 
-                } else {
-                    throw new Error('Failed to add Category');
                 }
-                
             }).catch(error => {
-                console.error('Failed to add category:', error);
-                alert('Failed to add category. Please try again');
+                console.error('เพิ่มหมวดหมู่ไม่สำเร็จ :', error);
+                alert('เพิ่มหมวดหมู่ไม่สำเร็จ โปรดลองอีกครั้งภายหลัง');
             });
         });
     
     </script>
-
-    <!-- Bootstrap JS and dependencies -->
-    
     <script src="/scripts/dropdown.js"></script>
     <script src="/scripts/sidebar.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+          if (localStorage.getItem('isLoggedIn') !== 'true') {
+              window.location.href = '../views/login.html';
+          }
+          $('#logoutButton').click(function () {
+              localStorage.removeItem('isLoggedIn');
+              window.location.href = '/views/login.html'; 
+          });
+      });
+  </script>
 </body>
 </html>

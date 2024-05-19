@@ -80,7 +80,6 @@
             </tr>
         </thead>
         <tbody id="ratingsList">
-            <!-- News rating data will be inserted here -->
         </tbody>
     </table>
 </div>
@@ -111,9 +110,13 @@ $(document).ready(function() {
 
 <script>
   $(document).ready(function () {
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      window.location.href = '../views/login.html';
-    }
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/views/login.html'; 
+      });
   });
 </script>
 </body>

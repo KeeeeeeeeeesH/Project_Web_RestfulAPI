@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
       if (error) {
         res.status(500).send(error.toString());
       } else {
-        res.status(201).send('Major added successfully.');
+        res.status(201).send('เพิ่มระดับความสำคัญสำเร็จ');
       }
     });
   });
@@ -34,14 +34,14 @@ router.get('/', (req, res) => {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No Major found with the specified ID.');
+            return res.status(404).send('No Major found with the specified ID');
         }
-        res.send('Major deleted successfully.');
+        res.send('ลบระดับความสำคัญสำเร็จ');
     });
   });
   
   router.put('/:id', function(req, res) {
-    const { id } = req.params;  // Get the ID from the URL parameter
+    const { id } = req.params;
     const { Major_Level } = req.body;
   
     const query = 'UPDATE Major SET Major_Level = ? WHERE Major_Id = ?';
@@ -50,13 +50,13 @@ router.get('/', (req, res) => {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No major found with the specified ID.');
+            return res.status(404).send('No major found with the specified ID');
         }
-        res.send('Major updated successfully.');
+        res.send('แก้ไขระดับความสำคัญสำเร็จ');
     });
   });
   
-    // GET a specific admin by ID
+    // GET a specific by ID
     router.get('/:id', (req, res) => {
       const id = req.params.id;
       pool.query('SELECT * FROM Major WHERE Major_Id = ?', [id], (error, results) => {
@@ -68,7 +68,7 @@ router.get('/', (req, res) => {
           if (results.length > 0) {
               res.json(results[0]);
           } else {
-              res.status(404).send('No major found with the specified ID.');
+              res.status(404).send('No major found with the specified ID');
           }
       });
     });

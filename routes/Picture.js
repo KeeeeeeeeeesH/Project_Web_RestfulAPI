@@ -18,7 +18,7 @@ const fileFilter = (req, file, cb) => {
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
       cb(null, true);
   } else {
-      cb(new Error('Only JPEG and PNG images are allowed!'), false);
+      cb(new Error('อนุญาตให้อัพโหลดเฉพาะไฟล์ .jpg และ .png เท่านั้น'), false);
   }
 };
 
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
       res.status(500).send(error.toString());
       return;
     }
-    res.status(201).send('Picture added successfully.');
+    res.status(201).send('เพิ่มรูปภาพสำเร็จ');
   });
 });
 
@@ -71,7 +71,7 @@ router.post('/upload', upload.array('newsPictures', 10), (req, res) => {
               res.status(201).json({ success: true, message: `${req.files.length} images uploaded successfully!` });
           });
       } else {
-          res.status(400).json({ success: false, message: 'No images to upload.' });
+          res.status(400).json({ success: false, message: 'No images to upload' });
       }
   });
 });
@@ -97,7 +97,7 @@ router.post('/upload', upload.array('newsPictures', 10), (req, res) => {
                 res.status(500).send(fsErr.message);
                 return;
             }
-            res.send('Picture deleted successfully.');
+            res.send('ลบรูปภาพสำเร็จ');
         });
     });
 });

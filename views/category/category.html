@@ -5,11 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Category Dashboard</title>
-  <!-- นำเข้า Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- นำเข้าแบบอักษรที่กำหนดเอง -->
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet" />
-  <!-- นำเข้าไฟล์ CSS ที่กำหนดเอง -->
   <link rel="stylesheet" href="/styles/styles.css">
 </head>
 
@@ -88,14 +85,11 @@
           </tr>
         </thead>
         <tbody id="category-rows">
-          <!-- ข้อมูลจะถูกแทรกที่นี่ -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- นำเข้า Bootstrap JS และความต้องการ -->
-  
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -128,18 +122,18 @@
     });
 
     function deleteCategory(catId) {
-      if (confirm("Are you sure you want to delete this category?")) {
+      if (confirm("ต้องการที่จะลบหมวดหมู่นี้ใช่ไหม ?")) {
         fetch(`http://localhost:5000/api/category/${catId}`, {
           method: "DELETE",
         })
           .then((response) => {
             if (!response.ok)
-              throw new Error("Failed to delete the category.");
-            alert("Category deleted successfully");
-            location.reload(); // Reload the page to update the list
+              throw new Error("ลบข้อมูลไม่สำเร็จ");
+            alert("ลบหมวดหมู่สำเร็จ");
+            location.reload();
           })
           .catch((error) => {
-            console.error("Error deleting the category:", error);
+            console.error("ลบหมวดหมู่ล้มเหลว :", error);
             alert(error.message);
           });
       }
@@ -156,6 +150,11 @@
     if (localStorage.getItem('isLoggedIn') !== 'true') {
       window.location.href = '../views/login.html';
     }
+
+    $("#logoutButton").click(function () {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "/views/login.html";
+    });
   });
 </script>
 </body>

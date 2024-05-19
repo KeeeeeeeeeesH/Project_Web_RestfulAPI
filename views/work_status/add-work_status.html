@@ -127,17 +127,28 @@
           body: JSON.stringify(formData)
         })
           .then(response => {
-            if (!response.ok) throw new Error('Failed to add new work status.');
-            alert('Work status added successfully.');
+            if (!response.ok) throw new Error('เพิ่มข้อมูลสถานะการทำงานไม่สำเร็จ');
+            alert('เพิ่มข้อมูลสถานะการทำงานสำเร็จ');
             window.location.href = `/views/work_status/work_status.html`;
           })
           .catch(error => {
-            console.error('Error adding work status:', error);
-            alert('Error adding work status: ' + error.message);
+            console.error('เพิ่มข้อมูลสถานะการทำงานไม่สำเร็จ:', error);
+            alert('เพิ่มข้อมูลสถานะการทำงานไม่สำเร็จ: ' + error.message);
           });
       });
     });
   </script>
+  <script>
+    $(document).ready(function () {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = '../views/login.html';
+        }
+        $('#logoutButton').click(function () {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '/views/login.html'; 
+        });
+    });
+</script>
 </body>
 
 </html>

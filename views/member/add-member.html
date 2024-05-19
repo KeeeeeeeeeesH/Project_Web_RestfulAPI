@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Member</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles -->
     <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
@@ -116,7 +114,7 @@
 
       const phone = document.getElementById('phone').value;
       if (!/^0\d{9}$/.test(phone)) {
-        document.getElementById('phoneError').textContent = 'Format of Phone Number is Incorrect';
+        document.getElementById('phoneError').textContent = 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง';
         return;
       }
 
@@ -149,18 +147,18 @@
         return response.json();
       })
       .then(data => {
-        alert('Member added successfully!');
+        alert('เพิ่มข้อมูลสมาชิกสำเร็จ');
         window.location.href = '/views/member/member.html';
       })
       .catch(error => {
-            if (error.message === 'Username already exists') {
+            if (error.message === 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว') {
                 document.getElementById('usernameError').textContent = error.message;
-            } else if (error.message === 'Email already exists') {
+            } else if (error.message === 'มีอีเมล์นี้ในระบบแล้ว') {
                 document.getElementById('emailError').textContent = error.message;
-            } else if (error.message === 'Phone number already exists') {
+            } else if (error.message === 'มีเบอร์โทรศัพท์นี้ในระบบแล้ว') {
                 document.getElementById('phoneError').textContent = error.message;
             } else {
-                alert('An error occurred: ' + error.message);
+                alert('เพิ่มข้อมูลสมาชิกไม่สำเร็จ: ' + error.message);
             }
         });
     });
@@ -176,13 +174,22 @@
       });
     });
   </script>
-
-  <!-- Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
+  <script>
+    $(document).ready(function () {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = '../views/login.html';
+        }
+        $('#logoutButton').click(function () {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '/views/login.html'; 
+        });
+    });
+</script>
   
 </body>
 </html>

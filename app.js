@@ -26,11 +26,13 @@ const pool = mysql.createPool({
 
 module.exports = pool;
 
+//middleware -> cors/parseJSON JS-Object 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//session otp
 app.use(session({
   secret: 'U2FsdGVkX19U/Td9EChM/fcQQgP3N6ifViHC2KraJKg=',
   resave: false,
@@ -38,14 +40,16 @@ app.use(session({
   cookie: { secure: 'auto' }
 }));
 
-
+//join path หน้า login
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
+//join path เข้า folder
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use('/views', express.static(path.join(__dirname, 'views/admin')));
 app.use('/views', express.static(path.join(__dirname, 'views/category')));
@@ -60,13 +64,13 @@ app.use('/views', express.static(path.join(__dirname, 'views/read_later')));
 app.use('/views', express.static(path.join(__dirname, 'views/total_read')));
 app.use('/views', express.static(path.join(__dirname, 'views/work_status')));
 app.use('/views', express.static(path.join(__dirname, 'views/picture')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
 app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
 app.use('/views', express.static(path.join(__dirname, 'views/picture')));
 app.use('/views', express.static(path.join(__dirname, 'views/news_sub_cate')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+
+//api router
 const LoginRouter = require('./routes/Login');
 app.use('/api', LoginRouter);
 

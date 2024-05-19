@@ -4,15 +4,15 @@ const pool = require('../app');
 
 router.post('/reset-password', async (req, res) => {
     const { newPassword, confirmPassword } = req.body;
-    const adminPhone = req.session.adminPhone; // เก็บหมายเลขโทรศัพท์ใน session
+    const adminPhone = req.session.adminPhone; // เก็บเบอร์โทรลง session
     let adminId;
 
     if (newPassword !== confirmPassword) {
-        return res.status(400).json({ success: false, message: 'Passwords do not match.' });
+        return res.status(400).json({ success: false, message: 'รหัสผ่านไม่ตรงกัน' });
     }
 
     try {
-        // ค้นหา Adm_Id ด้วยหมายเลขโทรศัพท์
+        // ค้นหา Adm_Id ด้วยเบอร์โทร
         const adminQuery = 'SELECT Adm_Id FROM Admin WHERE Adm_Phone = ?';
         const [adminRows, _] = await pool.promise().query(adminQuery, [adminPhone]);
         if (adminRows.length === 0) {
@@ -25,18 +25,18 @@ router.post('/reset-password', async (req, res) => {
         const oldPassword = oldPasswordRows[0].Adm_Password;
 
         if (newPassword === oldPassword) {
-            return res.status(400).json({ success: false, message: 'New password must be different from the old password.' });
+            return res.status(400).json({ success: false, message: 'รหัสผ่านต้องไม่ซ้ำกับรหัสผ่านเก่า' });
         }
 
         const updateQuery = 'UPDATE Admin SET Adm_Password = ? WHERE Adm_Id = ?';
         const updateResult = await pool.promise().query(updateQuery, [newPassword, adminId]);
         if (updateResult[0].affectedRows === 0) {
-            return res.status(404).json({ success: false, message: 'Admin not found.' });
+            return res.status(404).json({ success: false, message: 'ไม่พบผู้ดูแลระบบคนนี้' });
         }
 
-        // Clear the session data after successful password reset
+        // clear session หลังเปลี่ยนรหัสสำเร็จ
         req.session.destroy();
-        res.json({ success: true, message: 'Password has been reset successfully.' });
+        res.json({ success: true, message: 'แก้ไขรหัสผ่านสำเร็จ' });
 
     } catch (error) {
         console.error('Error resetting password:', error);

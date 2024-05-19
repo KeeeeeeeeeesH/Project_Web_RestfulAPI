@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorite Categories</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favorite Categories</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -68,48 +70,53 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-    
-      <div class="content" id="content">
-        <h2 class="text-center mt-5">Favorite Categories</h2>
-        <div class="card-body">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Member ID</th>
-                    <th>Category ID</th>
-                </tr>
-            </thead>
-            <tbody id="favoriteCategoryTable"></tbody>
-        </table>
-        </div>
-    </div>
 
-    <script src="/scripts/dropdown.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/api/Favorite_Category')
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('favoriteCategoryTable');
-                data.forEach(item => {
-                    const row = `<tr>
+  <div class="content" id="content">
+    <h2 class="text-center mt-5">Favorite Categories</h2>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Member ID</th>
+            <th>Category ID</th>
+          </tr>
+        </thead>
+        <tbody id="favoriteCategoryTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('http://localhost:5000/api/Favorite_Category')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('favoriteCategoryTable');
+          data.forEach(item => {
+            const row = `<tr>
                                     <td>${item.Mem_Id}</td>
                                     <td>${item.Cat_Id}</td>
                                 </tr>`;
-                    tableBody.innerHTML += row;
-                });
-            })
-            .catch(error => console.error('Error loading the categories:', error));
-        });
-    </script>
-
-<script>
-  $(document).ready(function () {
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      window.location.href = '../views/login.html';
-    }
-  });
-</script>
+            tableBody.innerHTML += row;
+          });
+        })
+        .catch(error => console.error('Error loading the categories:', error));
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/views/login.html';
+      });
+    });
+  </script>
 </body>
+
 </html>

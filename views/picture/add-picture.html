@@ -93,7 +93,6 @@
   <script src="/scripts/sidebar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Fetch the news list and populate the dropdown
       fetch('http://localhost:5000/api/news')
         .then(response => response.json())
         .then(data => {
@@ -118,18 +117,29 @@
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              alert('Image uploaded successfully!');
+              alert('อัพโหลดรูปภาพสำเร็จ');
               window.location.href = '/views/picture/picture.html';
             } else {
-              alert('Failed to upload image: ' + data.message);
+              alert('อัพโหลดรูปภาพไม่สำเร็จ: ' + data.message);
             }
           })
           .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while uploading the image.');
+            alert('เกิดปัญหาขณะอัพโหลดรูปภาพ');
           });
       });
     });
+  </script>
+    <script>
+      $(document).ready(function () {
+          if (localStorage.getItem('isLoggedIn') !== 'true') {
+              window.location.href = '../views/login.html';
+          }
+          $('#logoutButton').click(function () {
+              localStorage.removeItem('isLoggedIn');
+              window.location.href = '/views/login.html'; 
+          });
+      });
   </script>
 </body>
 
