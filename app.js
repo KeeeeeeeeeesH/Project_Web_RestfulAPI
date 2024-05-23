@@ -74,6 +74,9 @@ app.use('/views', express.static(path.join(__dirname, 'views/news_sub_cate')));
 const LoginRouter = require('./routes/Login');
 app.use('/api', LoginRouter);
 
+const loginMemberRouter = require('./routes/LoginMember');
+app.use('/api/loginMember', loginMemberRouter);
+
 const AdminRouter = require('./routes/admin');
 app.use('/api/admin', AdminRouter);
 
