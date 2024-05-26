@@ -122,8 +122,14 @@ app.use('/api/total_read', Total_ReadRouter);
 const RecoveryRouter = require('./routes/Recovery');
 app.use('/api/recovery', RecoveryRouter);
 
+const recoveryMemberRouter = require('./routes/RecoveryMember');
+app.use('/api/recovery_member', recoveryMemberRouter);
+
 const ResetPasswordRouter = require('./routes/reset_password');
 app.use('/api/reset_password', ResetPasswordRouter);
+
+const resetPasswordMemberRouter = require('./routes/reset_PasswordMember');
+app.use('/api/reset_password_member', resetPasswordMemberRouter);
 
 app.use('/uploads', express.static('uploads'));
 
