@@ -23,19 +23,17 @@ router.get('/news', (req, res) => {
 router.get('/member', (req, res) => {
     const query = `
         SELECT Member.Mem_Id, Member.Mem_Fname, Member.Mem_Lname,
-               News_Rating.News_Id, News_Rating.Rating_Score,
-               Read_History.News_Id AS Read_News_Id, Read_History.Read_Date,
-               Favorite_Category.Cat_Id
+               Read_History.News_Id, Read_History.Read_Date,
+               News_Rating.Rating_Score
         FROM Member
-        LEFT JOIN News_Rating ON Member.Mem_Id = News_Rating.Mem_Id
         LEFT JOIN Read_History ON Member.Mem_Id = Read_History.Mem_Id
-        LEFT JOIN Favorite_Category ON Member.Mem_Id = Favorite_Category.Mem_Id
+        LEFT JOIN News_Rating ON Member.Mem_Id = News_Rating.Mem_Id AND Read_History.News_Id = News_Rating.News_Id
     `;
     pool.promise().query(query)
         .then(([rows, fields]) => {
-            let csvData = 'Mem_Id, Mem_Fname, Mem_Lname, News_Id, Rating_Score, Read_News_Id, Read_Date, Cat_Id\n';
+            let csvData = 'Mem_Id, Mem_Fname, Mem_Lname, News_Id, Read_Date, Rating_Score\n';
             rows.forEach(row => {
-                csvData += `${row.Mem_Id}, ${row.Mem_Fname}, ${row.Mem_Lname}, ${row.News_Id}, ${row.Rating_Score}, ${row.Read_News_Id}, ${row.Read_Date}, ${row.Cat_Id}\n`;
+                csvData += `${row.Mem_Id}, ${row.Mem_Fname}, ${row.Mem_Lname}, ${row.News_Id}, ${row.Read_Date}, ${row.Rating_Score}\n`;
             });
 
             res.setHeader('Content-Type', 'text/csv');
