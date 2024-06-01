@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,66 +8,68 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles/styles.css">
 </head>
+
 <body>
     <div class="header">
-      <button class="toggle-btn" id="toggleButton">☰</button>
+        <button class="toggle-btn" id="toggleButton">☰</button>
     </div>
-  
+
     <div class="sidebar" id="sidebar">
-      <a href="/views/dashboard.html">Dashboard</a>
-      <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
-        <div class="dropdown-content" id="adminDropdownContent">
-          <a class="dropdown-item" href="../admin/admin.html">Admin Dashboard</a>
+        <a href="/views/dashboard.html">Dashboard</a>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="adminDropdown">Admin</a>
+            <div class="dropdown-content" id="adminDropdownContent">
+                <a class="dropdown-item" href="../admin/admin.html">Admin Dashboard</a>
+            </div>
         </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
-        <div class="dropdown-content" id="categoryDropdownContent">
-          <a class="dropdown-item" href="../category/category.html">Category Dashboard</a>
-          <a class="dropdown-item" href="../category/sub_category.html">Sub Category Dashboard</a>
+
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="categoryDropdown">Category</a>
+            <div class="dropdown-content" id="categoryDropdownContent">
+                <a class="dropdown-item" href="../category/category.html">Category Dashboard</a>
+                <a class="dropdown-item" href="../category/sub_category.html">Sub Category Dashboard</a>
+            </div>
         </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
-        <div class="dropdown-content" id="majorDropdownContent">
-          <a class="dropdown-item" href="../major/major.html">Major Dashboard</a>
+
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="majorDropdown">Major</a>
+            <div class="dropdown-content" id="majorDropdownContent">
+                <a class="dropdown-item" href="../major/major.html">Major Dashboard</a>
+            </div>
         </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
-        <div class="dropdown-content" id="memberDropdownContent">
-          <a class="dropdown-item" href="../member/member.html">Member Dashboard</a>
-          <a class="dropdown-item" href="../favorite_category/favorite_category.html">Favorite Category Dashboard</a>
-          <a class="dropdown-item" href="../read_later/read_later.html">Read Later Dashboard</a>
-          <a class="dropdown-item" href="../read_history/read_history.html">Read History Dashboard</a>
+
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="memberDropdown">Member</a>
+            <div class="dropdown-content" id="memberDropdownContent">
+                <a class="dropdown-item" href="../member/member.html">Member Dashboard</a>
+                <a class="dropdown-item" href="../favorite_category/favorite_category.html">Favorite Category
+                    Dashboard</a>
+                <a class="dropdown-item" href="../read_later/read_later.html">Read Later Dashboard</a>
+                <a class="dropdown-item" href="../read_history/read_history.html">Read History Dashboard</a>
+            </div>
         </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
-        <div class="dropdown-content" id="newsDropdownContent">
-          <a class="dropdown-item" href="../news/news.html">News Dashboard</a>
-          <a class="dropdown-item" href="../total_read/total_read.html">Total Read Dashboard</a>
-          <a class="dropdown-item" href="../picture/picture.html">Picture Dashboard</a>
-          <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">News Sub Category</a>
-          <a class="dropdown-item" href="../news_rating/news_rating.html">News Rating Dashboard</a>
+
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="newsDropdown">News</a>
+            <div class="dropdown-content" id="newsDropdownContent">
+                <a class="dropdown-item" href="../news/news.html">News Dashboard</a>
+                <a class="dropdown-item" href="../total_read/total_read.html">Total Read Dashboard</a>
+                <a class="dropdown-item" href="../picture/picture.html">Picture Dashboard</a>
+                <a class="dropdown-item" href="../news_sub_cate/news_sub_cate.html">News Sub Category</a>
+                <a class="dropdown-item" href="../news_rating/news_rating.html">News Rating Dashboard</a>
+            </div>
         </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="work_statusDropdown">Work status</a>
-        <div class="dropdown-content" id="work_statusContent">
-          <a class="dropdown-item" href="../work_status/work_status.html">Work status Dashboard</a>
+
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="work_statusDropdown">Work status</a>
+            <div class="dropdown-content" id="work_statusContent">
+                <a class="dropdown-item" href="../work_status/work_status.html">Work status Dashboard</a>
+            </div>
         </div>
-      </div>
-  
-      <button id="logoutButton" class="btn btn-danger">Logout</button>
+
+        <button id="logoutButton" class="btn btn-danger">Logout</button>
     </div>
-    
+
     <div class="content" id="content">
         <h2 class="text-center mt-5">Edit News</h2>
         <form id="editNewsForm">
@@ -80,8 +83,9 @@
             </div>
             <div class="form-group">
                 <label for="newsDate">Date:</label>
-                <input type="date" class="form-control" id="newsDate" required>
+                <input type="datetime-local" class="form-control" id="newsDate" required>
             </div>
+
             <div class="form-group">
                 <label for="catId">Category:</label>
                 <select class="form-control" id="catId" required></select>
@@ -110,13 +114,12 @@
                         document.getElementById('newsName').value = data.News_Name;
                         document.getElementById('newsDetails').value = data.News_Details;
                         document.getElementById('newsDate').value = data.Date_Added.substr(0, 10);
-
-                       
+        
                         fetchCategories().then(() => {
                             document.getElementById('catId').value = data.Cat_Id;
                             loadSubCategories(data.Cat_Id, data.Sub_Cat_Ids);
                         });
-
+        
                         fetchMajors().then(() => {
                             document.getElementById('majorId').value = data.Major_Id;
                         });
@@ -125,13 +128,13 @@
             } else {
                 console.error('No news ID provided');
             }
-
+        
             document.getElementById('catId').addEventListener('change', function () {
                 const catId = this.value;
                 loadSubCategories(catId);
                 document.getElementById('subCatsContainer').innerHTML = ''; // Clear existing sub-categories when the main category changes
             });
-
+        
             function fetchCategories() {
                 return fetch('http://localhost:5000/api/category')
                     .then(response => response.json())
@@ -147,7 +150,7 @@
                     })
                     .catch(error => console.error('Error loading categories:', error));
             }
-
+        
             function fetchMajors() {
                 return fetch('http://localhost:5000/api/major')
                     .then(response => response.json())
@@ -163,11 +166,11 @@
                     })
                     .catch(error => console.error('Error loading majors:', error));
             }
-
+        
             function loadSubCategories(catId, selectedSubCatIds = []) {
                 const subCatContainer = document.getElementById('subCatsContainer');
                 subCatContainer.innerHTML = '';
-
+        
                 if (catId) {
                     fetch(`http://localhost:5000/api/sub_category?catId=${catId}`)
                         .then(response => response.json())
@@ -179,7 +182,7 @@
                         .catch(error => console.error('Error loading sub categories:', error));
                 }
             }
-
+        
             function addSubCategory(selectedSubCatId = '', subCategories = []) {
                 const subCatContainer = document.getElementById('subCatsContainer');
                 
@@ -191,16 +194,16 @@
                 defaultOption.value = '';
                 defaultOption.textContent = 'Select Sub Category';
                 subCatSelect.appendChild(defaultOption);
-
+        
                 subCategories.forEach(subCat => {
                     const option = document.createElement('option');
                     option.value = subCat.Sub_Cat_Id;
                     option.textContent = subCat.Sub_Cat_Name;
                     subCatSelect.appendChild(option);
                 });
-
+        
                 subCatSelect.value = selectedSubCatId;
-
+        
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'Remove';
                 removeBtn.className = 'btn btn-sm btn-danger ml-2 mt-2';
@@ -208,7 +211,7 @@
                     subCatContainer.removeChild(subCatSelect);
                     subCatContainer.removeChild(removeBtn);
                 });
-
+        
                 subCatContainer.appendChild(subCatSelect);
                 subCatContainer.appendChild(removeBtn);
             }
@@ -245,17 +248,17 @@
                     },
                     body: JSON.stringify(requestBody)
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to update news');
-                    }
-                    alert('แก้ไขข้อมูลข่าวสำเร็จ');
-                    window.location.href = '/views/news/news.html';
-                })
-                .catch(error => {
-                    console.error('แก้ไขข้อมูลข่าวไม่สำเร็จ:', error);
-                    alert('แก้ไขข้อมูลข่าวไม่สำเร็จ');
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update news');
+                        }
+                        alert('แก้ไขข้อมูลข่าวสำเร็จ');
+                        window.location.href = '/views/news/news.html';
+                    })
+                    .catch(error => {
+                        console.error('แก้ไขข้อมูลข่าวไม่สำเร็จ:', error);
+                        alert('แก้ไขข้อมูลข่าวไม่สำเร็จ');
+                    });
             });
 
             document.getElementById('addSubCatBtn').addEventListener('click', function () {
@@ -271,16 +274,17 @@
             });
         });
     </script>
-   <script>
-    $(document).ready(function () {
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = '../views/login.html';
-        }
-        $('#logoutButton').click(function () {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = '/views/login.html'; 
+    <script>
+        $(document).ready(function () {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = '../views/login.html';
+            }
+            $('#logoutButton').click(function () {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = '/views/login.html';
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>

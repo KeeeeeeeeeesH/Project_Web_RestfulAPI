@@ -22,7 +22,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const { News_Name, News_Details, Date_Added, Cat_Id, Sub_Cat_Ids, Major_Id } = req.body;
+    let { News_Name, News_Details, Date_Added, Cat_Id, Sub_Cat_Ids, Major_Id } = req.body;
+
+    if (Date_Added) {
+        Date_Added = new Date(Date_Added);
+    } else {
+        Date_Added = new Date();
+    }
 
     const query = 'INSERT INTO News (News_Name, News_Details, Date_Added, Cat_Id, Major_Id) VALUES (?, ?, ?, ?, ?)';
     pool.query(query, [News_Name, News_Details, Date_Added, Cat_Id, Major_Id], (error, results) => {
@@ -46,14 +52,20 @@ router.post('/', (req, res) => {
                 res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
             });
         } else {
-            res.status(201).send('เพิ่มข้อมูลหมวดหมู่รองข่าวสำเร็จ');
+            res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
         }
     });
 });
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { News_Name, News_Details, Date_Added, Cat_Id, Major_Id, Sub_Cat_Ids } = req.body;
+    let { News_Name, News_Details, Date_Added, Cat_Id, Major_Id, Sub_Cat_Ids } = req.body;
+
+    if (Date_Added) {
+        Date_Added = new Date(Date_Added);
+    } else {
+        Date_Added = new Date();
+    }
 
     try {
         await pool.promise().query('UPDATE News SET News_Name = ?, News_Details = ?, Date_Added = ?, Cat_Id = ?, Major_Id = ? WHERE News_Id = ?',
@@ -107,6 +119,18 @@ router.get('/:id', (req, res) => {
             news.Sub_Cat_Ids = [];
         }
         res.json(news);
+    });
+});
+
+router.get('/category/:id', (req, res) => {
+    const categoryId = req.params.id;
+    pool.query('SELECT * FROM News WHERE Cat_Id = ?', [categoryId], (error, results) => {
+        if (error) {
+            console.error('Error fetching news by category:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
     });
 });
 
