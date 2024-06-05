@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picture Gallery</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Picture Gallery</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -68,76 +70,77 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-      <div class="content" id="content">
-        <h2 class="text-center mt-5">Picture Gallery</h2>
-        <a href="add-picture.html" class="btn btn-success">Add New Picture</a>
-        <div class="card-body">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">News ID</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Filename</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody id="gallery"></tbody>
-        </table>
+  <div class="content" id="content">
+    <h2 class="text-center mt-5">Picture Gallery</h2>
+    <a href="add-picture.html" class="btn btn-success">Add New Picture</a>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">News ID</th>
+            <th scope="col">Image</th>
+            <th scope="col">Filename</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="gallery"></tbody>
+      </table>
     </div>
-    </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="/scripts/dropdown.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:5000/api/picture')
-    .then(response => response.json())
-    .then(images => {
-        const gallery = document.getElementById('gallery');
-        images.forEach((img) => {
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('http://localhost:5000/api/picture')
+        .then(response => response.json())
+        .then(images => {
+          const gallery = document.getElementById('gallery');
+          images.forEach((img) => {
             const row = `
-                <tr>
-                    <th scope="row">${img.News_Id}</th>
-                    <td><img src="/uploads/${img.News_Pic}" style="width: 100px; height: auto;"></td>
-                    <td>${img.News_Pic}</td>
-                    <td><button class="btn btn-danger" onclick="deleteImage(${img.News_Id}, '${img.News_Pic}')">Delete</button></td>
-                </tr>
+              <tr>
+                <th scope="row">${img.News_Id}</th>
+                <td><img src="/uploads/${img.News_Pic}" style="width: 100px; height: auto;"></td>
+                <td>${img.News_Pic}</td>
+                <td><button class="btn btn-danger" onclick="deleteImage(${img.News_Id}, '${img.News_Pic}')">Delete</button></td>
+              </tr>
             `;
             gallery.innerHTML += row;
-        });
-    })
-    .catch(error => console.error('Error loading the images:', error));
-});
+          });
+        })
+        .catch(error => console.error('Error loading the images:', error));
+    });
 
-function deleteImage(newsId, fileName) {
-            fetch(`http://localhost:5000/api/picture/${newsId}/${fileName}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('ลบรูปภาพสำเร็จ');
-                    window.location.reload();
-                } else {
-                    console.error('ลบรูปภาพไม่สำเร็จ');
-                }
-            })
-            .catch(error => console.error('ลบรูปภาพไม่สำเร็จ:', error));
-        }
-    </script>
+    function deleteImage(newsId, fileName) {
+      fetch(`http://localhost:5000/api/picture/${newsId}/${fileName}`, {
+        method: 'DELETE'
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('ลบรูปภาพสำเร็จ');
+            window.location.reload();
+          } else {
+            console.error('ลบรูปภาพไม่สำเร็จ');
+          }
+        })
+        .catch(error => console.error('ลบรูปภาพไม่สำเร็จ:', error));
+    }
+  </script>
 
-<script>
-  $(document).ready(function () {
+  <script>
+    $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
-          window.location.href = '../views/login.html';
+        window.location.href = '../views/login.html';
       }
       $('#logoutButton').click(function () {
-          localStorage.removeItem('isLoggedIn');
-          window.location.href = '/views/login.html'; 
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/views/login.html';
       });
-  });
-</script>
+    });
+  </script>
 </body>
+
 </html>

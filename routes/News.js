@@ -122,36 +122,33 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.get('/category/:catId', (req, res) => {
-    const catId = req.params.catId;
+router.get('/category/:id', (req, res) => {
+    const { id } = req.params;
     const page = parseInt(req.query.page) || 0;
     const limit = parseInt(req.query.limit) || 5;
     const offset = page * limit;
 
     let query = `
-        SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id 
-        FROM News n 
-        LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id
+        SELECT n.News_Id, n.News_Name, n.Date_Added, n.Cat_Id,
+        (SELECT COUNT(*) FROM Total_Read WHERE Total_Read.News_Id = n.News_Id) AS readCount,
+        (SELECT AVG(Rating_Score) FROM News_Rating WHERE News_Rating.News_Id = n.News_Id) AS ratingScore
+        FROM News n
     `;
-    if (catId != 0) {
-        query += ` WHERE n.Cat_Id = ${pool.escape(catId)}`;
+    
+    if (id != 0) {
+        query += `WHERE n.Cat_Id = ? `;
     }
-    query += ` GROUP BY n.News_Id ORDER BY n.Date_Added DESC LIMIT ${pool.escape(limit)} OFFSET ${pool.escape(offset)}`;
 
-    pool.query(query, (error, results) => {
+    query += `ORDER BY n.Date_Added DESC LIMIT ? OFFSET ?`;
+
+    const params = id == 0 ? [limit, offset] : [id, limit, offset];
+
+    pool.query(query, params, (error, results) => {
         if (error) {
-            console.error('Error fetching news by category:', error);
+            console.error('Error fetching news:', error);
             res.status(500).send('Internal Server Error');
             return;
         }
-        results.forEach(news => {
-            if (news.Sub_Cat_Ids) {
-                const subCatIds = news.Sub_Cat_Ids.split(',');
-                news.Sub_Cat_Names = subCatIds.join(', ');
-            } else {
-                news.Sub_Cat_Names = '';
-            }
-        });
         res.json(results);
     });
 });
