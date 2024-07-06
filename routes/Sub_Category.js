@@ -81,4 +81,14 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.get('/ids', (req, res) => {
+    const ids = req.query.ids.split(',').map(id => parseInt(id, 10));
+    pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;
