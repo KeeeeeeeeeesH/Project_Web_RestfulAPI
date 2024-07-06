@@ -35,9 +35,18 @@ router.put('/:memId/:newsId', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No News Rating found with the specified member and news ID');
+          // ถ้าไม่มี record ในฐานข้อมูล, ให้ทำการ insert แทน
+          const insertQuery = 'INSERT INTO News_Rating (Mem_Id, News_Id, Rating_Score) VALUES (?, ?, ?)';
+          pool.query(insertQuery, [memId, newsId, Rating_Score], (insertError, insertResults) => {
+              if (insertError) {
+                  res.status(500).send(insertError.toString());
+                  return;
+              }
+              res.status(201).send('เพิ่มข้อมูลคะแนนข่าวสำเร็จ');
+          });
+      } else {
+          res.send('แก้ไขเพิ่มข้อมูลคะแนนข่าวสำเร็จ');
       }
-      res.send('แก้ไขเพิ่มข้อมูลคะแนนข่าวสำเร็จ');
   });
 });
 

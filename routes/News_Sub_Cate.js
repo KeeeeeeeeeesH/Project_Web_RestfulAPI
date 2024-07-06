@@ -64,4 +64,17 @@ router.get('/:catId', (req, res) => {
     });
 });
 
+// Fetch news sub categories by news ID
+router.get('/:newsId', (req, res) => {
+    const newsId = req.params.newsId;
+    pool.query('SELECT * FROM News_Sub_Cate WHERE News_Id = ?', [newsId], (error, results) => {
+        if (error) {
+            console.error('Error fetching news sub categories:', error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;

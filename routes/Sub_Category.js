@@ -81,6 +81,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// Get subcategories by IDs
 router.get('/ids', (req, res) => {
     const ids = req.query.ids.split(',').map(id => parseInt(id, 10));
     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
