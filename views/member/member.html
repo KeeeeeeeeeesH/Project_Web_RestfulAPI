@@ -72,7 +72,7 @@
 
   <div class="content" id="content">
     <h1 class="text-center mt-5">Member Dashboard</h1>
-    <a href="add-member.html" class="btn btn-success">Add New Member</a>
+    <!-- <a href="add-member.html" class="btn btn-success">Add New Member</a> -->
     <div class="card-body">
       <table class="table table-bordered">
         <thead>
@@ -117,11 +117,19 @@
                                         <td>${member.Mem_Username}</td>
                                         <td>${member.Mem_Email}</td>
                                         <td>${member.Mem_Phone}</td>
-                                        <td>${member.Mem_Status}</td>
-                                        <td>
-                                            <button onclick="editMember('${member.Mem_Id}')" class="btn btn-primary">Edit</button>
-                                            <button onclick="deleteMember('${member.Mem_Id}', this)" class="btn btn-danger">Delete</button>
-                                        </td>`;
+                                        <td>${member.Mem_Status}</td>`;
+
+        // tr.innerHTML = `<td>${member.Mem_Id}</td>
+                                    // <td>${member.Mem_Fname}</td>
+                                    // <td>${member.Mem_Lname}</td>
+                                    // <td>${member.Mem_Username}</td>
+                                    // <td>${member.Mem_Email}</td>
+                                    // <td>${member.Mem_Phone}</td>
+                                    // <td>${member.Mem_Status}</td>
+                                    // <td>
+                                    //     <button onclick="editMember('${member.Mem_Id}')" class="btn btn-primary">Edit</button>
+                                    //     <button onclick="deleteMember('${member.Mem_Id}', this)" class="btn btn-danger">Delete</button>
+                                    // </td>`;
             tableBody.appendChild(tr);
           });
         })
