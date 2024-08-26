@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../app');
+const sendNotification = require('../fcmNotifier');
 
 router.get('/', (req, res) => {
     pool.query('SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id FROM News n LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id GROUP BY n.News_Id', (error, results) => {
@@ -49,11 +50,15 @@ router.post('/', (req, res) => {
                     res.status(500).send('Internal Server Error');
                     return;
                 }
-                res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
             });
-        } else {
-            res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
         }
+
+        // ส่งการแจ้งเตือนถ้า Major_Id เป็น 2
+        if (Major_Id === 2) {
+            sendNotification('ข่าวใหม่ที่สำคัญ', News_Name, 'news_topic');  // ใช้ topic 'news_topic'
+        }
+
+        res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
     });
 });
 
@@ -68,6 +73,10 @@ router.put('/:id', async (req, res) => {
     }
 
     try {
+        // ดึง Major_Id เดิมเพื่อเปรียบเทียบ
+        const [rows] = await pool.promise().query('SELECT Major_Id FROM News WHERE News_Id = ?', [id]);
+        const previousMajorId = rows.length > 0 ? rows[0].Major_Id : null;
+
         await pool.promise().query('UPDATE News SET News_Name = ?, News_Details = ?, Date_Added = ?, Cat_Id = ?, Major_Id = ? WHERE News_Id = ?',
             [News_Name, News_Details, Date_Added, Cat_Id, Major_Id, id]);
 
@@ -77,6 +86,12 @@ router.put('/:id', async (req, res) => {
             const insertValues = Sub_Cat_Ids.map(subCatId => [id, subCatId]);
             await pool.promise().query('INSERT INTO News_Sub_Cate (News_Id, Sub_Cat_Id) VALUES ?', [insertValues]);
         }
+
+        // ส่งการแจ้งเตือนถ้า Major_Id เปลี่ยนจาก 1 เป็น 2
+        if (previousMajorId === 1 && Major_Id === 2) {
+            sendNotification('ข่าวสำคัญได้รับการอัปเดต', News_Name, 'news_topic');
+        }
+
         res.send('แก้ไขข้อมูลข่าวสำเร็จ');
     } catch (error) {
         console.error('Error updating news:', error);
