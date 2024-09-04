@@ -82,14 +82,42 @@ router.get('/:id', (req, res) => {
 });
 
 // Get subcategories by IDs
-router.get('/ids', (req, res) => {
-    const ids = req.query.ids.split(',').map(id => parseInt(id, 10));
+// router.get('/tag/ids', (req, res) => {
+//     const ids = req.query.ids.split(',').map(id => parseInt(id, 10));
+//     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
+//         if (error) {
+//             return res.status(500).json({ error: error.message });
+//         }
+//         if (results.length === 0) {
+//             return res.status(404).send('No sub category found with the specified ID');
+//         }
+//         res.json(results);
+//     });
+// });
+
+router.get('/tag/ids', (req, res) => {
+    let ids = req.query.ids;
+    // ตรวจสอบว่า ids เป็น array หรือไม่ ถ้าไม่ใช่ให้แปลงเป็น array
+    if (!Array.isArray(ids)) {
+        ids = ids.split(',').map(id => parseInt(id, 10));
+    } else {
+        ids = ids.map(id => parseInt(id, 10)); // แปลงแต่ละค่าใน array เป็นตัวเลข
+    }
+    console.log('Parsed IDs:', ids); // Log parsed IDs
     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
         if (error) {
+            console.error('Database error:', error); // Log database error
             return res.status(500).json({ error: error.message });
         }
+        if (results.length === 0) {
+            console.log('No results found for IDs:', ids); // Log if no results found
+            return res.status(404).send('No sub category found with the specified ID');
+        }
+        console.log('Query results:', results); // Log results
         res.json(results);
     });
 });
+
+
 
 module.exports = router;
