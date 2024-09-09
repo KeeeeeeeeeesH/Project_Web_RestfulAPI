@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${major.Major_Id}</td>
                 <td>${major.Major_Level}</td>
                 <td>
-                    <button class="btn btn-primary" onclick="editMajor(${major.Major_Id})">Edit</button>
                     <button class="btn btn-danger" onclick="deleteMajor(${major.Major_Id})">Delete</button>
                 </td>
             `;
@@ -148,3 +147,46 @@ function deleteMajor(majorId) {
 </script>
 </body>
 </html>
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      fetch('http://localhost:5000/api/major')
+      .then(response => response.json())
+      .then(majors => {
+          const tableBody = document.getElementById('majorList');
+          majors.forEach(major => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                  <td>${major.Major_Id}</td>
+                  <td>${major.Major_Level}</td>
+                  <td>
+                      <button class="btn btn-primary" onclick="editMajor(${major.Major_Id})">Edit</button>
+                      <button class="btn btn-danger" onclick="deleteMajor(${major.Major_Id})">Delete</button>
+                  </td>
+              `;
+              tableBody.appendChild(row);
+          });
+      })
+      .catch(error => console.error('Error loading majors:', error));
+  });
+  
+  function editMajor(majorId) {
+      window.location.href = `edit-major.html?id=${majorId}`;
+  }
+  
+  function deleteMajor(majorId) {
+      if (confirm('ต้องการที่จะลบระดับความสำคัญนี้ใช่ไหม ?')) {
+          fetch(`http://localhost:5000/api/major/${majorId}`, {
+              method: 'DELETE'
+          })
+          .then(response => {
+              if (!response.ok) throw new Error('ลบระดับความสำคัญนี้ไม่ได้');
+              alert('ลบระดับความสำคัญสำเร็จ');
+              location.reload();
+          })
+          .catch(error => {
+              alert('ลบระดับความสำคัญไม่สำเร็จ: ' + error.message);
+          });
+      }
+  }
+  </script> -->

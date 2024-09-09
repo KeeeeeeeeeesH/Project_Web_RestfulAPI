@@ -71,6 +71,7 @@
       <div class="content" id="content">
         <h2 class="text-center mt-5">News Overview</h2>
         <a href="add-news.html" class="btn btn-success">Add News</a>
+        <a href="add-picture.html" class="btn btn-success">Add New Picture</a>
         <div class="card-body">
             <table class="table table-bordered">
                 <thead>
@@ -79,9 +80,9 @@
                         <th>Name</th>
                         <th>Details</th>
                         <th>Date Added</th>
-                        <th>Category ID</th>
-                        <th>Sub Category ID</th>
-                        <th>Major ID</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Major</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -94,32 +95,73 @@
     <script src="/scripts/dropdown.js"></script>
     <script src="/scripts/sidebar.js"></script>
     <script>
-      $(document).ready(function() {
-          fetch('http://localhost:5000/api/news')
+      $(document).ready(function () {
+        // Initialize maps for categories, subcategories, and majors
+        const categoryMap = {};
+        const subCategoryMap = {};
+        const majorMap = {};
+  
+        // Fetch categories and create a map of Cat_Id to Cat_Name
+        fetch('http://localhost:5000/api/category')
+          .then(response => response.json())
+          .then(categories => {
+            categories.forEach(category => {
+              categoryMap[category.Cat_Id] = category.Cat_Name;
+            });
+  
+            // Fetch subcategories and create a map of Sub_Cat_Id to Sub_Cat_Name
+            return fetch('http://localhost:5000/api/sub_category');
+          })
+          .then(response => response.json())
+          .then(subCategories => {
+            subCategories.forEach(subCategory => {
+              subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
+            });
+  
+            // Fetch majors and create a map of Major_Id to Major_Level
+            return fetch('http://localhost:5000/api/major');
+          })
+          .then(response => response.json())
+          .then(majors => {
+            majors.forEach(major => {
+              majorMap[major.Major_Id] = major.Major_Level;
+            });
+  
+            // Fetch news and display data
+            return fetch('http://localhost:5000/api/news');
+          })
           .then(response => response.json())
           .then(data => {
-              const tableBody = document.getElementById('newsList');
-              data.forEach(news => {
-                  const row = document.createElement('tr');
-                  const date = new Date(news.Date_Added);
-                  const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
-                  row.innerHTML = `
-                      <td>${news.News_Id}</td>
-                      <td>${news.News_Name}</td>
-                      <td>${news.News_Details}</td>
-                      <td>${formattedDate}</td>
-                      <td>${news.Cat_Id}</td>
-                      <td>${news.Sub_Cat_Names}</td>
-                      <td>${news.Major_Id}</td>
-                      <td>
-                          <button class="btn btn-primary" onclick="editNews(${news.News_Id})">Edit</button>
-                          <button class="btn btn-danger" onclick="deleteNews(${news.News_Id})">Delete</button>
-                      </td>
-                  `;
-                  tableBody.appendChild(row);
-              });
+            const tableBody = document.getElementById('newsList');
+            data.forEach(news => {
+              const row = document.createElement('tr');
+              const date = new Date(news.Date_Added);
+              const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+  
+              // Get category name, subcategory names, and major level using maps
+              const categoryName = categoryMap[news.Cat_Id] || 'Unknown Category';
+              const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
+                ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'Unknown Subcategory').join(', ')
+                : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'Unknown Subcategory').join(', ');
+              const majorLevel = majorMap[news.Major_Id] !== undefined ? majorMap[news.Major_Id] : 'Unknown Level';
+  
+              row.innerHTML = `
+                <td>${news.News_Id}</td>
+                <td>${news.News_Name}</td>
+                <td>${news.News_Details}</td>
+                <td>${formattedDate}</td>
+                <td>${categoryName}</td>
+                <td>${subCategoryNames}</td>
+                <td>${majorLevel}</td>
+                <td>
+                    <button class="btn btn-primary" onclick="editNews(${news.News_Id})">Edit</button>
+                    <button class="btn btn-danger" onclick="deleteNews(${news.News_Id})">Delete</button>
+                </td>
+              `;
+              tableBody.appendChild(row);
+            });
           })
-          .catch(error => console.error('Error loading news:', error));
+          .catch(error => console.error('Error loading data:', error));
       });
     
     function editNews(newsId) {

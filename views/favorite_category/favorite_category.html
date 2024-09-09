@@ -78,7 +78,7 @@
         <thead>
           <tr>
             <th>Member ID</th>
-            <th>Category ID</th>
+            <th>Category</th>
           </tr>
         </thead>
         <tbody id="favoriteCategoryTable"></tbody>
@@ -91,21 +91,36 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      fetch('http://localhost:5000/api/Favorite_Category')
+      // Fetch categories to create a map of Cat_Id to Cat_Name
+      fetch('http://localhost:5000/api/category')
         .then(response => response.json())
-        .then(data => {
-          const tableBody = document.getElementById('favoriteCategoryTable');
-          data.forEach(item => {
-            const row = `<tr>
-                                    <td>${item.Mem_Id}</td>
-                                    <td>${item.Cat_Id}</td>
-                                </tr>`;
-            tableBody.innerHTML += row;
+        .then(categories => {
+          // Create a map of Cat_Id to Cat_Name
+          const categoryMap = {};
+          categories.forEach(category => {
+            categoryMap[category.Cat_Id] = category.Cat_Name;
           });
+  
+          // Fetch favorite categories
+          fetch('http://localhost:5000/api/favorite_category')
+            .then(response => response.json())
+            .then(data => {
+              const tableBody = document.getElementById('favoriteCategoryTable');
+              data.forEach(item => {
+                // Use categoryMap to display Cat_Name instead of Cat_Id
+                const row = `<tr>
+                              <td>${item.Mem_Id}</td>
+                              <td>${categoryMap[item.Cat_Id] || 'Unknown Category'}</td>
+                            </tr>`;
+                tableBody.innerHTML += row;
+              });
+            })
+            .catch(error => console.error('Error loading the favorite categories:', error));
         })
         .catch(error => console.error('Error loading the categories:', error));
     });
   </script>
+  
   <script>
     $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
