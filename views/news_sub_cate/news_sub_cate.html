@@ -75,7 +75,7 @@
         <thead>
             <tr>
                 <th>News ID</th>
-                <th>Sub Category ID</th>
+                <th>Sub Category</th>
             </tr>
         </thead>
         <tbody id="newsSubCateList">
@@ -90,28 +90,54 @@
 <script src="News_Sub_Cate.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetchNewsSubCategories();
-});
+  document.addEventListener('DOMContentLoaded', function() {
+      fetchSubCategoriesAndNewsSubCates();
+  });
 
-function fetchNewsSubCategories() {
-    fetch('http://localhost:5000/api/news_sub_cate')
-        .then(response => response.json())
-        .then(data => {
-            const newsSubCateList = document.getElementById('newsSubCateList');
-            data.forEach(newsSubCate => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${newsSubCate.News_Id}</td>
-                    <td>${newsSubCate.Sub_Cat_Id}</td>
-                `;
-                newsSubCateList.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error loading news sub categories:', error));
-}
+  function fetchSubCategoriesAndNewsSubCates() {
+      const subCategoryMap = {};
+
+      // Fetch sub categories to create a map of Sub_Cat_Id to Sub_Cat_Name
+      fetch('http://localhost:5000/api/sub_category')
+          .then(response => response.json())
+          .then(subCategories => {
+              subCategories.forEach(subCategory => {
+                  subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
+              });
+
+              // Fetch news sub categories
+              return fetch('http://localhost:5000/api/news_sub_cate');
+          })
+          .then(response => response.json())
+          .then(data => {
+              const newsSubCateList = document.getElementById('newsSubCateList');
+              data.forEach(newsSubCate => {
+                  const row = document.createElement('tr');
+                  // Use the subCategoryMap to get Sub Category Name
+                  const subCategoryName = subCategoryMap[newsSubCate.Sub_Cat_Id] || 'Unknown Subcategory';
+
+                  row.innerHTML = `
+                      <td>${newsSubCate.News_Id}</td>
+                      <td>${subCategoryName}</td>
+                  `;
+                  newsSubCateList.appendChild(row);
+              });
+          })
+          .catch(error => console.error('Error loading news sub categories:', error));
+  }
 </script>
 
+<script>
+  $(document).ready(function () {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+          window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/views/login.html'; 
+      });
+  });
+</script>
 <script>
   $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {

@@ -81,8 +81,8 @@
           <thead>
             <tr>
               <th>Sub-Category ID</th>
-              <th>Sub-Category Name</th>
-              <th>Category ID</th>
+              <th>Sub-Category</th>
+              <th>Category</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -100,40 +100,51 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("http://localhost:5000/api/sub_category")
+      // Fetch all categories to map their names with IDs
+      fetch("http://localhost:5000/api/category")
         .then((response) => response.json())
-        .then((subCategories) => {
-          const tableBody = document.getElementById("subCategoryList");
-          subCategories.forEach((subCategory) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${subCategory.Sub_Cat_Id}</td>
-                <td>${subCategory.Sub_Cat_Name}</td>
-                <td>${subCategory.Cat_Id}</td>
-                <td>
-                    <button class="btn btn-primary" onclick="editSubCategory(${subCategory.Sub_Cat_Id})">Edit</button>
-                    <button class="btn btn-danger" onclick="deleteSubCategory(${subCategory.Sub_Cat_Id})">Delete</button>
-                </td>`;
-            tableBody.appendChild(row);
+        .then((categories) => {
+          // Create a map of category IDs to category names
+          const categoryMap = {};
+          categories.forEach((category) => {
+            categoryMap[category.Cat_Id] = category.Cat_Name;
           });
+  
+          // Fetch all sub-categories
+          fetch("http://localhost:5000/api/sub_category")
+            .then((response) => response.json())
+            .then((subCategories) => {
+              const tableBody = document.getElementById("subCategoryList");
+              subCategories.forEach((subCategory) => {
+                const row = document.createElement("tr");
+                // Use categoryMap to display category name instead of ID
+                row.innerHTML = `
+                  <td>${subCategory.Sub_Cat_Id}</td>
+                  <td>${subCategory.Sub_Cat_Name}</td>
+                  <td>${categoryMap[subCategory.Cat_Id] || 'Unknown Category'}</td>
+                  <td>
+                      <button class="btn btn-primary" onclick="editSubCategory(${subCategory.Sub_Cat_Id})">Edit</button>
+                      <button class="btn btn-danger" onclick="deleteSubCategory(${subCategory.Sub_Cat_Id})">Delete</button>
+                  </td>`;
+                tableBody.appendChild(row);
+              });
+            })
+            .catch((error) => console.error("Error loading sub categories:", error));
         })
-        .catch((error) =>
-          console.error("Error loading sub categories:", error)
-        );
+        .catch((error) => console.error("Error loading categories:", error));
     });
-
+  
     function editSubCategory(subCatId) {
       window.location.href = `edit-sub_category.html?id=${subCatId}`;
     }
-
+  
     function deleteSubCategory(subCatId) {
       if (confirm("ต้องการที่จะลบหมวดหมู่รองนี้ใช่ไหม ?")) {
         fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
           method: "DELETE",
         })
           .then((response) => {
-            if (!response.ok)
-              throw new Error("ไม่สามารถลบหมวดหมู่รองนี้ได้");
+            if (!response.ok) throw new Error("ไม่สามารถลบหมวดหมู่รองนี้ได้");
             alert("ลบข้อมูลหมวดหมู่รองสำเร็จ");
             location.reload();
           })
@@ -142,8 +153,8 @@
           });
       }
     }
-
   </script>
+  
 
 <script>
    $(document).ready(function () {
