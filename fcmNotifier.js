@@ -1,17 +1,17 @@
 const axios = require('axios');
 
 
-const serverKey = 'BNBMvF61Qp1Lais93hPNkHM2UcXRWwPu1Iqc1ph5gErZ5mMtkpF7gue-DiHVTwEbTbjeBeuIHvLvo-IHZrd6y5c';
+const serverKey = '0c08547fdd55a410882adf87393a63669b7e97ec';
 
 const sendNotification = async (title, body, topic) => {
     const url = 'https://fcm.googleapis.com/fcm/send';
 
     const message = {
-        notification: {
+        notification: {     
             title: title,
             body: body,
         },
-        topic: topic,
+        to: `/topics/${topic}`,
     };
 
     try {
