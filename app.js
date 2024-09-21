@@ -7,6 +7,11 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 
+
+const fcmNotifier = require('./fcmNotifier');
+
+
+
 const pool = mysql.createPool({
     host: 'localhost',  
     user: 'root', 

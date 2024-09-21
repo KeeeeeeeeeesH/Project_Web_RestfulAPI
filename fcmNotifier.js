@@ -1,28 +1,27 @@
-const axios = require('axios');
+const admin = require('firebase-admin');
+const serviceAccount = require('./JsonFirebase/project-news-app-7493e-firebase-adminsdk-thl86-e725cac5be.json');
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
 
+console.log("Firebase Admin SDK initialized successfully...");
 
-const serverKey = '0c08547fdd55a410882adf87393a63669b7e97ec';
 
 const sendNotification = async (title, body, topic) => {
-    const url = 'https://fcm.googleapis.com/fcm/send';
+    console.log("sendNotification function called...");
+    console.log(`Preparing to send notification with title: ${title}, body: ${body}, topic: ${topic}`);
 
     const message = {
-        notification: {     
+        notification: {
             title: title,
             body: body,
         },
-        to: `/topics/${topic}`,
+        topic: topic,
     };
 
     try {
-        const response = await axios.post(url, message, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `key=${serverKey}`,
-            },
-        });
-
-        console.log('Notification sent:', response.data);
+        const response = await admin.messaging().send(message);
+        console.log('Notification sent successfully:', response);
     } catch (error) {
         console.error('Error sending notification:', error);
     }

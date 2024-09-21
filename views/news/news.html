@@ -71,7 +71,7 @@
       <div class="content" id="content">
         <h2 class="text-center mt-5">News Overview</h2>
         <a href="add-news.html" class="btn btn-success">Add News</a>
-        <a href="add-picture.html" class="btn btn-success">Add New Picture</a>
+        <a href="/views/picture/add-picture.html" class="btn btn-success">Add New Picture</a>
         <div class="card-body">
             <table class="table table-bordered">
                 <thead>
@@ -141,8 +141,8 @@
               // Get category name, subcategory names, and major level using maps
               const categoryName = categoryMap[news.Cat_Id] || 'Unknown Category';
               const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
-                ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'Unknown Subcategory').join(', ')
-                : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'Unknown Subcategory').join(', ');
+                ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
+                : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
               const majorLevel = majorMap[news.Major_Id] !== undefined ? majorMap[news.Major_Id] : 'Unknown Level';
   
               row.innerHTML = `
