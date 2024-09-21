@@ -7,10 +7,7 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 
-
 const fcmNotifier = require('./fcmNotifier');
-
-
 
 const pool = mysql.createPool({
     host: 'localhost',  
@@ -39,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //session otp
 app.use(session({
-  secret: 'U2FsdGVkX19U/Td9EChM/fcQQgP3N6ifViHC2KraJKg=',
+  secret: '5c430df2-905b3a50-680398aa-6cdf147e',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: 'auto' }

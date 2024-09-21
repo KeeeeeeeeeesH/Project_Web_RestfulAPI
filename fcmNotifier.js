@@ -4,8 +4,6 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 
-console.log("Firebase Admin SDK initialized successfully...");
-
 
 const sendNotification = async (title, body, topic) => {
     console.log("sendNotification function called...");

@@ -54,8 +54,9 @@ router.post('/', (req, res) => {
         }
 
         // ส่งการแจ้งเตือนถ้า Major_Id เป็น 2
-        if (Major_Id === 2) {
-            sendNotification('ข่าวใหม่ที่สำคัญ', News_Name, 'news_topic');  // ใช้ topic news_topic
+        if (Major_Id == 2) {
+            console.log("Major_Id is 2, preparing to send notification...");
+            sendNotification('ข่าวใหม่ที่สำคัญ', News_Name, 'news_topic');  
             console.log("Sending important news notification for Major_Id 2...");
         }
 

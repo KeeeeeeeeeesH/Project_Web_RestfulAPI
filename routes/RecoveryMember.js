@@ -9,49 +9,89 @@ router.post('/request-otp', async (req, res) => {
     const memberQuery = 'SELECT Mem_Id FROM Member WHERE Mem_Phone = ?';
     try {
         const memberResult = await pool.promise().query(memberQuery, [phone]);
-        const formattedPhone = phone.startsWith('0') ? '66' + phone.slice(1) : phone;
+
+        // ตรวจสอบและแปลงเบอร์โทรศัพท์ให้อยู่ในรูปแบบ +66
+        let formattedPhone;
+        if (phone.startsWith('0')) {
+            formattedPhone = '66' + phone.slice(1); // ตัดเลข 0 ออกและเพิ่ม 66 ข้างหน้า
+        } else if (phone.startsWith('66')) {
+            formattedPhone = phone; // ถ้าเบอร์โทรเริ่มต้นด้วย 66 แล้ว ให้ใช้เบอร์โทรเดิม
+        } else {
+            return res.status(400).json({ message: 'เบอร์โทรไม่ถูกต้อง' });
+        }
+
         if (memberResult[0].length === 0) {
             return res.status(404).json({ message: 'ไม่พบหมายเลขโทรศัพท์นี้ในฐานข้อมูล' });
         }
-        const otp = Math.floor(100000 + Math.random() * 900000); // สร้าง OTP 6 หลัก
-        const message = `Your OTP is ${otp}. Please keep it secret`;
 
-        // สร้างข้อความสำหรับส่ง OTP
-        const data = JSON.stringify({
-            "accountId": "09809608579971",
-            "secretKey": "U2FsdGVkX19U/Td9EChM/fcQQgP3N6ifViHC2KraJKg=",
-            "type": "OTP",
-            "to": formattedPhone,
-            "sender": "BulkSMS.Ltd",
-            "msg": message
-        });
+        // เตรียมข้อมูลสำหรับขอ OTP
+        const data = {
+            secretKey: "5c430df2-905b3a50-680398aa-6cdf147e",
+            apiKey: "b3146c53-8ccb409a-5525bbc7-1fb50a03",
+            to: formattedPhone,  
+            sender: "dee.SMSDemo",
+            lang: "th",
+            isShowRef: "1"
+        };
 
         // ส่ง OTP ไปยังเบอร์โทร
-        const smsResponse = await axios.post('https://smsapi.deecommerce.co.th:4300/service/SMSWebService', data, {
+        const otpResponse = await axios.post('https://apicall.deesmsx.com/v1/otp/request', data, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
-        // ถ้าไม่ ERROR เก็บ OTP และ ID ของ Member ใน session
-        if (smsResponse.data.error === '0') {
-            req.session.otp = otp.toString(); // แปลง OTP เป็น string
-            req.session.memberPhone = phone; // เพิ่มการเซ็ตค่า memberPhone ใน session
-            res.send({ success: true, message: 'OTP ถูกส่งสำเร็จ' });
+        // ตรวจสอบว่าการส่ง OTP สำเร็จหรือไม่
+        if (otpResponse.data && otpResponse.data.token) {
+            req.session.otpToken = otpResponse.data.token;
+            req.session.memberPhone = phone;
+            
+            // ส่งสถานะ HTTP 200 เมื่อ OTP ส่งสำเร็จ
+            res.status(200).json({ success: true, message: 'OTP ถูกส่งสำเร็จ' });
         } else {
-            res.status(500).json({ message: 'ไม่สามารถส่ง OTP ได้', details: smsResponse.data });
+            // หาก API ส่งกลับสถานะไม่สำเร็จ ให้ส่งสถานะ 500 กลับ
+            res.status(500).json({ message: 'ไม่สามารถส่ง OTP ได้', details: otpResponse.data });
         }
     } catch (error) {
+        // แสดงข้อผิดพลาดใน console เพื่อ debugging
         console.error('เกิดข้อผิดพลาดในการส่ง OTP:', error);
-        res.status(500).json({ message: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์', details: error });
+
+        // ตรวจสอบว่าข้อผิดพลาดมาจาก API ของผู้ให้บริการหรือไม่
+        if (error.response && error.response.data) {
+            res.status(500).json({ message: 'ข้อผิดพลาดจาก API ของผู้ให้บริการ', details: error.response.data });
+        } else {
+            // ข้อผิดพลาดอื่นๆ ภายในเซิร์ฟเวอร์
+            res.status(500).json({ message: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์', details: error });
+        }
     }
 });
 
-//สำหรับกดส่ง OTP ที่ได้รับ
+
+// สำหรับยืนยัน OTP ที่ได้รับ
 router.post('/verify-otp', async (req, res) => {
     const { otp } = req.body;
+
     try {
-        if (otp && req.session.otp && otp.toString() === req.session.otp) {
+        if (!req.session.otpToken) {
+            return res.status(400).json({ success: false, message: 'ไม่มีการร้องขอ OTP ในระบบ' });
+        }
+
+        // เตรียมข้อมูลสำหรับยืนยัน OTP โดยใช้ API ใหม่
+        const data = {
+            secretKey: "5c430df2-905b3a50-680398aa-6cdf147e",
+            apiKey: "b3146c53-8ccb409a-5525bbc7-1fb50a03",
+            token: req.session.otpToken,
+            pin: otp
+        };
+
+        // ตรวจสอบ OTP กับระบบ
+        const verifyResponse = await axios.post('https://apicall.deesmsx.com/v1/otp/verify', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (verifyResponse.data && verifyResponse.data.status === 'success') {
             res.send({ success: true });
         } else {
             res.status(400).json({ success: false, message: 'รหัส OTP ไม่ถูกต้อง' });
