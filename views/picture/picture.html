@@ -74,12 +74,17 @@
     <h2 class="text-center mt-5">Picture Gallery</h2>
     <a href="add-picture.html" class="btn btn-success">Add New Picture</a>
     <div class="card-body">
+
+      <div class="form-inline mb-3">
+        <input type="text" id="searchInput" placeholder="ค้นหา News ID" class="form-control" onkeyup="searchByNewsId()">
+      </div>
+
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col">News ID</th>
-            <th scope="col">Image</th>
-            <th scope="col">Filename</th>
+            <th scope="col">รหัสข่าว</th>
+            <th scope="col">รหัสรูปภาพ</th>
+            <th scope="col">=ชื่อรูปภาพ</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -141,6 +146,26 @@
       });
     });
   </script>
+
+<script>
+  function searchByNewsId() {
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    const tableBody = document.getElementById('gallery');
+    const rows = tableBody.getElementsByTagName('tr');
+    
+    for (let i = 0; i < rows.length; i++) {
+      const newsId = rows[i].getElementsByTagName('th')[0]; // คอลัมน์ News ID
+      if (newsId) {
+        const newsIdValue = newsId.textContent || newsId.innerText;
+        if (newsIdValue.toLowerCase().indexOf(searchValue) > -1) {
+          rows[i].style.display = ''; // แสดงแถวที่ตรงกับ News ID ที่ค้นหา
+        } else {
+          rows[i].style.display = 'none'; // ซ่อนแถวที่ไม่ตรงกับการค้นหา
+        }
+      }
+    }
+  }
+</script>
 </body>
 
 </html>

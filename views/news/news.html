@@ -73,16 +73,24 @@
         <a href="add-news.html" class="btn btn-success">Add News</a>
         <a href="/views/picture/add-picture.html" class="btn btn-success">Add New Picture</a>
         <div class="card-body">
+          <div class="form-inline mb-3">
+            <select id="searchType" class="form-control mr-2">
+              <option value="name">ค้นหาตามชื่อข่าว</option>
+              <option value="date">ค้นหาตามวันที่</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="ค้นหา..." class="form-control" onkeyup="performSearch()">
+          </div>
+
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Details</th>
-                        <th>Date Added</th>
-                        <th>Category</th>
-                        <th>Sub Category</th>
-                        <th>Major</th>
+                        <th>รหัสข่าว</th>
+                        <th>หัวข้อข่าว</th>
+                        <th>เนื้อหาข่าว</th>
+                        <th>วันที่ลงข่าว</th>
+                        <th>หมวดหมู่ข่าว</th>
+                        <th>หมวดหมู่ข่าวย่อย</th>
+                        <th>ความสําคัญของข่าว</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -122,28 +130,32 @@
             return fetch('http://localhost:5000/api/major');
           })
           .then(response => response.json())
-          .then(majors => {
-            majors.forEach(major => {
-              majorMap[major.Major_Id] = major.Major_Level;
-            });
-  
-            // Fetch news and display data
-            return fetch('http://localhost:5000/api/news');
-          })
-          .then(response => response.json())
-          .then(data => {
-            const tableBody = document.getElementById('newsList');
-            data.forEach(news => {
-              const row = document.createElement('tr');
-              const date = new Date(news.Date_Added);
-              const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
-  
-              // Get category name, subcategory names, and major level using maps
-              const categoryName = categoryMap[news.Cat_Id] || 'Unknown Category';
-              const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
-                ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
-                : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
-              const majorLevel = majorMap[news.Major_Id] !== undefined ? majorMap[news.Major_Id] : 'Unknown Level';
+.then(majors => {
+  majors.forEach(major => {
+    majorMap[major.Major_Id] = major.Major_Level;
+  });
+
+  // Fetch news and display data
+  return fetch('http://localhost:5000/api/news');
+})
+.then(response => response.json())
+.then(data => {
+  const tableBody = document.getElementById('newsList');
+  data.forEach(news => {
+    const row = document.createElement('tr');
+    const date = new Date(news.Date_Added);
+    const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+    // Get category name, subcategory names, and major level using maps
+    const categoryName = categoryMap[news.Cat_Id] || 'Unknown Category';
+    const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
+      ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
+      : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
+    
+    // **นี่คือส่วนที่ถูกแก้ไขสำหรับ majorLevel**
+    const majorLevel = majorMap[news.Major_Id] !== undefined 
+      ? (majorMap[news.Major_Id] === 0 ? 'ต่ำ' : 'สูง') 
+      : 'Unknown Level';
   
               row.innerHTML = `
                 <td>${news.News_Id}</td>
@@ -202,5 +214,32 @@
       });
   });
 </script>
+
+<script>
+  function performSearch() {
+      const searchType = document.getElementById('searchType').value; // อ่านค่าจาก dropdown
+      const searchValue = document.getElementById('searchInput').value.toLowerCase(); // ค่าจาก input ที่ผู้ใช้ป้อน
+      const tableBody = document.getElementById('newsList');
+      const rows = tableBody.getElementsByTagName('tr');
+      
+      for (let i = 0; i < rows.length; i++) {
+          let searchTarget = '';
+          
+          if (searchType === 'name') {
+              const newsName = rows[i].getElementsByTagName('td')[1]; // คอลัมน์ชื่อข่าว
+              searchTarget = newsName ? newsName.textContent.toLowerCase() : '';
+          } else if (searchType === 'date') {
+              const newsDate = rows[i].getElementsByTagName('td')[3]; // คอลัมน์วันที่ข่าว
+              searchTarget = newsDate ? newsDate.textContent.toLowerCase() : '';
+          }
+          
+          if (searchTarget.indexOf(searchValue) > -1) {
+              rows[i].style.display = ''; // แสดงแถวที่ตรงกับการค้นหา
+          } else {
+              rows[i].style.display = 'none'; // ซ่อนแถวที่ไม่ตรงกับการค้นหา
+          }
+      }
+  }
+  </script>
 </body>
 </html>
