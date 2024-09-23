@@ -72,13 +72,13 @@
 
   <div class="content" id="content">
     <h2 class="mt-5">Work Status Overview</h2>
-    <a href="add-work_status.html" class="btn btn-success">Add New Work Status</a>
+    <a href="add-work_status.html" class="btn btn-success">เพิ่มสถานะการทำงาน</a>
     <div class="card-body">
       <table class="table table-bordered">
         <thead>
           <tr>
             <th>รหัสผู้ดูแลระบบ</th>
-            <th>สถานนะการทำงาน</th>
+            <th>สถานะการทำงาน</th>
             <th>วันที่เริ่ม</th>
             <th>วันที่ออก</th>
             <th></th>
@@ -110,8 +110,8 @@
                     <td>${startDate}</td>
                     <td>${endDate}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">Delete</button>
+                        <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">เเก้ไข</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">ลบ</button>
                     </td>
                 </tr>
             `);

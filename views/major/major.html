@@ -70,7 +70,7 @@
 
       <div class="content" id="content">
     <h2 class="text-center mt-5">Majors List</h2>
-    <a href="add-major.html" class="btn btn-success">Add Major</a>
+    <a href="add-major.html" class="btn btn-success">เพิ่มระดับความสําคัญของข่าว</a>
     <div class="card-body">
     <table class="table table-bordered">
         <thead>
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${major.Major_Id}</td>
                 <td>${major.Major_Level}</td>
                 <td>
-                    <button class="btn btn-danger" onclick="deleteMajor(${major.Major_Id})">Delete</button>
+                    <button class="btn btn-danger" onclick="deleteMajor(${major.Major_Id})">ลบ</button>
                 </td>
             `;
             tableBody.appendChild(row);
