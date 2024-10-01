@@ -144,8 +144,8 @@ app.use('/export', exportRouter);
 const dashboardRouter = require('./routes/dashboard');
 app.use('/dashboard', dashboardRouter);
 
-const fcm = require('./fcmNotifier');
-app.use('/fcmNotifier', fcm);
+// const fcm = require('./fcmNotifier');
+// app.use('/fcmNotifier', fcm);
 
 // Start server
 app.listen(port, () => {

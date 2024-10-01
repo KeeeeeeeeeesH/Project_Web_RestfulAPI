@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../app');
-const sendNotification = require('../fcmNotifier');
+const { sendNotification, sendNotificationToFavoriteUsers } = require('../fcmNotifier');
 
 router.get('/', (req, res) => {
     pool.query('SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id FROM News n LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id GROUP BY n.News_Id', (error, results) => {
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
     }
 
     const query = 'INSERT INTO News (News_Name, News_Details, Date_Added, Cat_Id, Major_Id) VALUES (?, ?, ?, ?, ?)';
-    pool.query(query, [News_Name, News_Details, Date_Added, Cat_Id, Major_Id], (error, results) => {
+    pool.query(query, [News_Name, News_Details, Date_Added, Cat_Id, Major_Id], async (error, results) => {
         if (error) {
             console.error('Error adding News: ', error);
             res.status(500).send('Internal Server Error');
@@ -53,11 +53,13 @@ router.post('/', (req, res) => {
             });
         }
 
-        // ส่งการแจ้งเตือนถ้า Major_Id เป็น 2
+        // แจ้งเตือนเฉพาะข่าวสำคัญ (Major_Id = 2)
         if (Major_Id == 2) {
             console.log("Major_Id is 2, preparing to send notification...");
-            sendNotification('ข่าวใหม่ที่สำคัญ', News_Name, 'news_topic');  
-            console.log("Sending important news notification for Major_Id 2...");
+            sendNotification('แจ้งเตือนข่าวระดับความสำคัญสูง', News_Name, 'news_topic', newsId);
+        } else {
+            // ถ้าไม่ใช่ข่าวสำคัญ ให้ตรวจสอบหมวดหมู่โปรดของสมาชิก
+            await sendNotificationToFavoriteUsers(News_Name, Cat_Id, newsId, pool);
         }
 
         res.status(201).send('เพิ่มข้อมูลข่าวสำเร็จ');
@@ -79,6 +81,9 @@ router.put('/:id', async (req, res) => {
         const [rows] = await pool.promise().query('SELECT Major_Id FROM News WHERE News_Id = ?', [id]);
         const previousMajorId = rows.length > 0 ? rows[0].Major_Id : null;
 
+        console.log(`Previous Major ID: ${previousMajorId}`);
+        console.log(`New Major ID: ${Major_Id}`);
+
         await pool.promise().query('UPDATE News SET News_Name = ?, News_Details = ?, Date_Added = ?, Cat_Id = ?, Major_Id = ? WHERE News_Id = ?',
             [News_Name, News_Details, Date_Added, Cat_Id, Major_Id, id]);
 
@@ -90,8 +95,9 @@ router.put('/:id', async (req, res) => {
         }
 
         // ส่งการแจ้งเตือนถ้า Major_Id เปลี่ยนจาก 1 เป็น 2
-        if (previousMajorId === 1 && Major_Id === 2) {
-            sendNotification('ข่าวสำคัญได้รับการอัปเดต', News_Name, 'news_topic');
+        if (previousMajorId == 1 && Major_Id == 2) {
+            console.log('Condition met: previousMajorId == 1 && Major_Id == 2');
+            sendNotification('แจ้งเตือนข่าวระดับความสำคัญสูง', News_Name, 'news_topic', id); 
         }
 
         res.send('แก้ไขข้อมูลข่าวสำเร็จ');
@@ -100,6 +106,7 @@ router.put('/:id', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
