@@ -1,0 +1,3 @@
+# Ignore the JsonFirebase folder
+JsonFirebase/
+*.json
