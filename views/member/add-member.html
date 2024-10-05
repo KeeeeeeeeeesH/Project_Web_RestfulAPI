@@ -97,12 +97,6 @@
         <input type="text" class="form-control" id="phone" required>
         <small id="phoneError" class="form-text text-danger"></small>
       </div>
-      <div class="form-group">
-        <label for="status">สถานะการทำงาน:</label>
-        <select class="form-control" id="status" name="Mem_Status" required>
-          <option value="0">0</option>
-          <option value="1">1</option>
-        </select>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -125,7 +119,6 @@
         Mem_Password: document.getElementById('password').value,
         Mem_Email: document.getElementById('email').value,
         Mem_Phone: document.getElementById('phone').value,
-        Mem_Status: document.getElementById('status').value
       };
 
       document.getElementById('usernameError').textContent = '';

@@ -14,14 +14,14 @@ router.get('/', (req, res) => {
 });
 
 router.post("/", function (req, res) {
-  const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status } = req.body;
+  const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone } = req.body;
   
   if (!/^0\d{9}$/.test(Mem_Phone)) {
       return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
   }
   
-  const query = 'INSERT INTO Member (Mem_Id, Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)';
-  pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone, Mem_Status], function(error, results) {
+  const query = 'INSERT INTO Member (Mem_Id, Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
+  pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone], function(error, results) {
       if (error) {
           if (error.code === 'ER_DUP_ENTRY') {
               if (error.sqlMessage.includes('Mem_Username')) {
@@ -59,14 +59,14 @@ router.delete('/:id', function (req, res) {
 
 router.put('/:id', function (req, res) {
     const { id } = req.params;
-    const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone, Mem_Status } = req.body;
+    const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone} = req.body;
 
     if (!/^0\d{9}$/.test(Mem_Phone)) {
         return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
     }
 
-    const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Email = ?, Mem_Phone = ?, Mem_Status = ? WHERE Mem_Id = ?';
-    pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone, Mem_Status, id], function (error, results) {
+    const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Email = ?, Mem_Phone = ? = ? WHERE Mem_Id = ?';
+    pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone, id], function (error, results) {
         if (error) {
             if (error.code === 'ER_DUP_ENTRY') {
                 if (error.sqlMessage.includes('Mem_Username')) {

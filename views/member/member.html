@@ -83,7 +83,6 @@
             <th>ชื่่อผู้ใช้สมาชิก</th>
             <th>อีเมล์สมาชิก</th>
             <th>เบอร์โทรศัพท์สมาชิก</th>
-            <th>สถานะสมาชิก</th>
           </tr>
         </thead>
         <tbody id="member-rows">
@@ -116,20 +115,7 @@
                                         <td>${member.Mem_Lname}</td>
                                         <td>${member.Mem_Username}</td>
                                         <td>${member.Mem_Email}</td>
-                                        <td>${member.Mem_Phone}</td>
-                                        <td>${member.Mem_Status}</td>`;
-
-        // tr.innerHTML = `<td>${member.Mem_Id}</td>
-                                    // <td>${member.Mem_Fname}</td>
-                                    // <td>${member.Mem_Lname}</td>
-                                    // <td>${member.Mem_Username}</td>
-                                    // <td>${member.Mem_Email}</td>
-                                    // <td>${member.Mem_Phone}</td>
-                                    // <td>${member.Mem_Status}</td>
-                                    // <td>
-                                    //     <button onclick="editMember('${member.Mem_Id}')" class="btn btn-primary">Edit</button>
-                                    //     <button onclick="deleteMember('${member.Mem_Id}', this)" class="btn btn-danger">Delete</button>
-                                    // </td>`;
+                                        <td>${member.Mem_Phone}</td>`;
             tableBody.appendChild(tr);
           });
         })

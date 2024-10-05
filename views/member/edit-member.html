@@ -93,13 +93,6 @@
         <input type="text" class="form-control" id="Mem_Phone" name="Mem_Phone" required>
         <small id="phoneError" class="form-text text-danger"></small>
       </div>
-      <div class="form-group">
-        <label for="Mem_Status">สถานะการทำงาน:</label>
-        <select class="form-control" id="Mem_Status" name="Mem_Status" required>
-          <option value="0">0</option>
-          <option value="1">1</option>
-        </select>
-      </div>
       <button type="submit" class="btn btn-primary">Update Member</button>
     </form>
   </div>
@@ -119,7 +112,6 @@
           document.getElementById('Mem_Username').value = member.Mem_Username;
           document.getElementById('Mem_Email').value = member.Mem_Email;
           document.getElementById('Mem_Phone').value = member.Mem_Phone;
-          document.getElementById('Mem_Status').value = member.Mem_Status;
         })
         .catch(error => console.error('Error:', error));
 
@@ -138,7 +130,6 @@
           Mem_Username: document.getElementById('Mem_Username').value,
           Mem_Email: document.getElementById('Mem_Email').value,
           Mem_Phone: phone,
-          Mem_Status: document.getElementById('Mem_Status').value
         };
 
         document.getElementById('usernameError').textContent = '';
