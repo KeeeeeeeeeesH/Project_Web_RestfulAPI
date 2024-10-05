@@ -16,7 +16,7 @@ router.post('/reset-password', async (req, res) => {
         const adminQuery = 'SELECT Adm_Id FROM Admin WHERE Adm_Phone = ?';
         const [adminRows, _] = await pool.promise().query(adminQuery, [adminPhone]);
         if (adminRows.length === 0) {
-            return res.status(404).json({ success: false, message: 'Admin not found.' });
+            return res.status(404).json({ success: false, message: 'ไม่พบผู้ดูแลระบบ' });
         }
         adminId = adminRows[0].Adm_Id;
 
@@ -39,8 +39,8 @@ router.post('/reset-password', async (req, res) => {
         res.json({ success: true, message: 'แก้ไขรหัสผ่านสำเร็จ' });
 
     } catch (error) {
-        console.error('Error resetting password:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        console.error('เกิดข้อผิดพลาดในการรีเซ็ตรหัสผ่าน: ', error);
+        res.status(500).json({ success: false, message: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
     }
 });
 

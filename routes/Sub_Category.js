@@ -14,8 +14,8 @@ router.get('/', (req, res) => {
 
     pool.query(query, queryParams, (error, results) => {
         if (error) {
-            console.error('Error fetching sub categories:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่ย่อย: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -44,7 +44,7 @@ router.put('/:id', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Sub Category found with the specified ID');
+          return res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
       }
       res.send('แก้ไขหมวดหมู่รองสำเร็จ');
   });
@@ -59,7 +59,7 @@ router.delete('/:id', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Sub Category found with the specified ID');
+          return res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
       }
       res.send('ลบหมวดหมู่รองสำเร็จ');
   });
@@ -69,14 +69,14 @@ router.get('/:id', (req, res) => {
     const subCatId = req.params.id;
     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [subCatId], (error, results) => {
         if (error) {
-            console.error('Error fetching sub category by ID:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ย่อยตาม ID: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         if (results.length > 0) {
             res.json(results[0]);
         } else {
-            res.status(404).send('No sub category found with the specified ID');
+            res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
         }
     });
 });
@@ -91,12 +91,12 @@ router.get('/tag/ids', (req, res) => {
     }
     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
         if (error) {
-            console.error('Database error:', error); // Log database error
+            console.error('ข้อผิดพลาดของฐานข้อมูล: ', error); // Log database error
             return res.status(500).json({ error: error.message });
         }
         if (results.length === 0) {
-            console.log('No results found for IDs:', ids); // Log if no results found
-            return res.status(404).send('No sub category found with the specified ID');
+            console.log('ไม่พบผลลัพธ์สำหรับ ID: ', ids); // Log if no results found
+            return res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มีรหัสที่ระบุ');
         }
         res.json(results);
     });

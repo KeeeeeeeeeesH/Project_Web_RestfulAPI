@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Read_History', (error, results) => {
         if (error) {
-            console.error('Error fetching Read History: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกประวัติการอ่าน: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -26,8 +26,8 @@ router.get('/:memId', (req, res) => {
         ORDER BY rh.Read_Date DESC`;
     pool.query(query, [memId], (error, results) => {
         if (error) {
-            console.error('Error fetching Read History for member: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกประวัติการอ่านสำหรับสมาชิก: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -72,12 +72,12 @@ router.delete('/:memId/:newsId', (req, res) => {
     const query = 'DELETE FROM Read_History WHERE Mem_Id = ? AND News_Id = ?';
     pool.query(query, [memId, newsId], (error, results) => {
         if (error) {
-            console.error('Error deleting Read History: ', error);
+            console.error('เกิดข้อผิดพลาดในการลบประวัติการอ่าน: ', error);
             res.status(500).send(error.toString());
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No Read History found with the specified member and news ID');
+            return res.status(404).send('ไม่พบประวัติการอ่านพร้อมสมาชิกและรหัสข่าวที่ระบุ');
         }
         res.send('ลบข้อมูลประวัติการอ่านสำเร็จ');
     });

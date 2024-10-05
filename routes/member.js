@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Member', (error, results) => {
         if (error) {
-            console.error('Error fetching Member:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสมาชิก: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -42,7 +42,7 @@ router.delete('/:id', function (req, res) {
     const { id } = req.params;
 
     if (!id) {
-        return res.status(400).send('ID is required for delete');
+        return res.status(400).send('ต้องใช้ ID เพื่อลบ');
     }
 
     const query = 'DELETE FROM Member WHERE Mem_Id = ?';
@@ -51,7 +51,7 @@ router.delete('/:id', function (req, res) {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No member found with the specified ID');
+            return res.status(404).send('ไม่พบสมาชิกที่มี ID ที่ระบุ');
         }
         res.send('ลบข้อมูลสมาชิกสำเร็จ');
     });
@@ -80,7 +80,7 @@ router.put('/:id', function (req, res) {
             return res.status(500).json({ message: error.toString() });
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No member found with the specified ID');
+            return res.status(404).send('ไม่พบสมาชิกที่มี ID ที่ระบุ');
         }
         res.json({ message: 'แก้ไขข้อมูลสมาชิกสำเร็จ' });
     });
@@ -90,14 +90,14 @@ router.get('/:id', (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Member WHERE Mem_Id = ?', [id], (error, results) => {
         if (error) {
-            console.error('Error fetching member by ID:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสมาชิกด้วย ID: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         if (results.length > 0) {
             res.json(results[0]);
         } else {
-            res.status(404).send('No member found with the specified ID');
+            res.status(404).send('ไม่พบสมาชิกที่มี ID ที่ระบุ');
         }
     });
 });

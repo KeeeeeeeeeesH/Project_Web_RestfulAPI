@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Category', (error, results) => {
       if (error) {
-        console.error('Error fetching Category: ', error);
-        res.status(500).send('Internal Server Error');
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่: ', error);
+        res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
         return;
       }
       res.json(results);
@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No category found with the specified ID');
+            return res.status(404).send('ไม่พบหมวดหมู่ที่มี ID ที่ระบุ');
         }
         res.send('แก้ไขข้อมูลหมวดหมู่สำเร็จ');
     });
@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
     const { id } = req.params;  
   
     if (!id) {
-        return res.status(400).send('ID is required for delete');
+        return res.status(400).send('ต้องใช้ ID เพื่อลบ');
     }
     const query = 'DELETE FROM Category WHERE Cat_Id = ?';
     pool.query(query, [id], function(error, results) {
@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No category found with the specified ID');
+            return res.status(404).send('ไม่พบหมวดหมู่ที่มี ID ที่ระบุ');
         }
         res.send('ลบข้อมูลหมวดหมู่สำเร็จ');
     });
@@ -69,8 +69,8 @@ router.get('/', (req, res) => {
 
     pool.query(query, (error, results) => {
         if (error) {
-            console.error('Error fetching combined Category and Sub Category data: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกข้อมูลหมวดหมู่และหมวดหมู่ย่อยที่รวมกัน: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -81,14 +81,14 @@ router.get('/', (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Category WHERE Cat_Id  = ?', [id], (error, results) => {
         if (error) {
-            console.error('Error fetching category by ID:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่ตาม ID: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         if (results.length > 0) {
             res.json(results[0]);
         } else {
-            res.status(404).send('No category found with the specified ID');
+            res.status(404).send('ไม่พบหมวดหมู่ที่มี ID ที่ระบุ');
         }
     });
   });

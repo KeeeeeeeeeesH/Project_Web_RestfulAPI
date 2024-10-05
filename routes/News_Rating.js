@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM News_Rating', (error, results) => {
       if (error) {
-        console.error('Error fetching News Rating: ', error);
-        res.status(500).send('Internal Server Error');
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลการให้คะแนนข่าวสาร: ', error);
+        res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
         return;
       }
       res.json(results);
@@ -59,7 +59,7 @@ router.delete('/:memId/:newsId', (req, res) => {
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No News Rating found with the specified member and news ID');
+          return res.status(404).send('ไม่พบการให้คะแนนข่าวกับสมาชิกที่ระบุและรหัสข่าว');
       }
       res.send('ลบข้อมูลคะแนนข่าวสำเร็จ');
   });

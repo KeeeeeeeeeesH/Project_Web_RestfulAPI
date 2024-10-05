@@ -16,7 +16,7 @@ router.post('/reset-password', async (req, res) => {
         const memberQuery = 'SELECT Mem_Id FROM Member WHERE Mem_Phone = ?';
         const [memberRows, _] = await pool.promise().query(memberQuery, [memberPhone]);
         if (memberRows.length === 0) {
-            return res.status(404).json({ success: false, message: 'Member not found.' });
+            return res.status(404).json({ success: false, message: 'ไม่พบสมาชิก' });
         }
         memberId = memberRows[0].Mem_Id;
 
@@ -39,7 +39,7 @@ router.post('/reset-password', async (req, res) => {
         res.json({ success: true, message: 'แก้ไขรหัสผ่านสำเร็จ' });
 
     } catch (error) {
-        console.error('Error resetting password:', error);
+        console.error('เกิดข้อผิดพลาดในการรีเซ็ตรหัสผ่าน: ', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

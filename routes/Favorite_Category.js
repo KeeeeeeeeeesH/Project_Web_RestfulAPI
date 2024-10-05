@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Favorite_Category', (error, results) => {
       if (error) {
-        console.error('Error fetching Favorite_Category: ', error);
-        res.status(500).send('Internal Server Error');
+        console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่รายการโปรด: ', error);
+        res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
         return;
       }
       res.json(results);
@@ -23,13 +23,13 @@ router.get('/news', (req, res) => {
     `;
     pool.query(query, [memId], (error, results) => {
         if (error) {
-            console.error('Error fetching favorite category news: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกข่าวหมวดหมู่ที่ชื่นชอบ: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         // ตรวจสอบว่ามีผลลัพธ์จาก query หรือไม่
         if (results.length === 0) {
-            res.status(404).send('No news found for favorite categories');
+            res.status(404).send('ไม่พบข่าวสำหรับหมวดหมู่ที่ชื่นชอบ');
         } else {
             res.json(results);
         }
@@ -41,8 +41,8 @@ router.get('/:memId', (req, res) => {
     const memId = req.params.memId;
     pool.query('SELECT * FROM Favorite_Category WHERE Mem_Id = ?', [memId], (error, results) => {
         if (error) {
-            console.error('Error fetching favorite categories: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ที่ชื่นชอบ: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -65,14 +65,14 @@ router.post('/update', (req, res) => {
         if (values.length > 0) { // ตรวจสอบว่ามีค่า catId ใน array
             pool.query(insertQuery, [values], (insertError) => {
                 if (insertError) {
-                    console.error('Error inserting new favorites: ', insertError);
-                    return res.status(500).json({ error: 'Failed to insert new favorites' });
+                    console.error('เกิดข้อผิดพลาดในการแทรกรายการโปรดใหม่: ', insertError);
+                    return res.status(500).json({ error: 'ไม่สามารถแทรกรายการโปรดใหม่' });
                 }
 
-                res.status(200).json({ message: 'Favorites updated successfully' });
+                res.status(200).json({ message: 'อัปเดตรายการโปรดเรียบร้อยแล้ว' });
             });
         } else {
-            res.status(200).json({ message: 'No categories to add' }); // ถ้าไม่มีหมวดหมู่ให้เพิ่ม
+            res.status(200).json({ message: 'ไม่มีหมวดหมู่ที่จะเพิ่ม' }); // ถ้าไม่มีหมวดหมู่ให้เพิ่ม
         }
     });
 });
@@ -84,7 +84,7 @@ router.put('/', (req, res) => {
     const deleteQuery = 'DELETE FROM Favorite_Category WHERE Mem_Id = ?';
     pool.query(deleteQuery, [Mem_Id], (deleteError, deleteResults) => {
         if (deleteError) {
-            console.error('Error deleting favorite categories: ', deleteError);
+            console.error('เกิดข้อผิดพลาดในการลบหมวดหมู่ที่ชื่นชอบ: ', deleteError);
             res.status(500).json({ error: deleteError.toString() });
             return;
         }
@@ -94,11 +94,11 @@ router.put('/', (req, res) => {
 
         pool.query(insertQuery, [values], (insertError, insertResults) => {
             if (insertError) {
-                console.error('Error adding favorite categories: ', insertError);
+                console.error('เกิดข้อผิดพลาดในการเพิ่มหมวดหมู่ที่ชื่นชอบ: ', insertError);
                 res.status(500).json({ error: insertError.toString() });
                 return;
             }
-            res.status(201).json({ message: 'Favorite categories updated successfully' });
+            res.status(201).json({ message: 'อัปเดตหมวดหมู่รายการโปรดสำเร็จแล้ว' });
         });
     });
 });

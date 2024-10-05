@@ -10,8 +10,8 @@ router.get('/total-news', async (req, res) => {
         const totalNews = rows[0].totalNews;
         res.json({ totalNews });
     } catch (error) {
-        console.error('Error getting total news:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('เกิดข้อผิดพลาดในการรับข่าวสารทั้งหมด: ', error);
+        res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
     }
 });
 
@@ -22,8 +22,8 @@ router.get('/total-read', async (req, res) => {
         const totalRead = rows[0].totalRead;
         res.json({ totalRead });
     } catch (error) {
-        console.error('Error getting total read:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('เกิดข้อผิดพลาดในการรับการอ่านทั้งหมด: ', error);
+        res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
     }
 });
 
@@ -34,8 +34,8 @@ router.get('/total-members', async (req, res) => {
         const totalMembers = rows[0].totalMembers;
         res.json({ totalMembers });
     } catch (error) {
-        console.error('Error getting total members:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('เกิดข้อผิดพลาดในการรับสมาชิกทั้งหมด: ', error);
+        res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
     }
 });
 
@@ -48,15 +48,15 @@ router.get('/table/:tableName', async (req, res) => {
         'News_Rating', 'News_Sub_Cate', 'Picture', 'Total_Read', 'Major'
     ];
     if (!validTables.includes(tableName)) {
-        return res.status(400).json({ error: 'Invalid table name' });
+        return res.status(400).json({ error: 'ชื่อตารางไม่ถูกต้อง' });
     }
     try {
         const query = `SELECT * FROM ${tableName}`;
         const [rows] = await pool.promise().query(query);
         res.json(rows);
     } catch (error) {
-        console.error(`Error getting data from ${tableName}:`, error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(`เกิดข้อผิดพลาดในการรับข้อมูลจาก ${tableName}:`, error);
+        res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
     }
 });
 

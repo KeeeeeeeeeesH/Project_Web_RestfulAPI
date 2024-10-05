@@ -70,30 +70,30 @@
   </div>>
 
   <div class="content" id="content">
-    <h2>Add New Work Status</h2>
+    <h2>เพิ่มสถานะการทำงานใหม่</h2>
     <form id="addWorkStatusForm">
       <div class="form-group">
-        <label for="admId">Admin ID:</label>
+        <label for="admId">รหัสผู้ดูแลระบบ:</label>
         <select class="form-control" id="admId" required>
           <!-- Admin IDs will be loaded here -->
         </select>
       </div>
       <div class="form-group">
-        <label for="status">Status:</label>
+        <label for="status">สถานะการทำงาน:</label>
         <select class="form-control" id="status" required>
-          <option value="1">Working</option>
-          <option value="0">Resign</option>
+          <option value="1">ทำงาน</option>
+          <option value="0">ลาออก</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="startDate">Start Date:</label>
+        <label for="startDate">วันที่เริ่มต้น:</label>
         <input type="date" class="form-control" id="startDate" required>
       </div>
       <div class="form-group">
-        <label for="endDate">End Date:</label>
+        <label for="endDate">วันที่สิ้นสุด:</label>
         <input type="date" class="form-control" id="endDate">
       </div>
-      <button type="submit" class="btn btn-success">Add Status</button>
+      <button type="submit" class="btn btn-success">ยืนยัน</button>
     </form>
   </div>
 

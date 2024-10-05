@@ -150,7 +150,7 @@ router.post('/verify-otp', async (req, res) => {
         });
 
         verifyRequest.on('error', (error) => {
-            console.error('Error verifying OTP:', error);
+            console.error('เกิดข้อผิดพลาดในการตรวจสอบ OTP:', error);
             res.status(500).json({ success: false, message: 'ข้อผิดพลาดในการเชื่อมต่อกับผู้ให้บริการ', details: error });
         });
 
@@ -159,7 +159,7 @@ router.post('/verify-otp', async (req, res) => {
         verifyRequest.end();
 
     } catch (error) {
-        console.error('Error verifying OTP:', error);
+        console.error('เกิดข้อผิดพลาดในการตรวจสอบ OTP:', error);
         res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดในการตรวจสอบ OTP', details: error });
     }
 });

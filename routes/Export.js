@@ -15,8 +15,8 @@ router.get('/news', (req, res) => {
             res.send(csvData);
         })
         .catch(error => {
-            console.error('Error exporting news data:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            console.error('เกิดข้อผิดพลาดในการส่งออกข้อมูลข่าวสาร: ', error);
+            res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
         });
 });
 
@@ -41,8 +41,8 @@ router.get('/member', (req, res) => {
             res.send(csvData);
         })
         .catch(error => {
-            console.error('Error exporting member data:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            console.error('เกิดข้อผิดพลาดในการส่งออกข้อมูลสมาชิก: ', error);
+            res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
         });
 });
 
@@ -65,8 +65,8 @@ router.get('/admin', (req, res) => {
             res.send(csvData);
         })
         .catch(error => {
-            console.error('Error exporting admin data:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            console.error('เกิดข้อผิดพลาดในการส่งออกข้อมูลผู้ดูแลระบบ: ', error);
+            res.status(500).json({ error: 'ข้อผิดพลาดเซิร์ฟเวอร์ภายใน' });
         });
 });
 

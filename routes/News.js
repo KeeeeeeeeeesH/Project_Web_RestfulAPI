@@ -6,8 +6,8 @@ const { sendNotification, sendNotificationToFavoriteUsers } = require('../fcmNot
 router.get('/', (req, res) => {
     pool.query('SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id FROM News n LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id GROUP BY n.News_Id', (error, results) => {
         if (error) {
-            console.error('Error fetching news:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข่าว: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         results.forEach(news => {
@@ -34,8 +34,8 @@ router.post('/', (req, res) => {
     const query = 'INSERT INTO News (News_Name, News_Details, Date_Added, Cat_Id, Major_Id) VALUES (?, ?, ?, ?, ?)';
     pool.query(query, [News_Name, News_Details, Date_Added, Cat_Id, Major_Id], async (error, results) => {
         if (error) {
-            console.error('Error adding News: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเพิ่มข่าว: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
 
@@ -46,8 +46,8 @@ router.post('/', (req, res) => {
             const subCatQuery = 'INSERT INTO News_Sub_Cate (News_Id, Sub_Cat_Id) VALUES ?';
             pool.query(subCatQuery, [values], (subCatError, subCatResults) => {
                 if (subCatError) {
-                    console.error('Error adding Sub Categories: ', subCatError);
-                    res.status(500).send('Internal Server Error');
+                    console.error('เกิดข้อผิดพลาดในการเพิ่มหมวดหมู่ย่อย: ', subCatError);
+                    res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
                     return;
                 }
             });
@@ -55,7 +55,7 @@ router.post('/', (req, res) => {
 
         // แจ้งเตือนเฉพาะข่าวสำคัญ (Major_Id = 2)
         if (Major_Id == 2) {
-            console.log("Major_Id is 2, preparing to send notification...");
+            console.log("Major_Id is 2, กำลังเตรียมส่งการแจ้งเตือน...");
             sendNotification('แจ้งเตือนข่าวระดับความสำคัญสูง', News_Name, 'news_topic', newsId);
         } else {
             // ถ้าไม่ใช่ข่าวสำคัญ ให้ตรวจสอบหมวดหมู่โปรดของสมาชิก
@@ -102,8 +102,8 @@ router.put('/:id', async (req, res) => {
 
         res.send('แก้ไขข้อมูลข่าวสำเร็จ');
     } catch (error) {
-        console.error('Error updating news:', error);
-        res.status(500).send('Internal Server Error');
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข่าว: ', error);
+        res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
     }
 });
 
@@ -117,7 +117,7 @@ router.delete('/:id', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No News found with the specified ID');
+            return res.status(404).send('ไม่พบข่าวสารตาม ID ที่ระบุ');
         }
         res.send('ลบข้อมูลข่าวสำเร็จ');
     });
@@ -128,8 +128,8 @@ router.get('/:id', (req, res) => {
     const query = 'SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id FROM News n LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id WHERE n.News_Id = ? GROUP BY n.News_Id';
     pool.query(query, [id], (error, results) => {
         if (error) {
-            console.error('Error fetching news:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข่าว: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         if (results.length === 0) {
@@ -169,8 +169,8 @@ router.get('/category/:id', (req, res) => {
 
     pool.query(query, params, (error, results) => {
         if (error) {
-            console.error('Error fetching news:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข่าว: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);

@@ -10,12 +10,12 @@ router.post('/login', (req, res) => {
     pool.query(query, [login, login, password], (error, results) => {
         if (error) {
             console.error("Error fetching admin:", error);
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "ข้อผิดพลาดเซิร์ฟเวอร์ภายใน" });
         }
         if (results.length > 0) {
             return res.status(200).json({ success: true, user: results[0] });
         } else {
-            return res.status(401).json({ success: false, message: 'Username or email and password do not match' });
+            return res.status(401).json({ success: false, message: 'ชื่อผู้ใช้หรืออีเมลและรหัสผ่านไม่ตรงกัน' });
         }
     });
 });

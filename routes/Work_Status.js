@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Work_Status', (error, results) => {
         if (error) {
-            console.error('Error fetching Work Status:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกสถานะงาน: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -35,7 +35,7 @@ router.put('/:Adm_Id', function(req, res) {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No work status found with the specified ID');
+            return res.status(404).send('ไม่พบสถานะการทำงานตามรหัสที่ระบุ');
         }
         res.send('แก่ไขสถานะการทำงานเสร็จ');
     });
@@ -50,7 +50,7 @@ router.delete('/:Adm_Id', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No Work Status found with the specified Admin ID');
+            return res.status(404).send('ไม่พบสถานะการทำงานตามรหัสผู้ดูแลระบบที่ระบุ');
         }
         res.send('ลบสถานะการทำงานสำเร็จ');
     });
@@ -61,12 +61,12 @@ router.get('/:Adm_Id', (req, res) => {
   const query = 'SELECT * FROM Work_Status WHERE Adm_Id = ?';
   pool.query(query, [Adm_Id], (error, results) => {
       if (error) {
-          console.error('Error fetching Work Status:', error);
-          res.status(500).send('Internal Server Error');
+          console.error('เกิดข้อผิดพลาดในการเรียกสถานะงาน: ', error);
+          res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
           return;
       }
       if (results.length === 0) {
-          res.status(404).send('No work status found with the specified ID');
+          res.status(404).send('ไม่พบสถานะการทำงานตามรหัสที่ระบุ');
           return;
       }
       res.json(results[0]);

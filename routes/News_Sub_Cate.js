@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM News_Sub_Cate', (error, results) => {
         if (error) {
-            console.error('Error fetching news sub categories:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่ย่อยข่าว: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -24,7 +24,7 @@ router.put('/:id', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No News found with the specified ID');
+            return res.status(404).send('ไม่พบข่าวสารตาม ID ที่ระบุ');
         }
 
         const deleteSubCategoriesQuery = 'DELETE FROM News_Sub_Cate WHERE News_Id = ?';
@@ -56,8 +56,8 @@ router.get('/:catId', (req, res) => {
     const query = 'SELECT * FROM Sub_Category WHERE Cat_Id = ?';
     pool.query(query, [catId], (error, results) => {
         if (error) {
-            console.error('Error fetching sub categories:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ย่อย: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -69,8 +69,8 @@ router.get('/tag/:newsId', (req, res) => {
     const newsId = req.params.newsId;
     pool.query('SELECT * FROM News_Sub_Cate WHERE News_Id = ?', [newsId], (error, results) => {
         if (error) {
-            console.error('Error fetching news sub categories:', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่ย่อยข่าว: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);

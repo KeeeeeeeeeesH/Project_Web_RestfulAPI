@@ -33,8 +33,8 @@ const fileFilter = (req, file, cb) => {
 router.get('/', (req, res) => {
   pool.query('SELECT * FROM Picture', (error, results) => {
     if (error) {
-      console.error('Error fetching Picture: ', error);
-      res.status(500).send('Internal Server Error');
+      console.error('เกิดข้อผิดพลาดในการเรียกรูปภาพ: ', error);
+      res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
       return;
     }
     res.json(results);
@@ -48,11 +48,11 @@ router.post('/upload', upload.fields([{ name: 'coverImage', maxCount: 1 }, { nam
 
   pool.query('SELECT News_Id FROM News WHERE News_Id = ?', [News_Id], (error, results) => {
       if (error) {
-          res.status(500).json({ success: false, message: `Error checking news: ${error.toString()}` });
+          res.status(500).json({ success: false, message: `เกิดข้อผิดพลาดในการตรวจสอบข่าว: ${error.toString()}` });
           return;
       }
       if (results.length === 0) {
-          res.status(404).json({ success: false, message: `News with ID ${News_Id} not found.` });
+          res.status(404).json({ success: false, message: `ข่าวพร้อมไอดี ${News_Id} ไม่พบ` });
           return;
       }
 
@@ -62,20 +62,20 @@ router.post('/upload', upload.fields([{ name: 'coverImage', maxCount: 1 }, { nam
       // Check for existing cover image
       pool.query('SELECT * FROM Picture WHERE News_Id = ? AND News_Pic LIKE "cover_%"', [News_Id], (error, results) => {
           if (error) {
-              res.status(500).json({ success: false, message: `Error checking existing cover image: ${error.toString()}` });
+              res.status(500).json({ success: false, message: `เกิดข้อผิดพลาดในการตรวจสอบภาพหน้าปกที่มีอยู่: ${error.toString()}` });
               return;
           }
           if (results.length > 0 && coverFiles.length > 0) {
-              res.status(400).json({ success: false, message: 'ไม่สามารถเพิ่มรูปหน้าปกซ้ำได้ กรุณาลบรูปภาพเดิมออกก่อน.' });
+              res.status(400).json({ success: false, message: 'ไม่สามารถเพิ่มรูปหน้าปกซ้ำได้ กรุณาลบรูปภาพเดิมออกก่อน' });
               return;
           }
           if (coverFiles.length > 1) {
-              res.status(400).json({ success: false, message: 'You can only upload one cover image.' });
+              res.status(400).json({ success: false, message: 'คุณสามารถอัปโหลดภาพหน้าปกได้เพียงภาพเดียวเท่านั้น' });
               return;
           }
 
           if (coverFiles.length > 0 && !coverFiles[0].originalname.startsWith('cover_')) {
-              res.status(400).json({ success: false, message: 'Cover image filename must start with "cover_".' });
+              res.status(400).json({ success: false, message: 'ชื่อไฟล์ภาพหน้าปกต้องขึ้นต้นด้วย "cover_".' });
               return;
           }
 
@@ -91,13 +91,13 @@ function uploadFiles(req, res, News_Id, coverFiles, contentFiles) {
       const query = 'INSERT INTO Picture (News_Id, News_Pic) VALUES ?';
       pool.query(query, [values], (uploadError, uploadResults) => {
           if (uploadError) {
-              res.status(500).json({ success: false, message: `Error uploading images: ${uploadError.toString()}` });
+              res.status(500).json({ success: false, message: `เกิดข้อผิดพลาดในการอัปโหลดภาพ: ${uploadError.toString()}` });
               return;
           }
-          res.status(201).json({ success: true, message: `${allFiles.length} images uploaded successfully!` });
+          res.status(201).json({ success: true, message: `${allFiles.length} อัพโหลดรูปภาพสำเร็จแล้ว!` });
       });
   } else {
-      res.status(400).json({ success: false, message: 'No images to upload' });
+      res.status(400).json({ success: false, message: 'ไม่มีภาพที่จะอัปโหลด' });
   }
 }
 
@@ -108,17 +108,17 @@ router.delete('/:newsId/:newsPic', (req, res) => {
 
     pool.query('DELETE FROM Picture WHERE News_Id = ? AND News_Pic = ?', [newsId, newsPic], (err, results) => {
         if (err) {
-            console.error('Error deleting picture:', err);
+            console.error('เกิดข้อผิดพลาดในการลบรูปภาพ:', err);
             res.status(500).send(err.message);
             return;
         }
         if (results.affectedRows === 0) {
-            res.status(404).send('No picture found.');
+            res.status(404).send('ไม่พบรูปภาพ');
             return;
         }
         fs.unlink(filePath, (fsErr) => {
             if (fsErr) {
-                console.error('Error deleting file:', fsErr);
+                console.error('เกิดข้อผิดพลาดในการลบไฟล์: ', fsErr);
                 res.status(500).send(fsErr.message);
                 return;
             }
@@ -131,8 +131,8 @@ router.get('/news/:id', (req, res) => {
     const { id } = req.params;
     pool.query('SELECT * FROM Picture WHERE News_Id = ?', [id], (error, results) => {
       if (error) {
-        console.error('Error fetching pictures for news:', error);
-        res.status(500).send('Internal Server Error');
+        console.error('เกิดข้อผิดพลาดในการเรียกรูปภาพสำหรับข่าว: ', error);
+        res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
         return;
       }
       res.json(results);

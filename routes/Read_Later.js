@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Read_Later', (error, results) => {
         if (error) {
-            console.error('Error fetching Read Later: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลอ่านภายหลัง: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         res.json(results);
@@ -17,8 +17,8 @@ router.get('/:memId', (req, res) => {
   const memId = req.params.memId;
   pool.query('SELECT * FROM Read_Later WHERE Mem_Id = ?', [memId], (error, results) => {
     if (error) {
-      console.error('Error fetching Read Later: ', error);
-      res.status(500).send('Internal Server Error');
+      console.error('เกิดข้อผิดพลาดในการดึงข้อมูลอ่านภายหลัง: ', error);
+      res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
       return;
     }
     res.json(results);
@@ -30,8 +30,8 @@ router.get('/ids', (req, res) => {
     const query = 'SELECT * FROM News WHERE News_Id IN (?)';
     pool.query(query, [ids], (error, results) => {
         if (error) {
-            console.error('Error fetching news by IDs: ', error);
-            res.status(500).send('Internal Server Error');
+            console.error('เกิดข้อผิดพลาดในการดึงข่าวสารด้วยรหัส: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
             return;
         }
         if (results.length === 0) {
@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
   const checkQuery = 'SELECT * FROM Read_Later WHERE Mem_Id = ? AND News_Id = ?';
   pool.query(checkQuery, [Mem_Id, News_Id], (checkError, checkResults) => {
       if (checkError) {
-          console.error('Error checking Read Later status: ', checkError);
+          console.error('เกิดข้อผิดพลาดในการตรวจสอบสถานะอ่านภายหลัง: ', checkError);
           res.status(500).json({ error: checkError.toString() });
           return;
       }
@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
           const deleteQuery = 'DELETE FROM Read_Later WHERE Mem_Id = ? AND News_Id = ?';
           pool.query(deleteQuery, [Mem_Id, News_Id], (deleteError, deleteResults) => {
               if (deleteError) {
-                  console.error('Error removing from Read Later: ', deleteError);
+                  console.error('เกิดข้อผิดพลาดในการลบออกจากอ่านภายหลัง: ', deleteError);
                   res.status(500).json({ error: deleteError.toString() });
                   return;
               }
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
           const insertQuery = 'INSERT INTO Read_Later (Mem_Id, News_Id) VALUES (?, ?)';
           pool.query(insertQuery, [Mem_Id, News_Id], (insertError, insertResults) => {
               if (insertError) {
-                console.error('Error adding to Read Later: ', insertError);
+                console.error('เกิดข้อผิดพลาดในการเพิ่มอ่านภายหลัง: ', insertError);
                 res.status(500).json({ error: insertError.toString() });
                 return;
             }

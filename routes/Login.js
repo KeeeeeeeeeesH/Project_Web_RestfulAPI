@@ -11,8 +11,8 @@ router.post("/login", (req, res) => {
 
   pool.query(sql, [login, login, password], (err, results) => {
     if (err) {
-      console.error("Error fetching admin:", err);
-      return res.status(500).json({ message: "Internal server error" });
+      console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ดูแลระบบ: ", err);
+      return res.status(500).json({ message: "ข้อผิดพลาดเซิร์ฟเวอร์ภายใน" });
     }
 
     if (results.length === 0) {
@@ -35,7 +35,7 @@ router.post("/login", (req, res) => {
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "ข้อผิดพลาดเซิร์ฟเวอร์ภายใน" });
     }
     res.json({ success: true, message: "ออกจากระบบสำเร็จ" });
   });

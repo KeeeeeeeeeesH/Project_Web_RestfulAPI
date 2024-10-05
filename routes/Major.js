@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
   pool.query('SELECT * FROM Major', (error, results) => {
       if (error) {
-          console.error('Error fetching majors:', error);
-          res.status(500).send('Internal Server Error');
+          console.error('เกิดข้อผิดพลาดในการดึงข้อมูลระดับความสำคัญสำเร็จ:', error);
+          res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
           return;
       }
       res.json(results);
@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No Major found with the specified ID');
+            return res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
         }
         res.send('ลบระดับความสำคัญสำเร็จ');
     });
@@ -50,7 +50,7 @@ router.get('/', (req, res) => {
             return res.status(500).send(error.toString());
         }
         if (results.affectedRows === 0) {
-            return res.status(404).send('No major found with the specified ID');
+            return res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
         }
         res.send('แก้ไขระดับความสำคัญสำเร็จ');
     });
@@ -61,14 +61,14 @@ router.get('/', (req, res) => {
       const id = req.params.id;
       pool.query('SELECT * FROM Major WHERE Major_Id = ?', [id], (error, results) => {
           if (error) {
-              console.error('Error fetching major by ID:', error);
-              res.status(500).send('Internal Server Error');
+              console.error('เกิดข้อผิดพลาดในการดึงระดับความสำคัญสำเร็จด้วย ID: ', error);
+              res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
               return;
           }
           if (results.length > 0) {
               res.json(results[0]);
           } else {
-              res.status(404).send('No major found with the specified ID');
+              res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
           }
       });
     });

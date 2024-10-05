@@ -5,8 +5,8 @@ const pool = require('../app');
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Total_Read', (error, results) => {
       if (error) {
-        console.error('Error fetching Total Read: ', error);
-        res.status(500).send('Internal Server Error');
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลการอ่านทั้งหมด:', error);
+        res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
         return;
       }
       res.json(results);
@@ -31,12 +31,12 @@ router.put('/:id', (req, res) => {
   const query = 'UPDATE Total_Read SET News_Id = ? WHERE Count_Id = ?';
   pool.query(query, [News_Id, id], (error, results) => {
       if (error) {
-          console.error('Error updating Total Read record: ', error);
+          console.error('เกิดข้อผิดพลาดในการอัปเดตบันทึกการอ่านทั้งหมด: ', error);
           res.status(500).send(error.toString());
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Total Read record found with the specified ID');
+          return res.status(404).send('ไม่พบบันทึกการอ่านทั้งหมดที่มีรหัสที่ระบุ');
       }
       res.send('แก้ไขข้อมูลยอดการอ่านสำเร็จ');
   });
@@ -47,12 +47,12 @@ router.delete('/:id', (req, res) => {
   const query = 'DELETE FROM Total_Read WHERE Count_Id = ?';
   pool.query(query, [id], (error, results) => {
       if (error) {
-          console.error('Error deleting Total Read record: ', error);
+          console.error('เกิดข้อผิดพลาดในการลบบันทึกการอ่านทั้งหมด: ', error);
           res.status(500).send(error.toString());
           return;
       }
       if (results.affectedRows === 0) {
-          return res.status(404).send('No Total Read record found with the specified ID');
+          return res.status(404).send('ไม่พบบันทึกการอ่านทั้งหมดที่มีรหัสที่ระบุ');
       }
       res.send('ลบข้อมูลยอดการอ่านสำเร็จ');
   });
