@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Oct 05, 2024 at 10:20 AM
+-- Generation Time: Oct 07, 2024 at 01:07 PM
 -- Server version: 8.4.0
 -- PHP Version: 8.2.8
 
@@ -139,7 +139,8 @@ INSERT INTO `Member` (`Mem_Id`, `Mem_Fname`, `Mem_Lname`, `Mem_Username`, `Mem_P
 (25, 'Anonnn', 'Chaiyasong', 'abcd', '123456', 'abcd@gmail.com', '0980960857'),
 (26, 'testapp', 'testLapp', 'abbb', 'abbb', 'asdasdsad@gmail.com', '0945518201'),
 (29, 'testapp', 'testLapp', 'gun', 'gungungun', 'gun@gmail.com', '0642623451'),
-(30, 'dddghhggffff', 'agafgagagag', 'qwer', 'qwert', 'uyttree@hotmail.com', '0980880777');
+(30, 'dddghhggffff', 'agafgagagag', 'qwer', 'qwert', 'uyttree@hotmail.com', '0980880777'),
+(31, 'history', 'test', 'history', '123456', 'historyTest@gmail.com', '0981234567');
 
 -- --------------------------------------------------------
 
@@ -191,7 +192,9 @@ INSERT INTO `News_Rating` (`Mem_Id`, `News_Id`, `Rating_Score`) VALUES
 (25, 44, 4),
 (25, 46, 4.5),
 (25, 47, 5),
-(25, 48, 4.5);
+(25, 48, 4.5),
+(31, 42, 3),
+(31, 48, 5);
 
 -- --------------------------------------------------------
 
@@ -267,12 +270,11 @@ CREATE TABLE `Read_History` (
 --
 
 INSERT INTO `Read_History` (`Mem_Id`, `News_Id`, `Read_Date`) VALUES
-(25, 42, '2024-10-04 18:48:16'),
-(25, 44, '2024-08-20 04:06:49'),
-(25, 46, '2024-08-20 01:34:33'),
-(25, 47, '2024-10-01 19:40:17'),
-(25, 48, '2024-10-04 19:17:16'),
-(26, 43, '2024-08-05 04:11:04');
+(25, 46, '2024-10-07 18:52:52'),
+(25, 48, '2024-10-07 17:12:01'),
+(26, 43, '2024-08-05 04:11:04'),
+(31, 42, '2024-10-07 17:09:45'),
+(31, 48, '2024-10-07 17:10:02');
 
 -- --------------------------------------------------------
 
@@ -333,203 +335,24 @@ INSERT INTO `Sub_Category` (`Sub_Cat_Id`, `Sub_Cat_Name`, `Cat_Id`) VALUES
 
 CREATE TABLE `Total_Read` (
   `Count_Id` int NOT NULL,
-  `News_Id` int DEFAULT NULL
+  `News_Id` int DEFAULT NULL,
+  `Mem_Id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `Total_Read`
 --
 
-INSERT INTO `Total_Read` (`Count_Id`, `News_Id`) VALUES
-(40, NULL),
-(41, NULL),
-(42, NULL),
-(198, NULL),
-(199, NULL),
-(200, NULL),
-(201, NULL),
-(203, NULL),
-(204, NULL),
-(207, NULL),
-(208, NULL),
-(214, NULL),
-(215, NULL),
-(219, NULL),
-(221, NULL),
-(222, NULL),
-(224, NULL),
-(227, NULL),
-(228, NULL),
-(229, NULL),
-(43, 42),
-(44, 42),
-(45, 42),
-(64, 42),
-(78, 42),
-(87, 42),
-(114, 42),
-(117, 42),
-(178, 42),
-(179, 42),
-(180, 42),
-(187, 42),
-(192, 42),
-(193, 42),
-(216, 42),
-(230, 42),
-(231, 42),
-(232, 42),
-(233, 42),
-(46, 43),
-(47, 43),
-(59, 43),
-(60, 43),
-(84, 43),
-(86, 43),
-(90, 43),
-(96, 43),
-(102, 43),
-(106, 43),
-(108, 43),
-(109, 43),
-(111, 43),
-(112, 43),
-(118, 43),
-(122, 43),
-(148, 43),
-(166, 43),
-(169, 43),
-(170, 43),
-(171, 43),
-(172, 43),
-(173, 43),
-(176, 43),
-(66, 44),
-(67, 44),
-(70, 44),
-(71, 44),
-(74, 44),
-(75, 44),
-(85, 44),
-(88, 44),
-(91, 44),
-(94, 44),
-(95, 44),
-(104, 44),
-(120, 44),
-(130, 44),
-(131, 44),
-(132, 44),
-(161, 44),
-(162, 44),
-(177, 44),
-(183, 44),
-(186, 44),
-(189, 44),
-(194, 44),
-(195, 44),
-(196, 44),
-(48, 45),
-(119, 45),
-(49, 46),
-(50, 46),
-(61, 46),
-(63, 46),
-(68, 46),
-(69, 46),
-(77, 46),
-(92, 46),
-(98, 46),
-(123, 46),
-(124, 46),
-(125, 46),
-(127, 46),
-(144, 46),
-(145, 46),
-(150, 46),
-(159, 46),
-(182, 46),
-(51, 47),
-(52, 47),
-(53, 47),
-(54, 47),
-(55, 47),
-(56, 47),
-(58, 47),
-(62, 47),
-(121, 47),
-(211, 47),
-(212, 47),
-(218, 47),
-(57, 48),
-(72, 48),
-(76, 48),
-(79, 48),
-(80, 48),
-(81, 48),
-(82, 48),
-(83, 48),
-(89, 48),
-(93, 48),
-(97, 48),
-(99, 48),
-(100, 48),
-(101, 48),
-(103, 48),
-(105, 48),
-(107, 48),
-(110, 48),
-(115, 48),
-(116, 48),
-(126, 48),
-(128, 48),
-(129, 48),
-(133, 48),
-(134, 48),
-(135, 48),
-(136, 48),
-(137, 48),
-(138, 48),
-(139, 48),
-(140, 48),
-(141, 48),
-(142, 48),
-(143, 48),
-(146, 48),
-(147, 48),
-(149, 48),
-(151, 48),
-(152, 48),
-(153, 48),
-(154, 48),
-(155, 48),
-(156, 48),
-(157, 48),
-(158, 48),
-(160, 48),
-(163, 48),
-(164, 48),
-(165, 48),
-(167, 48),
-(168, 48),
-(174, 48),
-(175, 48),
-(181, 48),
-(184, 48),
-(185, 48),
-(188, 48),
-(190, 48),
-(191, 48),
-(202, 48),
-(205, 48),
-(206, 48),
-(209, 48),
-(210, 48),
-(213, 48),
-(223, 48),
-(225, 48),
-(226, 48),
-(234, 48);
+INSERT INTO `Total_Read` (`Count_Id`, `News_Id`, `Mem_Id`) VALUES
+(239, 48, 31),
+(240, 48, 31),
+(241, 42, 31),
+(242, 42, 31),
+(243, 48, 31),
+(244, 48, 25),
+(245, 48, 25),
+(246, 48, 25),
+(247, 46, 25);
 
 -- --------------------------------------------------------
 
@@ -647,7 +470,8 @@ ALTER TABLE `Sub_Category`
 --
 ALTER TABLE `Total_Read`
   ADD PRIMARY KEY (`Count_Id`),
-  ADD KEY `Total_Read_ibfk_1` (`News_Id`);
+  ADD KEY `Total_Read_ibfk_1` (`News_Id`),
+  ADD KEY `Total_Read_ibfk_2` (`Mem_Id`);
 
 --
 -- Indexes for table `Work_Status`
@@ -681,13 +505,13 @@ ALTER TABLE `Major`
 -- AUTO_INCREMENT for table `Member`
 --
 ALTER TABLE `Member`
-  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `Mem_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `News`
 --
 ALTER TABLE `News`
-  MODIFY `News_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `News_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- AUTO_INCREMENT for table `Sub_Category`
@@ -699,7 +523,7 @@ ALTER TABLE `Sub_Category`
 -- AUTO_INCREMENT for table `Total_Read`
 --
 ALTER TABLE `Total_Read`
-  MODIFY `Count_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
+  MODIFY `Count_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
 
 --
 -- Constraints for dumped tables
@@ -763,7 +587,8 @@ ALTER TABLE `Sub_Category`
 -- Constraints for table `Total_Read`
 --
 ALTER TABLE `Total_Read`
-  ADD CONSTRAINT `Total_Read_ibfk_1` FOREIGN KEY (`News_Id`) REFERENCES `News` (`News_Id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+  ADD CONSTRAINT `Total_Read_ibfk_1` FOREIGN KEY (`News_Id`) REFERENCES `News` (`News_Id`) ON DELETE SET NULL ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Total_Read_ibfk_2` FOREIGN KEY (`Mem_Id`) REFERENCES `Member` (`Mem_Id`) ON DELETE SET NULL ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `Work_Status`

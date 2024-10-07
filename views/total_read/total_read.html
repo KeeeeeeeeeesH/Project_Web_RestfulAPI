@@ -77,6 +77,7 @@
                 <tr>
                     <th>รหัสการกดอ่านข่าว</th>
                     <th>รหัสข่าว</th>
+                    <th>รหัสสมาชิกที่อ่านข่าว</th>
                 </tr>
             </thead>
             <tbody id="totalReadsTable"></tbody>
@@ -96,6 +97,7 @@
                     const row = `<tr>
                                     <td>${item.Count_Id}</td>
                                     <td>${item.News_Id}</td>
+                                    <td>${item.Mem_Id}</td>
                                 </tr>`;
                     tableBody.innerHTML += row;
                 });
