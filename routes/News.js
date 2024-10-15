@@ -123,6 +123,7 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+//get news by id สำหรับรายละเอียดข่าว
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     const query = 'SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id FROM News n LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id WHERE n.News_Id = ? GROUP BY n.News_Id';
@@ -146,6 +147,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
+//get news by cat id สำหรับแสดงตามหมวดหมู่
 router.get('/category/:id', (req, res) => {
     const { id } = req.params;
     const page = parseInt(req.query.page) || 0;

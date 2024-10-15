@@ -8,22 +8,23 @@ const path = require('path');
 const session = require('express-session');
 const fcmNotifier = require('./fcmNotifier');
 
-const pool = mysql.createPool({
-    host: 'localhost',  
-    user: 'root', 
-    password: 'newsroot123456',  
-    database: 'news_web_app',
-    port: 3306  
-});
-
-// set-up พรี่แชมป์
+// set-up local
 // const pool = mysql.createPool({
-//     host: 'localhost',  
+//     host: '10.3.58.154',  
 //     user: 'root', 
-//     password: '',  
+//     password: 'newsroot123456',  
 //     database: 'news_web_app',
 //     port: 3306  
 // });
+
+// set-up host
+const pool = mysql.createPool({
+    host: '118.27.130.234',  
+    user: 'zmkjqpsz_champ', 
+    password: 'Cc021721176',  
+    database: 'zmkjqpsz_news_web_app',
+    port: 3306  
+});
 
 module.exports = pool;
 
