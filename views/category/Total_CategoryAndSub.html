@@ -98,7 +98,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("http://localhost:5000/api/category/categories_with_sub")
+      fetch("https://co-newsproject.com/api/category/categories_with_sub")
         .then((response) => response.json())
         .then((data) => {
           const tableBody = document.getElementById("category-rows");

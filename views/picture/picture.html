@@ -100,7 +100,7 @@
   <script src="/scripts/sidebar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      fetch('http://localhost:5000/api/picture')
+      fetch('https://co-newsproject.com/api/picture')
         .then(response => response.json())
         .then(images => {
           const gallery = document.getElementById('gallery');
@@ -120,7 +120,7 @@
     });
 
     function deleteImage(newsId, fileName) {
-      fetch(`http://localhost:5000/api/picture/${newsId}/${fileName}`, {
+      fetch(`https://co-newsproject.com/api/picture/${newsId}/${fileName}`, {
         method: 'DELETE'
       })
         .then(response => {

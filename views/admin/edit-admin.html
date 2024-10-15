@@ -107,7 +107,7 @@
       const adminId = new URLSearchParams(window.location.search).get('id');
 
       // Load existing admin data
-      fetch(`http://localhost:5000/api/admin/${adminId}`)
+      fetch(`https://co-newsproject.com/api/admin/${adminId}`)
         .then(response => response.json())
         .then(admin => {
           document.getElementById('Adm_Fname').value = admin.Adm_Fname;
@@ -140,7 +140,7 @@
         document.getElementById('emailError').textContent = '';
         document.getElementById('phoneError').textContent = '';
 
-        fetch(`http://localhost:5000/api/admin/${adminId}`, {
+        fetch(`https://co-newsproject.com/api/admin/${adminId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

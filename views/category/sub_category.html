@@ -101,7 +101,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Fetch all categories to map their names with IDs
-      fetch("http://localhost:5000/api/category")
+      fetch("https://co-newsproject.com/api/category")
         .then((response) => response.json())
         .then((categories) => {
           // Create a map of category IDs to category names
@@ -111,7 +111,7 @@
           });
   
           // Fetch all sub-categories
-          fetch("http://localhost:5000/api/sub_category")
+          fetch("https://co-newsproject.com/api/sub_category")
             .then((response) => response.json())
             .then((subCategories) => {
               const tableBody = document.getElementById("subCategoryList");
@@ -140,7 +140,7 @@
   
     function deleteSubCategory(subCatId) {
       if (confirm("ต้องการที่จะลบหมวดหมู่รองนี้ใช่ไหม ?")) {
-        fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
+        fetch(`https://co-newsproject.com/api/sub_category/${subCatId}`, {
           method: "DELETE",
         })
           .then((response) => {

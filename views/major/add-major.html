@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const majorLevel = document.getElementById('majorLevel').value;
 
-        fetch('http://localhost:5000/api/major', {
+        fetch('https://co-newsproject.com/api/major', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ Major_Level: majorLevel })

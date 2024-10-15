@@ -90,7 +90,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 $(document).ready(function() {
-    fetch('http://localhost:5000/api/news_rating')
+    fetch('https://co-newsproject.com/api/news_rating')
     .then(response => response.json())
     .then(ratings => {
         const tableBody = document.getElementById('ratingsList');

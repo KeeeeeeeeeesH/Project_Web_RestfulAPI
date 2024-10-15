@@ -104,7 +104,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       const memberId = new URLSearchParams(window.location.search).get('id');
       
-      fetch(`http://localhost:5000/api/member/${memberId}`)
+      fetch(`https://co-newsproject.com/api/member/${memberId}`)
         .then(response => response.json())
         .then(member => {
           document.getElementById('Mem_Fname').value = member.Mem_Fname;

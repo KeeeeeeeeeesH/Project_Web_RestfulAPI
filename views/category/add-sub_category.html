@@ -86,7 +86,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/api/category')
+            fetch('https://co-newsproject.com/api/category')
                 .then(response => response.json())
                 .then(data => {
                     const select = document.getElementById('catId');
@@ -104,7 +104,7 @@
             event.preventDefault();
             const subCatName = document.getElementById('subCatName').value;
             const catId = document.getElementById('catId').value;
-            fetch('http://localhost:5000/api/sub_category', {
+            fetch('https://co-newsproject.com/api/sub_category', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

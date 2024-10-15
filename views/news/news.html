@@ -110,7 +110,7 @@
         const majorMap = {};
   
         // Fetch categories and create a map of Cat_Id to Cat_Name
-        fetch('http://localhost:5000/api/category')
+        fetch('https://co-newsproject.com/api/category')
           .then(response => response.json())
           .then(categories => {
             categories.forEach(category => {
@@ -118,7 +118,7 @@
             });
   
             // Fetch subcategories and create a map of Sub_Cat_Id to Sub_Cat_Name
-            return fetch('http://localhost:5000/api/sub_category');
+            return fetch('https://co-newsproject.com/api/sub_category');
           })
           .then(response => response.json())
           .then(subCategories => {
@@ -127,7 +127,7 @@
             });
   
             // Fetch majors and create a map of Major_Id to Major_Level
-            return fetch('http://localhost:5000/api/major');
+            return fetch('https://co-newsproject.com/api/major');
           })
           .then(response => response.json())
 .then(majors => {
@@ -136,7 +136,7 @@
   });
 
   // Fetch news and display data
-  return fetch('http://localhost:5000/api/news');
+  return fetch('https://co-newsproject.com/api/news');
 })
 .then(response => response.json())
 .then(data => {
@@ -182,7 +182,7 @@
     
     function deleteNews(newsId) {
         if (confirm('ต้องการที่จะลบข่าวนี้ใช่ไหม ?')) {
-            fetch(`http://localhost:5000/api/news/${newsId}`, {
+            fetch(`https://co-newsproject.com/api/news/${newsId}`, {
                 method: 'DELETE'
             })
             .then(response => {

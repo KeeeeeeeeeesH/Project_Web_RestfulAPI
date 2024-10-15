@@ -94,7 +94,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:5000/api/major')
+    fetch('https://co-newsproject.com/api/major')
     .then(response => response.json())
     .then(majors => {
         const tableBody = document.getElementById('majorList');
@@ -119,7 +119,7 @@ function editMajor(majorId) {
 
 function deleteMajor(majorId) {
     if (confirm('ต้องการที่จะลบระดับความสำคัญนี้ใช่ไหม ?')) {
-        fetch(`http://localhost:5000/api/major/${majorId}`, {
+        fetch(`https://co-newsproject.com/api/major/${majorId}`, {
             method: 'DELETE'
         })
         .then(response => {

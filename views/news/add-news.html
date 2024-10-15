@@ -106,7 +106,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/api/category')
+            fetch('https://co-newsproject.com/api/category')
                 .then(response => response.json())
                 .then(data => {
                     const select = document.getElementById('catId');
@@ -119,7 +119,7 @@
                 })
                 .catch(error => console.error('Error loading categories:', error));
         
-            fetch('http://localhost:5000/api/major')
+            fetch('https://co-newsproject.com/api/major')
                 .then(response => response.json())
                 .then(data => {
                     const select = document.getElementById('majorId');
@@ -159,7 +159,7 @@
                 Major_Id: majorId
             };
         
-            fetch('http://localhost:5000/api/news', {
+            fetch('https://co-newsproject.com/api/news', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -196,7 +196,7 @@
             subCatSelect.appendChild(defaultOption);
             
             const catId = document.getElementById('catId').value;
-            fetch(`http://localhost:5000/api/sub_category?catId=${catId}`)
+            fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(subCat => {

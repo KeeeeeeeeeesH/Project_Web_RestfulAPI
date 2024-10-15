@@ -89,7 +89,7 @@
     <script src="/scripts/sidebar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/api/Total_Read')
+            fetch('https://co-newsproject.com/api/Total_Read')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('totalReadsTable');

@@ -90,7 +90,7 @@
 <script src="/scripts/sidebar.js"></script>
 <script>
 $(document).ready(function() {
-    fetch('http://localhost:5000/api/read_history')
+    fetch('https://co-newsproject.com/api/read_history')
     .then(response => response.json())
     .then(historyItems => {
         const tableBody = document.getElementById('readHistoryList');

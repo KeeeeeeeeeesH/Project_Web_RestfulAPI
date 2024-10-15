@@ -89,7 +89,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const catId = new URLSearchParams(window.location.search).get('id');
-    fetch(`http://localhost:5000/api/category/${catId}`)
+    fetch(`https://co-newsproject.com/api/category/${catId}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('catName').value = data.Cat_Name;
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Cat_Name: document.getElementById('catName').value
         };
 
-        fetch(`http://localhost:5000/api/category/${catId}`, {
+        fetch(`https://co-newsproject.com/api/category/${catId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updatedData)

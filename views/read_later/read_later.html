@@ -87,7 +87,7 @@
 <script src="/scripts/sidebar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/api/Read_Later') 
+            fetch('https://co-newsproject.com/api/Read_Later') 
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('readLaterTable');

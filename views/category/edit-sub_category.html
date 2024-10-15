@@ -93,7 +93,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const subCatId = new URLSearchParams(window.location.search).get('id');
 
-    fetch('http://localhost:5000/api/category')
+    fetch('https://co-newsproject.com/api/category')
         .then(response => response.json())
         .then(data => {
             const select = document.getElementById('catId');
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 select.appendChild(option);
             });
 
-            fetch(`http://localhost:5000/api/sub_category/${subCatId}`)
+            fetch(`https://co-newsproject.com/api/sub_category/${subCatId}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('subCatName').value = data.Sub_Cat_Name;
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Cat_Id: document.getElementById('catId').value
         };
 
-        fetch(`http://localhost:5000/api/sub_category/${subCatId}`, {
+        fetch(`https://co-newsproject.com/api/sub_category/${subCatId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updatedData)

@@ -98,7 +98,7 @@
   <script src="/scripts/sidebar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      fetch('http://localhost:5000/api/news')
+      fetch('https://co-newsproject.com/api/news')
         .then(response => response.json())
         .then(data => {
           const newsSelect = document.getElementById('newsId');
@@ -137,7 +137,7 @@
           formData.append('contentImages', contentFiles[i]);
         }
 
-        fetch('http://localhost:5000/api/picture/upload', {
+        fetch('https://co-newsproject.com/api/picture/upload', {
           method: 'POST',
           body: formData
         })

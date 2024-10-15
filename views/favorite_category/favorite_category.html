@@ -92,7 +92,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Fetch categories to create a map of Cat_Id to Cat_Name
-      fetch('http://localhost:5000/api/category')
+      fetch('https://co-newsproject.com/api/category')
         .then(response => response.json())
         .then(categories => {
           // Create a map of Cat_Id to Cat_Name
@@ -102,7 +102,7 @@
           });
   
           // Fetch favorite categories
-          fetch('http://localhost:5000/api/favorite_category')
+          fetch('https://co-newsproject.com/api/favorite_category')
             .then(response => response.json())
             .then(data => {
               const tableBody = document.getElementById('favoriteCategoryTable');

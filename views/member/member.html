@@ -99,7 +99,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      fetch('http://localhost:5000/api/member')
+      fetch('https://co-newsproject.com/api/member')
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -128,7 +128,7 @@
 
     function deleteMember(memberId, element) {
       if (confirm('ต้องการที่จะลบข้อมูลสมาชิกคนนี้ ?')) {
-        fetch(`http://localhost:5000/api/member/${memberId}`, {
+        fetch(`https://co-newsproject.com/api/member/${memberId}`, {
           method: 'DELETE'
         })
           .then(response => {

@@ -98,7 +98,7 @@
       const subCategoryMap = {};
 
       // Fetch sub categories to create a map of Sub_Cat_Id to Sub_Cat_Name
-      fetch('http://localhost:5000/api/sub_category')
+      fetch('https://co-newsproject.com/api/sub_category')
           .then(response => response.json())
           .then(subCategories => {
               subCategories.forEach(subCategory => {
@@ -106,7 +106,7 @@
               });
 
               // Fetch news sub categories
-              return fetch('http://localhost:5000/api/news_sub_cate');
+              return fetch('https://co-newsproject.com/api/news_sub_cate');
           })
           .then(response => response.json())
           .then(data => {

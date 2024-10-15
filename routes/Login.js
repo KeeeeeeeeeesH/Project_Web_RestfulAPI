@@ -4,10 +4,11 @@ const pool = require("../app");
 
 router.post("/login", (req, res) => {
   const { login, password } = req.body;
-  let sql = `SELECT Admin.*, Work_Status.Adm_Status 
-               FROM Admin 
-               LEFT JOIN Work_Status ON Admin.Adm_Id = Work_Status.Adm_Id 
-               WHERE (Admin.Adm_Username = ? OR Admin.Adm_Email = ?) AND Admin.Adm_Password = ?`;
+  
+  let sql = `SELECT admin.*, work_status.adm_status 
+            FROM admin 
+            LEFT JOIN work_status ON admin.adm_id = work_status.adm_id 
+            WHERE (admin.adm_username = ? OR admin.adm_email = ?) AND admin.adm_password = ?`;
 
   pool.query(sql, [login, login, password], (err, results) => {
     if (err) {
@@ -23,7 +24,7 @@ router.post("/login", (req, res) => {
 
     const admin = results[0];
 
-    if (admin.Adm_Status !== 1) {
+    if (admin.adm_status !== 1) {
       return res.status(403).json({ message: "ไม่ได้อยู่ในสถานะผู้ดูแลระบบ" });
     }
     req.session.isLoggedIn = true;

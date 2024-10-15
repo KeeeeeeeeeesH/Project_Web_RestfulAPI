@@ -108,7 +108,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const newsId = new URLSearchParams(window.location.search).get('id');
             if (newsId) {
-                fetch(`http://localhost:5000/api/news/${newsId}`)
+                fetch(`https://co-newsproject.com/api/news/${newsId}`)
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('newsName').value = data.News_Name;
@@ -136,7 +136,7 @@
             });
         
             function fetchCategories() {
-                return fetch('http://localhost:5000/api/category')
+                return fetch('https://co-newsproject.com/api/category')
                     .then(response => response.json())
                     .then(data => {
                         const select = document.getElementById('catId');
@@ -152,7 +152,7 @@
             }
         
             function fetchMajors() {
-                return fetch('http://localhost:5000/api/major')
+                return fetch('https://co-newsproject.com/api/major')
                     .then(response => response.json())
                     .then(data => {
                         const select = document.getElementById('majorId');
@@ -172,7 +172,7 @@
                 subCatContainer.innerHTML = '';
         
                 if (catId) {
-                    fetch(`http://localhost:5000/api/sub_category?catId=${catId}`)
+                    fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
                         .then(response => response.json())
                         .then(data => {
                             selectedSubCatIds.forEach(subCatId => {
@@ -241,7 +241,7 @@
                     Major_Id: majorId
                 };
 
-                fetch(`http://localhost:5000/api/news/${newsId}`, {
+                fetch(`https://co-newsproject.com/api/news/${newsId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -264,7 +264,7 @@
             document.getElementById('addSubCatBtn').addEventListener('click', function () {
                 const catId = document.getElementById('catId').value;
                 if (catId) {
-                    fetch(`http://localhost:5000/api/sub_category?catId=${catId}`)
+                    fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
                         .then(response => response.json())
                         .then(data => {
                             addSubCategory('', data);

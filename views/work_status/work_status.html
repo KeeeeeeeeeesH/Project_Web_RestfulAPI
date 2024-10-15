@@ -95,7 +95,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     $(document).ready(function () {
-      fetch('http://localhost:5000/api/work_status')
+      fetch('https://co-newsproject.com/api/work_status')
         .then(response => response.json())
         .then(statusItems => {
           const tableBody = $('#workStatusList');
@@ -126,7 +126,7 @@
 
       window.deleteWorkStatus = function (admId) {
         if (confirm('ต้องการที่จะลบข้อมูลสถานะการทำงานนี้ใช่ไหม ?')) {
-          fetch(`http://localhost:5000/api/work_status/${admId}`, {
+          fetch(`https://co-newsproject.com/api/work_status/${admId}`, {
             method: 'DELETE'
           })
             .then(response => {

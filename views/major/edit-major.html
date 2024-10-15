@@ -92,7 +92,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const majorId = new URLSearchParams(window.location.search).get('id');
-    fetch(`http://localhost:5000/api/major/${majorId}`)
+    fetch(`https://co-newsproject.com/api/major/${majorId}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('majorId').value = data.Major_Id;
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Major_Level: document.getElementById('majorLevel').value
         };
 
-        fetch(`http://localhost:5000/api/major/${majorId}`, {
+        fetch(`https://co-newsproject.com/api/major/${majorId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updatedData)

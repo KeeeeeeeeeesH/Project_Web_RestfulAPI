@@ -98,7 +98,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("http://localhost:5000/api/category")
+      fetch("https://co-newsproject.com/api/category")
         .then((response) => response.json())
         .then((Categories) => {
           const tableBody = document.getElementById("category-rows");
@@ -123,7 +123,7 @@
 
     function deleteCategory(catId) {
       if (confirm("ต้องการที่จะลบหมวดหมู่นี้ใช่ไหม ?")) {
-        fetch(`http://localhost:5000/api/category/${catId}`, {
+        fetch(`https://co-newsproject.com/api/category/${catId}`, {
           method: "DELETE",
         })
           .then((response) => {
