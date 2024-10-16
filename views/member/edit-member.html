@@ -136,7 +136,7 @@
         document.getElementById('emailError').textContent = '';
         document.getElementById('phoneError').textContent = '';
 
-        fetch(`http://localhost:5000/api/member/${memberId}`, {
+        fetch(`https://co-newsproject.com/api/member/${memberId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

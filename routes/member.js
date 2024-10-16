@@ -59,15 +59,20 @@ router.delete('/:id', function (req, res) {
 
 router.put('/:id', function (req, res) {
     const { id } = req.params;
-    const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone} = req.body;
+    const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone } = req.body;
 
-    if (!/^0\d{9}$/.test(Mem_Phone)) {
+    // ตรวจสอบเบอร์โทรศัพท์
+    if (Mem_Phone && !/^0\d{9}$/.test(Mem_Phone)) {
         return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
     }
 
-    const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Email = ?, Mem_Phone = ? = ? WHERE Mem_Id = ?';
-    pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone, id], function (error, results) {
+    // ตรวจสอบค่าที่เป็น null หรือ undefined
+    const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Email = ?, Mem_Phone = ? WHERE Mem_Id = ?';
+    const values = [Mem_Fname || '', Mem_Lname || '', Mem_Username || '', Mem_Email || '', Mem_Phone || '', id];
+
+    pool.query(query, values, function (error, results) {
         if (error) {
+            console.error('SQL Error:', error);
             if (error.code === 'ER_DUP_ENTRY') {
                 if (error.sqlMessage.includes('Mem_Username')) {
                     return res.status(409).json({ message: 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว' });
@@ -85,6 +90,8 @@ router.put('/:id', function (req, res) {
         res.json({ message: 'แก้ไขข้อมูลสมาชิกสำเร็จ' });
     });
 });
+
+
 
 router.get('/:id', (req, res) => {
     const id = req.params.id;
