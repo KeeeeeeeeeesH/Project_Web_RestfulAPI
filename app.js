@@ -66,8 +66,8 @@ app.use('/views', express.static(path.join(__dirname, 'views/read_later')));
 app.use('/views', express.static(path.join(__dirname, 'views/total_read')));
 app.use('/views', express.static(path.join(__dirname, 'views/work_status')));
 app.use('/views', express.static(path.join(__dirname, 'views/picture')));
-app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
-app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
+// app.use('/views', express.static(path.join(__dirname, 'views/recovery')));
+// app.use('/views', express.static(path.join(__dirname, 'views/reset_password')));
 app.use('/views', express.static(path.join(__dirname, 'views/picture')));
 app.use('/views', express.static(path.join(__dirname, 'views/news_sub_cate')));
 
@@ -124,14 +124,14 @@ app.use('/api/read_history', Read_HistoryRouter);
 const Total_ReadRouter = require('./routes/Total_Read');
 app.use('/api/total_read', Total_ReadRouter);
 
-const RecoveryRouter = require('./routes/Recovery');
-app.use('/api/recovery', RecoveryRouter);
+// const RecoveryRouter = require('./routes/Recovery');
+// app.use('/api/recovery', RecoveryRouter);
 
 const recoveryMemberRouter = require('./routes/RecoveryMember');
 app.use('/api/recovery_member', recoveryMemberRouter);
 
-const ResetPasswordRouter = require('./routes/reset_password');
-app.use('/api/reset_password', ResetPasswordRouter);
+// const ResetPasswordRouter = require('./routes/reset_password');
+// app.use('/api/reset_password', ResetPasswordRouter);
 
 const resetPasswordMemberRouter = require('./routes/reset_PasswordMember');
 app.use('/api/reset_password_member', resetPasswordMemberRouter);

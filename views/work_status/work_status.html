@@ -102,11 +102,13 @@
           statusItems.forEach(item => {
             const startDate = new Date(item.Start_Date).toLocaleDateString();
             const endDate = item.End_Date ? new Date(item.End_Date).toLocaleDateString() : 'N/A';
+            
+             const statusText = item.Adm_Status === 1 ? 'กำลังทำงาน' : 'ลาออก';
 
             const row = $(`
                 <tr>
                     <td>${item.Adm_Id}</td>
-                    <td>${item.Adm_Status}</td>
+                    <td>${statusText}</td>
                     <td>${startDate}</td>
                     <td>${endDate}</td>
                     <td>

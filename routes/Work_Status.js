@@ -15,15 +15,29 @@ router.get('/', (req, res) => {
 
 router.post("/", function (req, res) {
     const { Adm_Id, Adm_Status, Start_Date, End_Date } = req.body;
-    const query = 'INSERT INTO Work_Status (Adm_Id, Adm_Status, Start_Date, End_Date) VALUES (?, ?, ?, ?)';
-    pool.query(query, [Adm_Id, Adm_Status, Start_Date, End_Date || null], function(error, results) {
-        if (error) {
-            res.status(500).send(error.toString());
-        } else {
-            res.status(201).send('เพิ่มสถานะการทำงานให้ผู้ดูแลระบบสำเร็จ');
+
+    // ตรวจสอบว่ามีสถานะการทำงานของ Admin นี้อยู่แล้วหรือไม่
+    const checkQuery = 'SELECT * FROM Work_Status WHERE Adm_Id = ? AND Adm_Status = 1';
+    pool.query(checkQuery, [Adm_Id], (checkError, checkResults) => {
+        if (checkError) {
+            return res.status(500).json({ message: 'เกิดข้อผิดพลาดในการตรวจสอบสถานะ', error: checkError.toString() });
         }
+
+        if (checkResults.length > 0) {
+            return res.status(400).json({ message: 'มีสถานะการทำงานของผู้ดูแลระบบนี้อยู่แล้ว' });
+        }
+
+        // ถ้าไม่มีสถานะการทำงานซ้ำ ให้เพิ่มสถานะใหม่
+        const insertQuery = 'INSERT INTO Work_Status (Adm_Id, Adm_Status, Start_Date, End_Date) VALUES (?, ?, ?, ?)';
+        pool.query(insertQuery, [Adm_Id, Adm_Status, Start_Date, End_Date || null], (error, results) => {
+            if (error) {
+                return res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเพิ่มสถานะการทำงาน', error: error.toString() });
+            }
+            res.status(201).json({ message: 'เพิ่มสถานะการทำงานสำเร็จ' });
+        });
     });
 });
+
 
 router.put('/:Adm_Id', function(req, res) {
     const { Adm_Id } = req.params;  

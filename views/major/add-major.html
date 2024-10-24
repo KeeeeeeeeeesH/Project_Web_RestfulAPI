@@ -72,9 +72,10 @@
     <h2>เพิ่มระดับความสําคัญของข่าว</h2>
     <form id="addMajorForm">
         <div class="form-group">
-            <label for="majorLevel">ระดับความสําคัญของข่าว:</label>
-            <input type="text" class="form-control" id="majorLevel" name="majorLevel" required>
-        </div>
+    <label for="majorLevel">ระดับความสําคัญของข่าว:</label>
+    <input type="text" class="form-control" id="majorLevel" name="majorLevel" 
+           required pattern="[0-9]" maxlength="1" title="กรุณากรอกเฉพาะตัวเลข 0-9">
+</div>
         <button type="submit" class="btn btn-success">ยืนยัน</button>
     </form>
 </div>
@@ -86,19 +87,29 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('addMajorForm').addEventListener('submit', function(e) {
+    document.getElementById('addMajorForm').addEventListener('submit', function (e) {
         e.preventDefault();
         const majorLevel = document.getElementById('majorLevel').value;
 
+        // ตรวจสอบว่าค่าที่กรอกเป็นตัวเลขหลักเดียว
+        if (!/^[0-9]$/.test(majorLevel)) {
+            alert('กรุณากรอกเฉพาะตัวเลขระหว่าง 0-9 เท่านั้น');
+            return;
+        }
+
         fetch('https://co-newsproject.com/api/major', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ Major_Level: majorLevel })
         })
         .then(response => {
             if (response.ok) {
                 alert('เพิ่มระดับความสำคัญสำเร็จ');
                 window.location.href = '/views/major/major.html';
+            } else if (response.status === 400) {
+                alert('มีระดับความสำคัญนี้แล้ว');
+            } else {
+                return response.text().then(text => { throw new Error(text); });
             }
         })
         .catch(error => {
@@ -107,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 </script>
 <script>
   $(document).ready(function () {

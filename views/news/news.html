@@ -81,21 +81,21 @@
             <input type="text" id="searchInput" placeholder="ค้นหา..." class="form-control" onkeyup="performSearch()">
           </div>
 
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>รหัสข่าว</th>
-                        <th>หัวข้อข่าว</th>
-                        <th>เนื้อหาข่าว</th>
-                        <th>วันที่ลงข่าว</th>
-                        <th>หมวดหมู่ข่าว</th>
-                        <th>หมวดหมู่ข่าวย่อย</th>
-                        <th>ความสําคัญของข่าว</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="newsList"></tbody>
-            </table>
+            <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>รหัสข่าว</th>
+            <th style="width: 15%;">หัวข้อข่าว</th>
+            <th style="width: 35%;">เนื้อหาข่าว</th>
+            <th>วันที่ลงข่าว</th>
+            <th>หมวดหมู่ข่าว</th>
+            <th>หมวดหมู่ข่าวย่อย</th>
+            <th>ความสำคัญ</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="newsList"></tbody>
+</table>
         </div>
     </div>
 
@@ -108,8 +108,13 @@
         const categoryMap = {};
         const subCategoryMap = {};
         const majorMap = {};
+        
+        // ฟังก์ชั่นตัดข้อความให้ไม่ยาวเกิน
+        function truncateText(text, length = 100) {
+      return text.length > length ? text.substring(0, length) + "..." : text;
+    }
   
-        // Fetch categories and create a map of Cat_Id to Cat_Name
+        // ดึงข้อมูลหมวดหมู่
         fetch('https://co-newsproject.com/api/category')
           .then(response => response.json())
           .then(categories => {
@@ -117,7 +122,7 @@
               categoryMap[category.Cat_Id] = category.Cat_Name;
             });
   
-            // Fetch subcategories and create a map of Sub_Cat_Id to Sub_Cat_Name
+            // ดึงข้อมูลหมวดหมู่ย่อย
             return fetch('https://co-newsproject.com/api/sub_category');
           })
           .then(response => response.json())
@@ -126,7 +131,7 @@
               subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
             });
   
-            // Fetch majors and create a map of Major_Id to Major_Level
+             // ดึงข้อมูลระดับความสำคัญ
             return fetch('https://co-newsproject.com/api/major');
           })
           .then(response => response.json())
@@ -135,7 +140,7 @@
     majorMap[major.Major_Id] = major.Major_Level;
   });
 
-  // Fetch news and display data
+  // ดึงข้อมูลข่าวและแสดงในตาราง
   return fetch('https://co-newsproject.com/api/news');
 })
 .then(response => response.json())
@@ -146,21 +151,23 @@
     const date = new Date(news.Date_Added);
     const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
 
-    // Get category name, subcategory names, and major level using maps
-    const categoryName = categoryMap[news.Cat_Id] || 'Unknown Category';
+// คำนวณชื่อหมวดหมู่หลักและย่อย
+    const categoryName = categoryMap[news.Cat_Id] || 'ไม่มีหมวดหมู่';
     const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
       ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
       : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
     
-    // **นี่คือส่วนที่ถูกแก้ไขสำหรับ majorLevel**
+    // แปลงระดับความสำคัญ
     const majorLevel = majorMap[news.Major_Id] !== undefined 
       ? (majorMap[news.Major_Id] === 0 ? 'ต่ำ' : 'สูง') 
-      : 'Unknown Level';
+      : 'ไม่พบระดับความสำคัญ';
+      
+      const truncatedDetails = truncateText(news.News_Details, 100);
   
               row.innerHTML = `
                 <td>${news.News_Id}</td>
                 <td>${news.News_Name}</td>
-                <td>${news.News_Details}</td>
+                <td>${truncatedDetails}</td>
                 <td>${formattedDate}</td>
                 <td>${categoryName}</td>
                 <td>${subCategoryNames}</td>

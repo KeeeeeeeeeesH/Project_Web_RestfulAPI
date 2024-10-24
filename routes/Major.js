@@ -15,15 +15,32 @@ router.get('/', (req, res) => {
 
   router.post("/", function (req, res) {
     const { Major_Level } = req.body;
-    const query = 'INSERT INTO Major (Major_Level) VALUES (?)';
-    pool.query(query, [ Major_Level ], function(error, results) {
-      if (error) {
-        res.status(500).send(error.toString());
-      } else {
-        res.status(201).send('เพิ่มระดับความสำคัญสำเร็จ');
-      }
+
+    // ตรวจสอบว่า Major_Level มีอยู่แล้วหรือไม่
+    const checkQuery = 'SELECT * FROM Major WHERE Major_Level = ?';
+    pool.query(checkQuery, [Major_Level], function (error, results) {
+        if (error) {
+            console.error('เกิดข้อผิดพลาดในการตรวจสอบระดับความสำคัญ:', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+            return;
+        }
+
+        if (results.length > 0) {
+            // หากมีระดับความสำคัญซ้ำอยู่แล้ว ให้ส่งข้อความแจ้งเตือน
+            res.status(400).send('มีระดับความสำคัญนี้แล้ว');
+        } else {
+            // หากไม่มี ให้ทำการ INSERT ข้อมูลใหม่
+            const insertQuery = 'INSERT INTO Major (Major_Level) VALUES (?)';
+            pool.query(insertQuery, [Major_Level], function (error, results) {
+                if (error) {
+                    res.status(500).send(error.toString());
+                } else {
+                    res.status(201).send('เพิ่มระดับความสำคัญสำเร็จ');
+                }
+            });
+        }
     });
-  });
+});
   
   router.delete('/:id', function(req, res) {
     const { id } = req.params;  
