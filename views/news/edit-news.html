@@ -92,7 +92,7 @@
             </div>
             <div id="subCatsContainer" class="mb-3">
             </div>
-            <button type="button" class="btn btn-sm btn-primary mb-3" id="addSubCatBtn">Add Sub Category</button>
+            <button type="button" class="btn btn-sm btn-primary mb-3" id="addSubCatBtn">เพิ่มหมวดหมู่ข่าวรอง</button>
             <div class="form-group">
                 <label for="majorId">ระดับความสําคัญของข่าว:</label>
                 <select class="form-control" id="majorId" required></select>
@@ -192,7 +192,7 @@
                 
                 const defaultOption = document.createElement('option');
                 defaultOption.value = '';
-                defaultOption.textContent = 'Select Sub Category';
+                defaultOption.textContent = 'เลือกหมวดหมู่รอง';
                 subCatSelect.appendChild(defaultOption);
         
                 subCategories.forEach(subCat => {
@@ -205,7 +205,7 @@
                 subCatSelect.value = selectedSubCatId;
         
                 const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'Remove';
+                removeBtn.textContent = 'ลบ';
                 removeBtn.className = 'btn btn-sm btn-danger ml-2 mt-2';
                 removeBtn.addEventListener('click', function () {
                     subCatContainer.removeChild(subCatSelect);
