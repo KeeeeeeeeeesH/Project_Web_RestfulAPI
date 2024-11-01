@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show Read History</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Read History</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -68,33 +70,33 @@
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
 
-      <div class="content" id="content">
+  <div class="content" id="content">
     <h2 class="text-center mt-5">Read History Overview</h2>
     <div class="card-body">
-    <table class="table table-bordered">
+      <table class="table table-bordered">
         <thead>
-            <tr>
-                <th>รหัสสมาชิก</th>
-                <th>รหัสข่าว</th>
-                <th>วันที่อ่านข่าว</th>
-            </tr>
+          <tr>
+            <th>รหัสสมาชิก</th>
+            <th>รหัสข่าว</th>
+            <th>วันที่อ่านข่าว</th>
+          </tr>
         </thead>
         <tbody id="readHistoryList">
         </tbody>
-    </table>
-</div>
-</div>
+      </table>
+    </div>
+  </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="/scripts/dropdown.js"></script>
-<script src="/scripts/sidebar.js"></script>
-<script>
-$(document).ready(function() {
-    fetch('https://co-newsproject.com/api/read_history')
-    .then(response => response.json())
-    .then(historyItems => {
-        const tableBody = document.getElementById('readHistoryList');
-        historyItems.forEach(item => {
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('https://co-newsproject.com/api/read_history')
+        .then(response => response.json())
+        .then(historyItems => {
+          const tableBody = document.getElementById('readHistoryList');
+          historyItems.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${item.Mem_Id}</td>
@@ -102,22 +104,23 @@ $(document).ready(function() {
                 <td>${new Date(item.Read_Date).toLocaleString()}</td>
             `;
             tableBody.appendChild(row);
-        });
-    })
-    .catch(error => console.error('Error loading read history:', error));
-});
-</script>
+          });
+        })
+        .catch(error => console.error('Error loading read history:', error));
+    });
+  </script>
 
-<script>
-  $(document).ready(function () {
+  <script>
+    $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
-          window.location.href = '../views/login.html';
+        window.location.href = '../views/login.html';
       }
       $('#logoutButton').click(function () {
-          localStorage.removeItem('isLoggedIn');
-          window.location.href = '/views/login.html'; 
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/views/login.html';
       });
-  });
-</script>
+    });
+  </script>
 </body>
+
 </html>

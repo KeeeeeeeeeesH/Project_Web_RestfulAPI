@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Dashboard</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Dashboard</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/styles.css">
 
 
 </head>
+
 <body>
   <div class="header">
     <button class="toggle-btn" id="toggleButton">☰</button>
@@ -68,22 +70,22 @@
 
     <button id="logoutButton" class="btn btn-danger">Logout</button>
   </div>
-      <div class="content" id="content">
-        <h2 class="text-center mt-5">News Overview</h2>
-        <a href="add-news.html" class="btn btn-success">เพิ่มข่าว</a>
-        <a href="/views/picture/add-picture.html" class="btn btn-success">เพิ่มรูปภาพ</a>
-        <div class="card-body">
-          <div class="form-inline mb-3">
-            <select id="searchType" class="form-control mr-2">
-              <option value="name">ค้นหาตามชื่อข่าว</option>
-              <option value="date">ค้นหาตามวันที่</option>
-            </select>
-            <input type="text" id="searchInput" placeholder="ค้นหา..." class="form-control" onkeyup="performSearch()">
-          </div>
+  <div class="content" id="content">
+    <h2 class="text-center mt-5">News Overview</h2>
+    <a href="add-news.html" class="btn btn-success">เพิ่มข่าว</a>
+    <a href="/views/picture/add-picture.html" class="btn btn-success">เพิ่มรูปภาพ</a>
+    <div class="card-body">
+      <div class="form-inline mb-3">
+        <select id="searchType" class="form-control mr-2">
+          <option value="name">ค้นหาตามชื่อข่าว</option>
+          <option value="date">ค้นหาตามวันที่</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="ค้นหา..." class="form-control" onkeyup="performSearch()">
+      </div>
 
-            <table class="table table-bordered table-hover">
-    <thead class="thead-light">
-        <tr>
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
             <th>รหัสข่าว</th>
             <th style="width: 15%;">หัวข้อข่าว</th>
             <th style="width: 35%;">เนื้อหาข่าว</th>
@@ -92,79 +94,79 @@
             <th>หมวดหมู่ข่าวรอง</th>
             <th>ความสำคัญ</th>
             <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody id="newsList"></tbody>
-</table>
-        </div>
+          </tr>
+        </thead>
+        <tbody id="newsList"></tbody>
+      </table>
     </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="/scripts/dropdown.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script>
-      $(document).ready(function () {
-        // Initialize maps for categories, subcategories, and majors
-        const categoryMap = {};
-        const subCategoryMap = {};
-        const majorMap = {};
-        
-        // ฟังก์ชั่นตัดข้อความให้ไม่ยาวเกิน
-        function truncateText(text, length = 100) {
-      return text.length > length ? text.substring(0, length) + "..." : text;
-    }
-  
-        // ดึงข้อมูลหมวดหมู่
-        fetch('https://co-newsproject.com/api/category')
-          .then(response => response.json())
-          .then(categories => {
-            categories.forEach(category => {
-              categoryMap[category.Cat_Id] = category.Cat_Name;
-            });
-  
-            // ดึงข้อมูลหมวดหมู่ย่อย
-            return fetch('https://co-newsproject.com/api/sub_category');
-          })
-          .then(response => response.json())
-          .then(subCategories => {
-            subCategories.forEach(subCategory => {
-              subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
-            });
-  
-             // ดึงข้อมูลระดับความสำคัญ
-            return fetch('https://co-newsproject.com/api/major');
-          })
-          .then(response => response.json())
-.then(majors => {
-  majors.forEach(major => {
-    majorMap[major.Major_Id] = major.Major_Level;
-  });
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="/scripts/dropdown.js"></script>
+  <script src="/scripts/sidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize maps for categories, subcategories, and majors
+      const categoryMap = {};
+      const subCategoryMap = {};
+      const majorMap = {};
 
-  // ดึงข้อมูลข่าวและแสดงในตาราง
-  return fetch('https://co-newsproject.com/api/news');
-})
-.then(response => response.json())
-.then(data => {
-  const tableBody = document.getElementById('newsList');
-  data.forEach(news => {
-    const row = document.createElement('tr');
-    const date = new Date(news.Date_Added);
-    const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+      // ฟังก์ชั่นตัดข้อความให้ไม่ยาวเกิน
+      function truncateText(text, length = 100) {
+        return text.length > length ? text.substring(0, length) + "..." : text;
+      }
 
-// คำนวณชื่อหมวดหมู่หลักและย่อย
-    const categoryName = categoryMap[news.Cat_Id] || 'ไม่มีหมวดหมู่';
-    const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
-      ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
-      : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
-    
-    // แปลงระดับความสำคัญ
-    const majorLevel = majorMap[news.Major_Id] !== undefined 
-      ? (majorMap[news.Major_Id] === 0 ? 'ต่ำ' : 'สูง') 
-      : 'ไม่พบระดับความสำคัญ';
-      
-      const truncatedDetails = truncateText(news.News_Details, 100);
-  
-              row.innerHTML = `
+      // ดึงข้อมูลหมวดหมู่
+      fetch('https://co-newsproject.com/api/category')
+        .then(response => response.json())
+        .then(categories => {
+          categories.forEach(category => {
+            categoryMap[category.Cat_Id] = category.Cat_Name;
+          });
+
+          // ดึงข้อมูลหมวดหมู่ย่อย
+          return fetch('https://co-newsproject.com/api/sub_category');
+        })
+        .then(response => response.json())
+        .then(subCategories => {
+          subCategories.forEach(subCategory => {
+            subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
+          });
+
+          // ดึงข้อมูลระดับความสำคัญ
+          return fetch('https://co-newsproject.com/api/major');
+        })
+        .then(response => response.json())
+        .then(majors => {
+          majors.forEach(major => {
+            majorMap[major.Major_Id] = major.Major_Level;
+          });
+
+          // ดึงข้อมูลข่าวและแสดงในตาราง
+          return fetch('https://co-newsproject.com/api/news');
+        })
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('newsList');
+          data.forEach(news => {
+            const row = document.createElement('tr');
+            const date = new Date(news.Date_Added);
+            const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+            // คำนวณชื่อหมวดหมู่หลักและย่อย
+            const categoryName = categoryMap[news.Cat_Id] || 'ไม่มีหมวดหมู่';
+            const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
+              ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
+              : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
+
+            // แปลงระดับความสำคัญ
+            const majorLevel = majorMap[news.Major_Id] !== undefined
+              ? (majorMap[news.Major_Id] === 0 ? 'ต่ำ' : 'สูง')
+              : 'ไม่พบระดับความสำคัญ';
+
+            const truncatedDetails = truncateText(news.News_Details, 100);
+
+            row.innerHTML = `
                 <td>${news.News_Id}</td>
                 <td>${news.News_Name}</td>
                 <td>${truncatedDetails}</td>
@@ -177,76 +179,77 @@
                     <button class="btn btn-danger" onclick="deleteNews(${news.News_Id})">ลบ</button>
                 </td>
               `;
-              tableBody.appendChild(row);
-            });
-          })
-          .catch(error => console.error('Error loading data:', error));
-      });
-    
-    function editNews(newsId) {
-        window.location.href = `./edit-news.html?id=${newsId}`;
-    }
-    
-    function deleteNews(newsId) {
-        if (confirm('ต้องการที่จะลบข่าวนี้ใช่ไหม ?')) {
-            fetch(`https://co-newsproject.com/api/news/${newsId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response not ok');
-                }
-                return response.text(); 
-            })
-            .then(data => {
-                alert('ลบข้อมูลข่าวสำเร็จ');
-                location.reload();
-            })
-            .catch(error => {
-                console.error('ลบข้อมูลข่าวไม่สำเร็จ:', error);
-                alert(error.message);
-            });
-        }
-    }
-    </script>
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading data:', error));
+    });
 
-<script>
-  $(document).ready(function () {
+    function editNews(newsId) {
+      window.location.href = `./edit-news.html?id=${newsId}`;
+    }
+
+    function deleteNews(newsId) {
+      if (confirm('ต้องการที่จะลบข่าวนี้ใช่ไหม ?')) {
+        fetch(`https://co-newsproject.com/api/news/${newsId}`, {
+          method: 'DELETE'
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response not ok');
+            }
+            return response.text();
+          })
+          .then(data => {
+            alert('ลบข้อมูลข่าวสำเร็จ');
+            location.reload();
+          })
+          .catch(error => {
+            console.error('ลบข้อมูลข่าวไม่สำเร็จ:', error);
+            alert(error.message);
+          });
+      }
+    }
+  </script>
+
+  <script>
+    $(document).ready(function () {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
-          window.location.href = '../views/login.html';
+        window.location.href = '../views/login.html';
       }
       $('#logoutButton').click(function () {
-          localStorage.removeItem('isLoggedIn');
-          window.location.href = '/views/login.html'; 
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/views/login.html';
       });
-  });
-</script>
+    });
+  </script>
 
-<script>
-  function performSearch() {
+  <script>
+    function performSearch() {
       const searchType = document.getElementById('searchType').value; // อ่านค่าจาก dropdown
       const searchValue = document.getElementById('searchInput').value.toLowerCase(); // ค่าจาก input ที่ผู้ใช้ป้อน
       const tableBody = document.getElementById('newsList');
       const rows = tableBody.getElementsByTagName('tr');
-      
+
       for (let i = 0; i < rows.length; i++) {
-          let searchTarget = '';
-          
-          if (searchType === 'name') {
-              const newsName = rows[i].getElementsByTagName('td')[1]; // คอลัมน์ชื่อข่าว
-              searchTarget = newsName ? newsName.textContent.toLowerCase() : '';
-          } else if (searchType === 'date') {
-              const newsDate = rows[i].getElementsByTagName('td')[3]; // คอลัมน์วันที่ข่าว
-              searchTarget = newsDate ? newsDate.textContent.toLowerCase() : '';
-          }
-          
-          if (searchTarget.indexOf(searchValue) > -1) {
-              rows[i].style.display = ''; // แสดงแถวที่ตรงกับการค้นหา
-          } else {
-              rows[i].style.display = 'none'; // ซ่อนแถวที่ไม่ตรงกับการค้นหา
-          }
+        let searchTarget = '';
+
+        if (searchType === 'name') {
+          const newsName = rows[i].getElementsByTagName('td')[1]; // คอลัมน์ชื่อข่าว
+          searchTarget = newsName ? newsName.textContent.toLowerCase() : '';
+        } else if (searchType === 'date') {
+          const newsDate = rows[i].getElementsByTagName('td')[3]; // คอลัมน์วันที่ข่าว
+          searchTarget = newsDate ? newsDate.textContent.toLowerCase() : '';
+        }
+
+        if (searchTarget.indexOf(searchValue) > -1) {
+          rows[i].style.display = ''; // แสดงแถวที่ตรงกับการค้นหา
+        } else {
+          rows[i].style.display = 'none'; // ซ่อนแถวที่ไม่ตรงกับการค้นหา
+        }
       }
-  }
+    }
   </script>
 </body>
+
 </html>

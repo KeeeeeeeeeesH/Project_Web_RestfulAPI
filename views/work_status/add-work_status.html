@@ -100,72 +100,72 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // โหลดรายชื่อผู้ดูแลระบบลงใน select box
-    fetch('https://co-newsproject.com/api/admin')
-      .then(response => response.json())
-      .then(admins => {
-        const adminSelect = document.getElementById('admId');
-        admins.forEach(admin => {
-          let option = new Option(admin.Adm_Id, admin.Adm_Id);
-          adminSelect.appendChild(option);
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // โหลดรายชื่อผู้ดูแลระบบลงใน select box
+      fetch('https://co-newsproject.com/api/admin')
+        .then(response => response.json())
+        .then(admins => {
+          const adminSelect = document.getElementById('admId');
+          admins.forEach(admin => {
+            let option = new Option(admin.Adm_Id, admin.Adm_Id);
+            adminSelect.appendChild(option);
+          });
         });
+
+      document.getElementById('addWorkStatusForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const admId = document.getElementById('admId').value;
+
+        // ตรวจสอบสถานะการทำงานของ Admin ก่อนเพิ่มข้อมูล
+        fetch(`https://co-newsproject.com/api/work_status/${admId}`)
+          .then(response => {
+            if (response.status === 200) {
+              throw new Error('มีสถานะการทำงานของผู้ดูแลระบบนี้อยู่แล้ว');
+            }
+            return Promise.resolve(); // ถ้าไม่มีสถานะซ้ำ ให้ดำเนินการต่อ
+          })
+          .then(() => {
+            const formData = {
+              Adm_Id: admId,
+              Adm_Status: document.getElementById('status').value,
+              Start_Date: document.getElementById('startDate').value,
+              End_Date: document.getElementById('endDate').value || null
+            };
+
+            // ส่งคำขอเพิ่มสถานะไปยัง backend
+            return fetch('https://co-newsproject.com/api/work_status', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message) {
+              alert(data.message); // แสดงข้อความตอบกลับจาก backend
+            }
+            window.location.href = `/views/work_status/work_status.html`;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('เกิดข้อผิดพลาด: ' + error.message);
+          });
       });
-
-    document.getElementById('addWorkStatusForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const admId = document.getElementById('admId').value;
-
-  // ตรวจสอบสถานะการทำงานของ Admin ก่อนเพิ่มข้อมูล
-  fetch(`https://co-newsproject.com/api/work_status/${admId}`)
-    .then(response => {
-      if (response.status === 200) {
-        throw new Error('มีสถานะการทำงานของผู้ดูแลระบบนี้อยู่แล้ว');
-      }
-      return Promise.resolve(); // ถ้าไม่มีสถานะซ้ำ ให้ดำเนินการต่อ
-    })
-    .then(() => {
-      const formData = {
-        Adm_Id: admId,
-        Adm_Status: document.getElementById('status').value,
-        Start_Date: document.getElementById('startDate').value,
-        End_Date: document.getElementById('endDate').value || null
-      };
-
-      // ส่งคำขอเพิ่มสถานะไปยัง backend
-      return fetch('https://co-newsproject.com/api/work_status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.message) {
-        alert(data.message); // แสดงข้อความตอบกลับจาก backend
-      }
-      window.location.href = `/views/work_status/work_status.html`;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('เกิดข้อผิดพลาด: ' + error.message);
     });
-});
-  });
-</script>
+  </script>
 
   <script>
     $(document).ready(function () {
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = '../views/login.html';
-        }
-        $('#logoutButton').click(function () {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = '/views/login.html'; 
-        });
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../views/login.html';
+      }
+      $('#logoutButton').click(function () {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/views/login.html';
+      });
     });
-</script>
+  </script>
 </body>
 
 </html>

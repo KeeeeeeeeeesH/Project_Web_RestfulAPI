@@ -94,30 +94,29 @@
   <script src="/scripts/sidebar.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
-    $(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', function () {
       fetch('https://co-newsproject.com/api/work_status')
         .then(response => response.json())
         .then(statusItems => {
-          const tableBody = $('#workStatusList');
+          const tableBody = document.getElementById('workStatusList');
           statusItems.forEach(item => {
             const startDate = new Date(item.Start_Date).toLocaleDateString();
             const endDate = item.End_Date ? new Date(item.End_Date).toLocaleDateString() : 'N/A';
-            
-             const statusText = item.Adm_Status === 1 ? 'กำลังทำงาน' : 'ลาออก';
 
-            const row = $(`
-                <tr>
-                    <td>${item.Adm_Id}</td>
-                    <td>${statusText}</td>
-                    <td>${startDate}</td>
-                    <td>${endDate}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">เเก้ไข</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">ลบ</button>
-                    </td>
-                </tr>
-            `);
-            tableBody.append(row);
+            const statusText = item.Adm_Status === 1 ? 'กำลังทำงาน' : 'ลาออก';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.Adm_Id}</td>
+                <td>${statusText}</td>
+                <td>${startDate}</td>
+                <td>${endDate}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="editWorkStatus(${item.Adm_Id})">เเก้ไข</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteWorkStatus(${item.Adm_Id})">ลบ</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
           });
         })
         .catch(error => console.error('Error loading work status:', error));
