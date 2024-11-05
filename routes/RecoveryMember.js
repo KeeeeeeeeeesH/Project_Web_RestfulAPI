@@ -63,7 +63,7 @@ router.post('/request-otp', async (req, res) => {
                     
                     // check service msg + result token
                     if (result && result.msg === '[ACCEPTD] Message is in accepted state') {
-                        // keep token in session and response
+                        // เก็บ token ใน session และ res ออกมา
                         req.session.otpToken = result.result?.token || '';  
                         req.session.memberPhone = phone;
                         res.status(200).json({ success: true, message: 'OTP ถูกส่งสำเร็จ' });

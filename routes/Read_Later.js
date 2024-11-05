@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
+//แสดงข้อมูลบนเว็บ
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Read_Later', (error, results) => {
         if (error) {
@@ -13,6 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//ดึงข้อมูลตามข่าวอ่านภายหลังตามสมาชิก
 router.get('/:memId', (req, res) => {
   const memId = req.params.memId;
   pool.query('SELECT * FROM Read_Later WHERE Mem_Id = ?', [memId], (error, results) => {
@@ -25,25 +27,25 @@ router.get('/:memId', (req, res) => {
   });
 });
 
-router.get('/ids', (req, res) => {
-    const ids = req.query.ids.split(',').map(id => parseInt(id, 10)); // การจัดการ ids
-    const query = 'SELECT * FROM News WHERE News_Id IN (?)';
-    pool.query(query, [ids], (error, results) => {
-        if (error) {
-            console.error('เกิดข้อผิดพลาดในการดึงข่าวสารด้วยรหัส: ', error);
-            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
-            return;
-        }
-        if (results.length === 0) {
-            res.status(404).send('ไม่พบข่าวนี้');
-        } else {
-            res.json(results);
-        }
-    });
-});
+// router.get('/ids', (req, res) => {
+//     const ids = req.query.ids.split(',').map(id => parseInt(id, 10)); // การจัดการ ids
+//     const query = 'SELECT * FROM News WHERE News_Id IN (?)';
+//     pool.query(query, [ids], (error, results) => {
+//         if (error) {
+//             console.error('เกิดข้อผิดพลาดในการดึงข่าวสารด้วยรหัส: ', error);
+//             res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+//             return;
+//         }
+//         if (results.length === 0) {
+//             res.status(404).send('ไม่พบข่าวนี้');
+//         } else {
+//             res.json(results);
+//         }
+//     });
+// });
 
 
-
+//เพิ่มข่าวอ่านภายหลัง ในแอป
 router.post('/', (req, res) => {
   const { Mem_Id, News_Id } = req.body;
 

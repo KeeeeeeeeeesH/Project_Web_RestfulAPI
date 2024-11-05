@@ -7,12 +7,13 @@ router.post('/reset-password', async (req, res) => {
     const memberPhone = req.session.memberPhone; // เก็บเบอร์โทรลง session
     let memberId;
 
+    //ตรวจสอบว่ารหัสกับยืนยันรหัสตรงหรือไม่
     if (newPassword !== confirmPassword) {
         return res.status(400).json({ success: false, message: 'รหัสผ่านไม่ตรงกัน' });
     }
 
     try {
-        // ค้นหา Mem_Id ด้วยเบอร์โทร
+        // ค้นหา Mem_Id ที่มีจากเบอร์โทร 
         const memberQuery = 'SELECT Mem_Id FROM Member WHERE Mem_Phone = ?';
         const [memberRows, _] = await pool.promise().query(memberQuery, [memberPhone]);
         if (memberRows.length === 0) {
@@ -20,6 +21,7 @@ router.post('/reset-password', async (req, res) => {
         }
         memberId = memberRows[0].Mem_Id;
 
+        //ตรวจสอบรหัสผ่านเก่าโดยค้นหาจาก Mem_Id
         const checkOldPasswordQuery = 'SELECT Mem_Password FROM Member WHERE Mem_Id = ?';
         const [oldPasswordRows, result] = await pool.promise().query(checkOldPasswordQuery, [memberId]);
         const oldPassword = oldPasswordRows[0].Mem_Password;
@@ -28,6 +30,7 @@ router.post('/reset-password', async (req, res) => {
             return res.status(400).json({ success: false, message: 'รหัสผ่านต้องไม่ซ้ำกับรหัสผ่านเก่า' });
         }
 
+        //อัพเดทรหัสผ่านใหม่
         const updateQuery = 'UPDATE Member SET Mem_Password = ? WHERE Mem_Id = ?';
         const updateResult = await pool.promise().query(updateQuery, [newPassword, memberId]);
         if (updateResult[0].affectedRows === 0) {

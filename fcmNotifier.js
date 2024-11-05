@@ -1,16 +1,20 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('./JsonFirebase/project-news-app-7493e-55815ab731e1.json');
 
+// เชื่อมกับ firebaseส
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 
 // ฟังก์ชันสำหรับส่งการแจ้งเตือนทั่วไป
 const sendNotification = async (title, body, topic, newsId) => {
+    
+    // ตัดข้อความให้สั้น
     if (body.length > 50) {
         body = body.substring(0, 50) + "...อ่านต่อ";
     }
 
+    // สิ่งที่จะส่งไปกับแจ้งเตือน
     const message = {
         data: {
             title: title,
@@ -28,7 +32,6 @@ const sendNotification = async (title, body, topic, newsId) => {
     }
 };
 
-
 // ฟังก์ชันสำหรับส่งการแจ้งเตือนไปยังสมาชิกที่มีหมวดหมู่โปรด
 const sendNotificationToFavoriteUsers = async (newsName, catId, newsId, pool) => {
     try {
@@ -42,13 +45,13 @@ const sendNotificationToFavoriteUsers = async (newsName, catId, newsId, pool) =>
         // ดึง Mem_Id ทั้งหมดที่มีหมวดหมู่นี้ใน Favorite_Category
         const [favoriteUsers] = await pool.promise().query('SELECT Mem_Id FROM Favorite_Category WHERE Cat_Id = ?', [catId]);
 
-        if (favoriteUsers.length === 0) return;  // ไม่มีสมาชิกที่สนใจหมวดหมู่นี้
+        if (favoriteUsers.length === 0) return;  // return ถ้าไม่มีสมาชิกที่สนใจหมวดหมู่นี้
 
         // ส่งการแจ้งเตือนถึงสมาชิกแต่ละคนในหมวดหมู่โปรดนี้
         for (const user of favoriteUsers) {
             const memId = user.Mem_Id;
 
-            // ส่งข้อความแจ้งเตือนที่ระบุ Mem_Id ด้วย
+            // ส่งข้อความแจ้งเตือนโดยใช้ Mem_Id เป็น topic ในการเลือกส่ง
             const message = {
                 data: {
                     title: title,

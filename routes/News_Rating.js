@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
+//แสดงข้อมูล
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM News_Rating', (error, results) => {
         if (error) {
@@ -31,6 +32,7 @@ router.get('/member/:memId', (req, res) => {
     });
 });
 
+//เพิ่มคะแนนแต่ละข่าวของสมาชิก
 router.post('/', (req, res) => {
     const { Mem_Id, News_Id, Rating_Score } = req.body;
     const query = 'INSERT INTO News_Rating (Mem_Id, News_Id, Rating_Score) VALUES (?, ?, ?)';
@@ -43,6 +45,7 @@ router.post('/', (req, res) => {
     });
 });
 
+//แก้ไขคะแนนแต่ละข่าวของสมาชิก
 router.put('/:memId/:newsId', (req, res) => {
     const { memId, newsId } = req.params;
     const { Rating_Score } = req.body;
@@ -53,7 +56,7 @@ router.put('/:memId/:newsId', (req, res) => {
             return;
         }
         if (results.affectedRows === 0) {
-            // ถ้าไม่มี record ในฐานข้อมูล, ให้ทำการ insert แทน
+            // ถ้าไม่มีข้อมูล ให้ทำการ insert แทน
             const insertQuery = 'INSERT INTO News_Rating (Mem_Id, News_Id, Rating_Score) VALUES (?, ?, ?)';
             pool.query(insertQuery, [memId, newsId, Rating_Score], (insertError, insertResults) => {
                 if (insertError) {
@@ -68,6 +71,7 @@ router.put('/:memId/:newsId', (req, res) => {
     });
 });
 
+//ลบข้อมูล
 router.delete('/:memId/:newsId', (req, res) => {
     const { memId, newsId } = req.params;
     const query = 'DELETE FROM News_Rating WHERE Mem_Id = ? AND News_Id = ?';
@@ -82,7 +86,5 @@ router.delete('/:memId/:newsId', (req, res) => {
         res.send('ลบข้อมูลคะแนนข่าวสำเร็จ');
     });
 });
-
-
 
 module.exports = router;

@@ -6,11 +6,13 @@ router.get('/news', (req, res) => {
     const query = 'SELECT News.News_Id, News.News_Name, News.Date_Added, News.Cat_Id, News.Major_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Name, Major.Major_Level FROM News LEFT JOIN Category ON News.Cat_Id = Category.Cat_Id LEFT JOIN Sub_Category ON News.Cat_Id = Sub_Category.Cat_Id LEFT JOIN Major ON News.Major_Id = Major.Major_Id';
     pool.promise().query(query)
         .then(([rows]) => {
+            //หัวข้อในตาราง
             let csvData = '\ufeffNews_Id, News_Name, Date_Added, Cat_Id, Major_Id, Cat_Name, Sub_Cat_Name, Major_Level\n'; 
+            //วนหาข้อมูลข้างในและเพิ่มข้อมูลลงในรูปแบบ csv
             rows.forEach(row => {
                 csvData += `${row.News_Id}, ${row.News_Name}, ${row.Date_Added}, ${row.Cat_Id}, ${row.Major_Id}, ${row.Cat_Name}, ${row.Sub_Cat_Name}, ${row.Major_Level}\n`;
             });
-            res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+            res.setHeader('Content-Type', 'text/csv; charset=utf-8'); //รองรับภาษาไทย
             res.attachment('news.csv');
             res.send(csvData);
         })

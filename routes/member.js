@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
+//แสดงข้อมูล
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Member', (error, results) => {
         if (error) {
@@ -13,6 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//เพิ่มข้อมูล
 router.post("/", function (req, res) {
   const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone } = req.body;
   
@@ -23,6 +25,7 @@ router.post("/", function (req, res) {
   const query = 'INSERT INTO Member (Mem_Id, Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
   pool.query(query, [Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone], function(error, results) {
       if (error) {
+        //เช็คข้อมูลซ้ำ
           if (error.code === 'ER_DUP_ENTRY') {
               if (error.sqlMessage.includes('Mem_Username')) {
                   return res.status(409).json({ message: 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว' });
@@ -38,6 +41,7 @@ router.post("/", function (req, res) {
   });
 });
 
+//ลบข้อมูล
 router.delete('/:id', function (req, res) {
     const { id } = req.params;
 
@@ -57,6 +61,7 @@ router.delete('/:id', function (req, res) {
     });
 });
 
+//แก้ไข
 router.put('/:id', function (req, res) {
     const { id } = req.params;
     const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone } = req.body;
@@ -66,7 +71,7 @@ router.put('/:id', function (req, res) {
         return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
     }
 
-    // ตรวจสอบค่าที่เป็น null หรือ undefined
+    // update ข้อมูลแบบ dynamic กรณีที่มีบาง value เป็น null / undefined จะแทนที่ด้วยช่องว่าง
     const query = 'UPDATE Member SET Mem_Fname = ?, Mem_Lname = ?, Mem_Username = ?, Mem_Email = ?, Mem_Phone = ? WHERE Mem_Id = ?';
     const values = [Mem_Fname || '', Mem_Lname || '', Mem_Username || '', Mem_Email || '', Mem_Phone || '', id];
 
@@ -91,8 +96,7 @@ router.put('/:id', function (req, res) {
     });
 });
 
-
-
+//แสดงข้อมูลตาม id
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Member WHERE Mem_Id = ?', [id], (error, results) => {

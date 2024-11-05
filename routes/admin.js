@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
+//แสดงข้อมูลหน้า admin
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Admin', (error, results) => {
         if (error) {
@@ -13,16 +14,20 @@ router.get('/', (req, res) => {
     });
 });
 
+//เพิ่ม admin
 router.post("/", function (req, res) {
     const { Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone } = req.body;
-    
+
+    //format รูปแบบเบอร์โทรศัพท์ด้วย regex ขึ้นต้นด้วย0 ตามด้วยเลข 9 หลัก
     if (!/^0\d{9}$/.test(Adm_Phone)) {
         return res.status(400).json({ message: 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง' });
     }
 
+    //query ข้อมูล admin ในฐานข้อมูล
     const query = 'INSERT INTO Admin (Adm_Id, Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
-    pool.query(query, [Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone], function(error, results) {
+    pool.query(query, [Adm_Fname, Adm_Lname, Adm_Username, Adm_Password, Adm_Email, Adm_Phone], function (error, results) {
         if (error) {
+            //ป้องกันข้อมูลซ้ำ
             if (error.code === 'ER_DUP_ENTRY') {
                 if (error.sqlMessage.includes('Adm_Username')) {
                     return res.status(409).json({ message: 'มีชื่อผู้ใช้งานนี้ในระบบแล้ว' });
@@ -38,7 +43,8 @@ router.post("/", function (req, res) {
     });
 });
 
-router.put('/:id', function(req, res) {
+//แก้ไข admin
+router.put('/:id', function (req, res) {
     const { id } = req.params;
     const { Adm_Fname, Adm_Lname, Adm_Username, Adm_Email, Adm_Phone } = req.body;
 
@@ -47,7 +53,7 @@ router.put('/:id', function(req, res) {
     }
 
     const query = 'UPDATE Admin SET Adm_Fname = ?, Adm_Lname = ?, Adm_Username = ?, Adm_Email = ?, Adm_Phone = ? WHERE Adm_Id = ?';
-    pool.query(query, [Adm_Fname, Adm_Lname, Adm_Username, Adm_Email, Adm_Phone, id], function(error, results) {
+    pool.query(query, [Adm_Fname, Adm_Lname, Adm_Username, Adm_Email, Adm_Phone, id], function (error, results) {
         if (error) {
             if (error.code === 'ER_DUP_ENTRY') {
                 if (error.sqlMessage.includes('Adm_Username')) {
@@ -60,6 +66,7 @@ router.put('/:id', function(req, res) {
             }
             return res.status(500).json({ message: error.toString() });
         }
+        //ตรวจสอบว่าข้อมูลที่แก้ไขมีจริงหรือไม่
         if (results.affectedRows === 0) {
             return res.status(404).send('ไม่พบผู้ดูแลระบบที่มี ID ที่ระบุ');
         }
@@ -67,7 +74,8 @@ router.put('/:id', function(req, res) {
     });
 });
 
-router.delete('/:id', function(req, res) {
+//ลบ admin
+router.delete('/:id', function (req, res) {
     const { id } = req.params;
 
     if (!id) {
@@ -75,7 +83,7 @@ router.delete('/:id', function(req, res) {
     }
 
     const query = 'DELETE FROM Admin WHERE Adm_Id = ?';
-    pool.query(query, [id], function(error, results) {
+    pool.query(query, [id], function (error, results) {
         if (error) {
             return res.status(500).send(error.toString());
         }
@@ -86,6 +94,7 @@ router.delete('/:id', function(req, res) {
     });
 });
 
+//แสดงข้อมูล admin แต่ละคนตาม id
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Admin WHERE Adm_Id = ?', [id], (error, results) => {

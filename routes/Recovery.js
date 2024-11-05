@@ -22,7 +22,7 @@ router.post('/request-otp', async (req, res) => {
             return res.status(400).json({ message: 'เบอร์โทรไม่ถูกต้อง' });
         }
 
-        if (memberResult[0].length === 0) {
+        if (adminResult[0].length === 0) {
             return res.status(404).json({ message: 'ไม่พบหมายเลขโทรศัพท์นี้ในฐานข้อมูล' });
         }
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-// ดึงจำนวนการอ่านทั้งหมดสำหรับทุกข่าว
+// ดึงจำนวนการอ่านทั้งหมด
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Total_Read', (error, results) => {
       if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// ดึงจำนวนการอ่านเฉพาะของสมาชิกคนเดียวกัน
+// ดึงจำนวนการอ่านเฉพาะของสมาชิกคนๆนั้น แสดงบนหน้าประวัติการอ่านในแอป
 router.get('/member/:memId', (req, res) => {
     const { memId } = req.params;
     const query = 'SELECT * FROM Total_Read WHERE Mem_Id = ?';
@@ -28,7 +28,7 @@ router.get('/member/:memId', (req, res) => {
     });
 });
 
-// บันทึกการอ่านใหม่ พร้อมระบุ Mem_Id
+// บันทึกการอ่านใหม่ พร้อมระบุว่าใครเป็นคนอ่าน
 router.post('/', (req, res) => {
     const { News_Id, Mem_Id } = req.body;
     const query = 'INSERT INTO Total_Read (Count_Id, News_Id, Mem_Id) VALUES (NULL, ?, ?)';
@@ -42,6 +42,7 @@ router.post('/', (req, res) => {
 });
 
 // อัปเดตข้อมูลการอ่าน
+// ไม่ได้ใช้แล้ว
 router.put('/:id', (req, res) => {
     const { id } = req.params;
     const { News_Id, Mem_Id } = req.body;
@@ -59,6 +60,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// ลบข้อมูลการอ่าน ไม่ได้ใช้แล้ว เพราะ set เป็น null ถ้าข่าวถูกลบ
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM Total_Read WHERE Count_Id = ?';

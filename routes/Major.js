@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../app');
-  
+
+//แสดงข้อมูล
 router.get('/', (req, res) => {
   pool.query('SELECT * FROM Major', (error, results) => {
       if (error) {
@@ -13,6 +14,7 @@ router.get('/', (req, res) => {
   });
 });
 
+//เพิ่มข้อมูล
   router.post("/", function (req, res) {
     const { Major_Level } = req.body;
 
@@ -26,10 +28,10 @@ router.get('/', (req, res) => {
         }
 
         if (results.length > 0) {
-            // หากมีระดับความสำคัญซ้ำอยู่แล้ว ให้ส่งข้อความแจ้งเตือน
+            // ตรวจระดับความสำคัญซ้ำ
             res.status(400).send('มีระดับความสำคัญนี้แล้ว');
         } else {
-            // หากไม่มี ให้ทำการ INSERT ข้อมูลใหม่
+            // หากไม่มี ให้ทำการ insert ข้อมูลใหม่
             const insertQuery = 'INSERT INTO Major (Major_Level) VALUES (?)';
             pool.query(insertQuery, [Major_Level], function (error, results) {
                 if (error) {
@@ -42,6 +44,7 @@ router.get('/', (req, res) => {
     });
 });
   
+//ลบข้อมูล
   router.delete('/:id', function(req, res) {
     const { id } = req.params;  
  
@@ -57,6 +60,7 @@ router.get('/', (req, res) => {
     });
   });
   
+  //แก้ไขข้อมูล
   router.put('/:id', function(req, res) {
     const { id } = req.params;
     const { Major_Level } = req.body;
@@ -73,7 +77,7 @@ router.get('/', (req, res) => {
     });
   });
   
-    // GET a specific by ID
+    //แสดงตาม id
     router.get('/:id', (req, res) => {
       const id = req.params.id;
       pool.query('SELECT * FROM Major WHERE Major_Id = ?', [id], (error, results) => {

@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../app');
-  
+
+//แสดงหมวดหมู่ย่อย(แท็กข่าว) โดยส่งหมวดหมู่หลักมาด้วย
 router.get('/', (req, res) => {
     const { catId } = req.query;
     let query = 'SELECT * FROM Sub_Category';
     let queryParams = [];
 
+    //เพิ่มไอดีหมวดหมู่หลักเป็นเงื่อนไขในการ query
     if (catId) {
         query += ' WHERE Cat_Id = ?';
         queryParams.push(catId);
@@ -22,6 +24,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//เพิ่มแท็กข่าว
   router.post('/', (req, res) => {
     const { Sub_Cat_Name, Cat_Id } = req.body;
     const query = 'INSERT INTO Sub_Category (Sub_Cat_Id, Sub_Cat_Name, Cat_Id) VALUES (NULL, ?, ?)';
@@ -34,6 +37,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//แก้ไขชื่อแท็กข่าวพร้อมกับเปลี่ยนหมวดหมู่หลัก
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const { Sub_Cat_Name, Cat_Id } = req.body;
@@ -50,6 +54,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
+//ลบแท็กข่าว
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM Sub_Category WHERE Sub_Cat_Id = ?';
@@ -65,43 +70,43 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-router.get('/:id', (req, res) => {
-    const subCatId = req.params.id;
-    pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [subCatId], (error, results) => {
-        if (error) {
-            console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ย่อยตาม ID: ', error);
-            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
-            return;
-        }
-        if (results.length > 0) {
-            res.json(results[0]);
-        } else {
-            res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
-        }
-    });
-});
+// router.get('/:id', (req, res) => {
+//     const subCatId = req.params.id;
+//     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [subCatId], (error, results) => {
+//         if (error) {
+//             console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ย่อยตาม ID: ', error);
+//             res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+//             return;
+//         }
+//         if (results.length > 0) {
+//             res.json(results[0]);
+//         } else {
+//             res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
+//         }
+//     });
+// });
 
+//ดึงชื่อของแท็กข่าว แล้วเอาไปแสดงผลบนแอป
 router.get('/tag/ids', (req, res) => {
     let ids = req.query.ids;
     // ตรวจสอบว่า ids เป็น array หรือไม่ ถ้าไม่ใช่ให้แปลงเป็น array
     if (!Array.isArray(ids)) {
         ids = ids.split(',').map(id => parseInt(id, 10));
     } else {
-        ids = ids.map(id => parseInt(id, 10)); // แปลงแต่ละค่าใน array เป็นตัวเลข
+        ids = ids.map(id => parseInt(id, 10)); // แปลงแต่ละค่าใน array ให้เป็นตัวเลข
     }
+    // ใช้ in ค้นหาหลายๆค่าของ sub cat id
     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
         if (error) {
-            console.error('ข้อผิดพลาดของฐานข้อมูล: ', error); // Log database error
+            console.error('ข้อผิดพลาดของฐานข้อมูล: ', error); 
             return res.status(500).json({ error: error.message });
         }
         if (results.length === 0) {
-            console.log('ไม่พบผลลัพธ์สำหรับ ID: ', ids); // Log if no results found
+            console.log('ไม่พบผลลัพธ์สำหรับ ID: ', ids);
             return res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มีรหัสที่ระบุ');
         }
         res.json(results);
     });
 });
-
-
 
 module.exports = router;

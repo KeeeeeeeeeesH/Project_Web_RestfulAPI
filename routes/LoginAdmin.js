@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../app");
 
-// API สำหรับการเข้าสู่ระบบผู้ดูแลระบบ
+// API สำหรับการเข้าสู่ระบบแอดมิน
 router.post('/login', (req, res) => {
     const { login, password } = req.body;
 

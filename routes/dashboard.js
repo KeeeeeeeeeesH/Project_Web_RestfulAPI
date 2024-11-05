@@ -47,10 +47,13 @@ router.get('/table/:tableName', async (req, res) => {
         'Favorite_Category', 'Read_Later', 'Read_History', 'News', 
         'News_Rating', 'News_Sub_Cate', 'Picture', 'Total_Read', 'Major'
     ];
+
+    //ตรวจสอบความถูกต้องของชื่อตารางที่กำหนดไว้ข้างบน
     if (!validTables.includes(tableName)) {
         return res.status(400).json({ error: 'ชื่อตารางไม่ถูกต้อง' });
     }
     try {
+        //select ข้อมูลตาม tableName ที่เลือก 
         const query = `SELECT * FROM ${tableName}`;
         const [rows] = await pool.promise().query(query);
         res.json(rows);

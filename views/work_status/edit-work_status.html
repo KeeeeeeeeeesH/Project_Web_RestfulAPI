@@ -97,47 +97,47 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    // รับค่า admId จาก URL
-    const admId = new URLSearchParams(window.location.search).get('admId');
-    document.getElementById('admId').value = admId; // กำหนดค่า admId ในฟอร์ม
+      // รับค่า admId จาก URL
+      const admId = new URLSearchParams(window.location.search).get('admId');
+      document.getElementById('admId').value = admId; // กำหนดค่า admId ในฟอร์ม
 
-    // ดึงข้อมูลสถานะการทำงานจาก API โดยใช้ admId
-    fetch(`https://co-newsproject.com/api/work_status/${admId}`)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('status').value = data.Adm_Status; // กำหนดค่าสถานะ
-        document.getElementById('startDate').value = new Date(data.Start_Date).toISOString().split('T')[0]; // กำหนดวันที่เริ่มต้น
-        document.getElementById('endDate').value = data.End_Date ? new Date(data.End_Date).toISOString().split('T')[0] : ''; // กำหนดวันที่สิ้นสุด หากไม่มี ให้เป็นค่าว่าง
-      })
-      .catch(error => console.error('Error fetching work status:', error));
-
-    // จัดการเมื่อกดปุ่มอัปเดต
-    document.getElementById('editWorkStatusForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const status = document.getElementById('status').value;
-      const updatedData = {
-        Adm_Status: status,
-        Start_Date: document.getElementById('startDate').value,
-        End_Date: status === '1' ? null : document.getElementById('endDate').value // ถ้าเป็นสถานะ "ทำงาน" ให้ End_Date เป็น null
-      };
-
-      // ส่งคำขออัปเดตข้อมูลไปยัง API
-      fetch(`https://co-newsproject.com/api/work_status/${admId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
-      })
-        .then(response => {
-          if (!response.ok) throw new Error('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ');
-          alert('อัพเดทข้อมูลสถานะการทำงานสำเร็จ');
-          window.location.href = '/views/work_status/work_status.html'; // กลับไปยังหน้าหลักหลังอัปเดตเสร็จ
+      // ดึงข้อมูลสถานะการทำงานจาก API โดยใช้ admId
+      fetch(`https://co-newsproject.com/api/work_status/${admId}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('status').value = data.Adm_Status; // กำหนดค่าสถานะ
+          document.getElementById('startDate').value = new Date(data.Start_Date).toISOString().split('T')[0]; // กำหนดวันที่เริ่มต้น
+          document.getElementById('endDate').value = data.End_Date ? new Date(data.End_Date).toISOString().split('T')[0] : ''; // กำหนดวันที่สิ้นสุด หากไม่มี ให้เป็นค่าว่าง
         })
-        .catch(error => {
-          console.error('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ:', error);
-          alert('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ: ' + error.message);
-        });
+        .catch(error => console.error('Error fetching work status:', error));
+
+      // จัดการเมื่อกดปุ่มอัปเดต
+      document.getElementById('editWorkStatusForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const status = document.getElementById('status').value;
+        const updatedData = {
+          Adm_Status: status,
+          Start_Date: document.getElementById('startDate').value,
+          End_Date: document.getElementById('endDate').value
+        };
+
+        // ส่งคำขออัปเดตข้อมูลไปยัง API
+        fetch(`https://co-newsproject.com/api/work_status/${admId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedData)
+        })
+          .then(response => {
+            if (!response.ok) throw new Error('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ');
+            alert('อัพเดทข้อมูลสถานะการทำงานสำเร็จ');
+            window.location.href = '/views/work_status/work_status.html'; // กลับไปยังหน้าหลักหลังอัปเดตเสร็จ
+          })
+          .catch(error => {
+            console.error('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ:', error);
+            alert('อัพเดทข้อมูลสถานะการทำงานไม่สำเร็จ: ' + error.message);
+          });
+      });
     });
-  });
   </script>
   <script>
     $(document).ready(function () {

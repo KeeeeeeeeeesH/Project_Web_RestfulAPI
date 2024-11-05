@@ -28,7 +28,7 @@ const pool = mysql.createPool({
 
 module.exports = pool;
 
-//middleware -> cors/parseJSON JS-Object 
+//ตั้งค่า Middleware
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -42,12 +42,12 @@ app.use(session({
   cookie: { secure: 'auto' }
 }));
 
-//join path หน้า login
+//join path เข้าหน้า login โดยกำหนดให้เป็นเส้นทางหลักตอนเข้าเว็บ 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
-//join path เข้า folder
+//join path เข้า folder เพื่อให้เข้าถึงไฟล์ผ่านเบราว์เซอร์ได้โดยตรง
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

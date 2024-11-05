@@ -153,7 +153,7 @@
             const date = new Date(news.Date_Added);
             const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
 
-            // คำนวณชื่อหมวดหมู่หลักและย่อย
+            // ตรวจชื่อหมวดหมู่หลักและแปลงไอดีให้เป็นชื่อหมวดหมู่ย่อย
             const categoryName = categoryMap[news.Cat_Id] || 'ไม่มีหมวดหมู่';
             const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
               ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
