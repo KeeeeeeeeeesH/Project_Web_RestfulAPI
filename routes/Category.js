@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงข้อมูลหมวดหมู่
+//แสดงข้อมูลหมวดหมู่บนเว็บและแอป
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Category', (error, results) => {
       if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
   });
 
-  //เพิ่มข้อมูลหมวดหมู่
+  //เพิ่มข้อมูลหมวดหมู่บนเว็บ
   router.post("/", function (req, res) {
     const { Cat_Name } = req.body;
     const query = 'INSERT INTO Category (Cat_Id, Cat_Name ) VALUES (NULL, ?)';
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
     });
   });
 
-  //แก้ไขหมวดหมู่
+  //แก้ไขหมวดหมู่บนเว็บ
   router.put('/:id', function(req, res) {
     const { id } = req.params;
     const { Cat_Name } = req.body;
@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
     });
   });
 
-  //ลบหมวดหมู่
+  //ลบหมวดหมู่บนเว็บ
   router.delete('/:id', function(req, res) {
     const { id } = req.params;  
   
@@ -64,7 +64,7 @@ router.get('/', (req, res) => {
     });
   });
   
-  //แสดงหมวดหมู่หลักพร้อมรอง
+  //แสดงหมวดหมู่หลักพร้อมแท็กข่าวบนเว็บ
   router.get('/categories_with_sub', (req, res) => {
     const query = `
     SELECT Category.Cat_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Id, Sub_Category.Sub_Cat_Name 
@@ -82,7 +82,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//แสดงหมวดหมู่ตามไอดี
+//แสดงชื่อหมวดหมู่จากไอดีบนแอป
   router.get('/:id', (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Category WHERE Cat_Id  = ?', [id], (error, results) => {

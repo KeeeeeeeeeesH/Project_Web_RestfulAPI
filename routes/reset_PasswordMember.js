@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app'); 
 
+//เปลี่ยนรหัส
 router.post('/reset-password', async (req, res) => {
     const { newPassword, confirmPassword } = req.body;
     const memberPhone = req.session.memberPhone; // เก็บเบอร์โทรลง session

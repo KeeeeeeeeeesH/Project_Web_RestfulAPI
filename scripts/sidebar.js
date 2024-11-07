@@ -1,3 +1,4 @@
+//จัดการ sidebar
 document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById('toggleButton');
         const sidebar = document.getElementById('sidebar');

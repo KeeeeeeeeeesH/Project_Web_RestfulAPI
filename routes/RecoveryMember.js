@@ -94,6 +94,7 @@ router.post('/request-otp', async (req, res) => {
     }
 });
 
+//สำหรับตรวจสอบ otp ที่ขอไป
 router.post('/verify-otp', async (req, res) => {
     const { otp } = req.body;
 

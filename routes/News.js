@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require('../app');
 const { sendNotification, sendNotificationToFavoriteUsers } = require('../fcmNotifier');
 
-//แสดงข้อมูลที่จำเป็นสำหรับหน้าแสดงข่าว
+//แสดงข้อมูลบนเว็บ/แอป
 router.get('/', (req, res) => {
     //ดึงข่าว หมวดหมู่ข่าว แท็กข่าว
     pool.query('SELECT n.News_Id, n.News_Name, n.News_Details, n.Date_Added, n.Cat_Id, GROUP_CONCAT(nsc.Sub_Cat_Id) AS Sub_Cat_Ids, n.Major_Id FROM News n LEFT JOIN News_Sub_Cate nsc ON n.News_Id = nsc.News_Id GROUP BY n.News_Id', (error, results) => {
@@ -26,6 +26,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//เพิ่มข่าวบนเว็บ
 router.post('/', (req, res) => {
     let { News_Name, News_Details, Date_Added, Cat_Id, Sub_Cat_Ids, Major_Id } = req.body;
 
@@ -73,6 +74,7 @@ router.post('/', (req, res) => {
     });
 });
 
+//แก้ไขข่าวบนเว็บ
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     let { News_Name, News_Details, Date_Added, Cat_Id, Major_Id, Sub_Cat_Ids } = req.body;
@@ -115,7 +117,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-//ลบข้อมูล
+//ลบข้อมูลบนเว็บ
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM News WHERE News_Id = ?';
@@ -131,7 +133,7 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-//get news by id สำหรับแสดงหน้ารายละเอียดข่าวในแอป
+//แสดงหน้ารายละเอียดข่าวในแอป
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     //เชื่อม news กับ news sub cate ไว้แสดงแท็กข่าว
@@ -158,7 +160,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-//get news by cat id สำหรับแสดงรายการข่าวตามหมวดหมู่ในแอป
+//แสดงรายการข่าวตามหมวดหมู่ในแอป
 router.get('/category/:id', (req, res) => {
     const { id } = req.params;
     const page = parseInt(req.query.page) || 0 ; //จำนวนหน้า เริ่มที่ 0

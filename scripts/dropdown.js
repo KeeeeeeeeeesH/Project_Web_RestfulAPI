@@ -1,3 +1,4 @@
+//จัดการ dropdown
 document.addEventListener("DOMContentLoaded", function () {
     const adminDropdown = document.getElementById('adminDropdown');
     const adminDropdownContent = document.getElementById('adminDropdownContent');

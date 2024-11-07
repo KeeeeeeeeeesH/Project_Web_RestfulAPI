@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-// ดึงจำนวนการอ่านทั้งหมด
+// ดึงจำนวนการอ่านทั้งหมด บนเว็บ/แอป
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Total_Read', (error, results) => {
       if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// ดึงจำนวนการอ่านเฉพาะของสมาชิกคนๆนั้น แสดงบนหน้าประวัติการอ่านในแอป
+// ดึงจำนวนการอ่านเฉพาะสมาชิกคนๆนั้น หน้าประวัติการอ่าน บนแอป
 router.get('/member/:memId', (req, res) => {
     const { memId } = req.params;
     const query = 'SELECT * FROM Total_Read WHERE Mem_Id = ?';
@@ -28,7 +28,7 @@ router.get('/member/:memId', (req, res) => {
     });
 });
 
-// บันทึกการอ่านใหม่ พร้อมระบุว่าใครเป็นคนอ่าน
+// บันทึกการอ่านใหม่ พร้อมระบุว่าใครเป็นคนอ่าน บนแอป
 router.post('/', (req, res) => {
     const { News_Id, Mem_Id } = req.body;
     const query = 'INSERT INTO Total_Read (Count_Id, News_Id, Mem_Id) VALUES (NULL, ?, ?)';
@@ -42,39 +42,38 @@ router.post('/', (req, res) => {
 });
 
 // อัปเดตข้อมูลการอ่าน
-// ไม่ได้ใช้แล้ว
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
-    const { News_Id, Mem_Id } = req.body;
-    const query = 'UPDATE Total_Read SET News_Id = ?, Mem_Id = ? WHERE Count_Id = ?';
-    pool.query(query, [News_Id, Mem_Id, id], (error, results) => {
-        if (error) {
-            console.error('เกิดข้อผิดพลาดในการอัปเดตบันทึกการอ่านทั้งหมด: ', error);
-            res.status(500).send(error.toString());
-            return;
-        }
-        if (results.affectedRows === 0) {
-            return res.status(404).send('ไม่พบบันทึกการอ่านทั้งหมดที่มีรหัสที่ระบุ');
-        }
-        res.send('แก้ไขข้อมูลยอดการอ่านสำเร็จ');
-    });
-});
+// router.put('/:id', (req, res) => {
+//     const { id } = req.params;
+//     const { News_Id, Mem_Id } = req.body;
+//     const query = 'UPDATE Total_Read SET News_Id = ?, Mem_Id = ? WHERE Count_Id = ?';
+//     pool.query(query, [News_Id, Mem_Id, id], (error, results) => {
+//         if (error) {
+//             console.error('เกิดข้อผิดพลาดในการอัปเดตบันทึกการอ่านทั้งหมด: ', error);
+//             res.status(500).send(error.toString());
+//             return;
+//         }
+//         if (results.affectedRows === 0) {
+//             return res.status(404).send('ไม่พบบันทึกการอ่านทั้งหมดที่มีรหัสที่ระบุ');
+//         }
+//         res.send('แก้ไขข้อมูลยอดการอ่านสำเร็จ');
+//     });
+// });
 
 // ลบข้อมูลการอ่าน ไม่ได้ใช้แล้ว เพราะ set เป็น null ถ้าข่าวถูกลบ
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    const query = 'DELETE FROM Total_Read WHERE Count_Id = ?';
-    pool.query(query, [id], (error, results) => {
-        if (error) {
-            console.error('เกิดข้อผิดพลาดในการลบบันทึกการอ่านทั้งหมด: ', error);
-            res.status(500).send(error.toString());
-            return;
-        }
-        if (results.affectedRows === 0) {
-            return res.status(404).send('ไม่พบบันทึกการอ่านทั้งหมดที่มีรหัสที่ระบุ');
-        }
-        res.send('ลบข้อมูลยอดการอ่านสำเร็จ');
-    });
-});
+// router.delete('/:id', (req, res) => {
+//     const { id } = req.params;
+//     const query = 'DELETE FROM Total_Read WHERE Count_Id = ?';
+//     pool.query(query, [id], (error, results) => {
+//         if (error) {
+//             console.error('เกิดข้อผิดพลาดในการลบบันทึกการอ่านทั้งหมด: ', error);
+//             res.status(500).send(error.toString());
+//             return;
+//         }
+//         if (results.affectedRows === 0) {
+//             return res.status(404).send('ไม่พบบันทึกการอ่านทั้งหมดที่มีรหัสที่ระบุ');
+//         }
+//         res.send('ลบข้อมูลยอดการอ่านสำเร็จ');
+//     });
+// });
 
 module.exports = router;

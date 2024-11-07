@@ -4,18 +4,18 @@ const pool = require('../app');
 
 //แสดงข้อมูล
 router.get('/', (req, res) => {
-  pool.query('SELECT * FROM Major', (error, results) => {
-      if (error) {
-          console.error('เกิดข้อผิดพลาดในการดึงข้อมูลระดับความสำคัญสำเร็จ:', error);
-          res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
-          return;
-      }
-      res.json(results);
-  });
+    pool.query('SELECT * FROM Major', (error, results) => {
+        if (error) {
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูลระดับความสำคัญสำเร็จ:', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+            return;
+        }
+        res.json(results);
+    });
 });
 
 //เพิ่มข้อมูล
-  router.post("/", function (req, res) {
+router.post("/", function (req, res) {
     const { Major_Level } = req.body;
 
     // ตรวจสอบว่า Major_Level มีอยู่แล้วหรือไม่
@@ -43,13 +43,13 @@ router.get('/', (req, res) => {
         }
     });
 });
-  
+
 //ลบข้อมูล
-  router.delete('/:id', function(req, res) {
-    const { id } = req.params;  
- 
+router.delete('/:id', function (req, res) {
+    const { id } = req.params;
+
     const query = 'DELETE FROM Major WHERE Major_Id = ?';
-    pool.query(query, [id], function(error, results) {
+    pool.query(query, [id], function (error, results) {
         if (error) {
             return res.status(500).send(error.toString());
         }
@@ -58,40 +58,41 @@ router.get('/', (req, res) => {
         }
         res.send('ลบระดับความสำคัญสำเร็จ');
     });
-  });
-  
-  //แก้ไขข้อมูล
-  router.put('/:id', function(req, res) {
-    const { id } = req.params;
-    const { Major_Level } = req.body;
-  
-    const query = 'UPDATE Major SET Major_Level = ? WHERE Major_Id = ?';
-    pool.query(query, [Major_Level ,id], function(error, results) {
+});
+
+//แสดง level จาก id บนแอป
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    pool.query('SELECT * FROM Major WHERE Major_Id = ?', [id], (error, results) => {
         if (error) {
-            return res.status(500).send(error.toString());
+            console.error('เกิดข้อผิดพลาดในการดึงระดับความสำคัญสำเร็จด้วย ID: ', error);
+            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+            return;
         }
-        if (results.affectedRows === 0) {
-            return res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
         }
-        res.send('แก้ไขระดับความสำคัญสำเร็จ');
     });
-  });
-  
-    //แสดงตาม id
-    router.get('/:id', (req, res) => {
-      const id = req.params.id;
-      pool.query('SELECT * FROM Major WHERE Major_Id = ?', [id], (error, results) => {
-          if (error) {
-              console.error('เกิดข้อผิดพลาดในการดึงระดับความสำคัญสำเร็จด้วย ID: ', error);
-              res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
-              return;
-          }
-          if (results.length > 0) {
-              res.json(results[0]);
-          } else {
-              res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
-          }
-      });
-    });
+});
+
+//แก้ไขข้อมูล
+// router.put('/:id', function (req, res) {
+//     const { id } = req.params;
+//     const { Major_Level } = req.body;
+
+//     const query = 'UPDATE Major SET Major_Level = ? WHERE Major_Id = ?';
+//     pool.query(query, [Major_Level, id], function (error, results) {
+//         if (error) {
+//             return res.status(500).send(error.toString());
+//         }
+//         if (results.affectedRows === 0) {
+//             return res.status(404).send('ไม่พบระดับความสำคัญสำเร็จที่มี ID ที่ระบุ');
+//         }
+//         res.send('แก้ไขระดับความสำคัญสำเร็จ');
+//     });
+// });
+
 
 module.exports = router;

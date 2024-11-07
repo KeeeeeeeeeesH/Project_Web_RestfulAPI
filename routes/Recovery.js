@@ -1,3 +1,5 @@
+//กู้รหัสผ่านของแอดมิน ไม่ใช้แล้ว
+
 const express = require('express');
 const router = express.Router();
 const pool = require('../app');

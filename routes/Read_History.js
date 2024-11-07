@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//ดึงข้อมูลประวัติการอ่านข่าวนั้นๆของสมาชิก
+//ดึงข้อมูลประวัติการอ่านข่าวนั้นๆของสมาชิก บนแอป
 router.get('/:memId', (req, res) => {
     const { memId } = req.params;
     //ดึงข้อมูลจาก read_history rating_score picture
@@ -39,7 +39,7 @@ router.get('/:memId', (req, res) => {
     });
 });
 
-//แสดง/อัพเดท/ลบ ประวัติการอ่าน
+//แสดง/อัพเดท/ลบ ประวัติการอ่าน บนแอป
 router.post('/', (req, res) => {
     const { Mem_Id, News_Id } = req.body;
     const Read_Date = new Date();
@@ -76,7 +76,7 @@ router.post('/', (req, res) => {
     });
 });
 
-//ลบประวัติการอ่าน
+//ลบประวัติการอ่าน บนแอป
 router.delete('/:memId/:newsId', (req, res) => {
     const { memId, newsId } = req.params;
     const query = 'DELETE FROM Read_History WHERE Mem_Id = ? AND News_Id = ?';

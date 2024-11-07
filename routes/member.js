@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงข้อมูล
+//แสดงข้อมูลบนเว็บ
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Member', (error, results) => {
         if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//เพิ่มข้อมูล
+//เพิ่มข้อมูลบนแอป
 router.post("/", function (req, res) {
   const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Password, Mem_Email, Mem_Phone } = req.body;
   
@@ -41,27 +41,8 @@ router.post("/", function (req, res) {
   });
 });
 
-//ลบข้อมูล
-router.delete('/:id', function (req, res) {
-    const { id } = req.params;
 
-    if (!id) {
-        return res.status(400).send('ต้องใช้ ID เพื่อลบ');
-    }
-
-    const query = 'DELETE FROM Member WHERE Mem_Id = ?';
-    pool.query(query, [id], function (error, results) {
-        if (error) {
-            return res.status(500).send(error.toString());
-        }
-        if (results.affectedRows === 0) {
-            return res.status(404).send('ไม่พบสมาชิกที่มี ID ที่ระบุ');
-        }
-        res.send('ลบข้อมูลสมาชิกสำเร็จ');
-    });
-});
-
-//แก้ไข
+//แก้ไขบนแอป
 router.put('/:id', function (req, res) {
     const { id } = req.params;
     const { Mem_Fname, Mem_Lname, Mem_Username, Mem_Email, Mem_Phone } = req.body;
@@ -96,7 +77,7 @@ router.put('/:id', function (req, res) {
     });
 });
 
-//แสดงข้อมูลตาม id
+//แสดงข้อมูลสมาชิกจาก id บนแอป
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Member WHERE Mem_Id = ?', [id], (error, results) => {
@@ -112,5 +93,25 @@ router.get('/:id', (req, res) => {
         }
     });
 });
+
+//ลบข้อมูล
+// router.delete('/:id', function (req, res) {
+//     const { id } = req.params;
+
+//     if (!id) {
+//         return res.status(400).send('ต้องใช้ ID เพื่อลบ');
+//     }
+
+//     const query = 'DELETE FROM Member WHERE Mem_Id = ?';
+//     pool.query(query, [id], function (error, results) {
+//         if (error) {
+//             return res.status(500).send(error.toString());
+//         }
+//         if (results.affectedRows === 0) {
+//             return res.status(404).send('ไม่พบสมาชิกที่มี ID ที่ระบุ');
+//         }
+//         res.send('ลบข้อมูลสมาชิกสำเร็จ');
+//     });
+// });
 
 module.exports = router;

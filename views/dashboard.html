@@ -136,7 +136,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Export buttons
+            // เรียก api ต่างๆ ของ export
             document.getElementById('exportNewsButton').addEventListener('click', function () {
                 window.location.href = '/export/news';
             });
@@ -149,7 +149,7 @@
                 window.location.href = '/export/admin';
             });
 
-            // Fetch total counts
+            // ดึงข้อมูลต่างๆ 
             fetch("/dashboard/total-news")
                 .then(response => response.json())
                 .then(data => {
@@ -168,13 +168,15 @@
                     document.getElementById("totalMembers").textContent = data.totalMembers;
                 });
 
-            // Handle table selection and load data
+            // จัดการเกี่ยวกับตารางแสดงข้อมูล
             document.getElementById('tableSelect').addEventListener('change', function () {
                 const tableName = this.value;
                 if (tableName) {
+                    //ดึงข้อมูลของตารางที่เลือก
                     fetch(`/dashboard/table/${tableName}`)
                         .then(response => response.json())
                         .then(data => {
+                            //สร้างตาราง
                             let tableHtml = '<table class="table table-bordered"><thead><tr>';
                             const columns = Object.keys(data[0]);
                             columns.forEach(column => {
@@ -189,6 +191,7 @@
                                 tableHtml += '</tr>';
                             });
                             tableHtml += '</tbody></table>';
+                            //แสดงตาราง
                             document.getElementById('tableContainer').innerHTML = tableHtml;
                         })
                         .catch(() => {

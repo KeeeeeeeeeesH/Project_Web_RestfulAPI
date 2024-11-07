@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงข้อมูล
+//แสดงข้อมูลคะแนนบนเว็บและแอป
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM News_Rating', (error, results) => {
         if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// ดึงคะแนนการให้คะแนนเฉพาะของสมาชิก
+// ดึงคะแนนเฉพาะของสมาชิก ในประวัติการอ่านบนแอป 
 router.get('/member/:memId', (req, res) => {
     const { memId } = req.params;
     const query = `
@@ -32,23 +32,11 @@ router.get('/member/:memId', (req, res) => {
     });
 });
 
-//เพิ่มคะแนนแต่ละข่าวของสมาชิก
-router.post('/', (req, res) => {
-    const { Mem_Id, News_Id, Rating_Score } = req.body;
-    const query = 'INSERT INTO News_Rating (Mem_Id, News_Id, Rating_Score) VALUES (?, ?, ?)';
-    pool.query(query, [Mem_Id, News_Id, Rating_Score], (error, results) => {
-        if (error) {
-            res.status(500).send(error.toString());
-            return;
-        }
-        res.status(201).send('เพิ่มข้อมูลคะแนนข่าวสำเร็จ');
-    });
-});
-
-//แก้ไขคะแนนแต่ละข่าวของสมาชิก
+//เพิ่มหรือแก้ไขคะแนนแต่ละข่าวของสมาชิก บนแอป
 router.put('/:memId/:newsId', (req, res) => {
     const { memId, newsId } = req.params;
     const { Rating_Score } = req.body;
+    //แก้ไขคะแนน
     const query = 'UPDATE News_Rating SET Rating_Score = ? WHERE Mem_Id = ? AND News_Id = ?';
     pool.query(query, [Rating_Score, memId, newsId], (error, results) => {
         if (error) {
@@ -72,19 +60,32 @@ router.put('/:memId/:newsId', (req, res) => {
 });
 
 //ลบข้อมูล
-router.delete('/:memId/:newsId', (req, res) => {
-    const { memId, newsId } = req.params;
-    const query = 'DELETE FROM News_Rating WHERE Mem_Id = ? AND News_Id = ?';
-    pool.query(query, [memId, newsId], (error, results) => {
-        if (error) {
-            res.status(500).send(error.toString());
-            return;
-        }
-        if (results.affectedRows === 0) {
-            return res.status(404).send('ไม่พบการให้คะแนนข่าวกับสมาชิกที่ระบุและรหัสข่าว');
-        }
-        res.send('ลบข้อมูลคะแนนข่าวสำเร็จ');
-    });
-});
+// router.delete('/:memId/:newsId', (req, res) => {
+//     const { memId, newsId } = req.params;
+//     const query = 'DELETE FROM News_Rating WHERE Mem_Id = ? AND News_Id = ?';
+//     pool.query(query, [memId, newsId], (error, results) => {
+//         if (error) {
+//             res.status(500).send(error.toString());
+//             return;
+//         }
+//         if (results.affectedRows === 0) {
+//             return res.status(404).send('ไม่พบการให้คะแนนข่าวกับสมาชิกที่ระบุและรหัสข่าว');
+//         }
+//         res.send('ลบข้อมูลคะแนนข่าวสำเร็จ');
+//     });
+// });
+
+//เพิ่มคะแนน
+// router.post('/', (req, res) => {
+//     const { Mem_Id, News_Id, Rating_Score } = req.body;
+//     const query = 'INSERT INTO News_Rating (Mem_Id, News_Id, Rating_Score) VALUES (?, ?, ?)';
+//     pool.query(query, [Mem_Id, News_Id, Rating_Score], (error, results) => {
+//         if (error) {
+//             res.status(500).send(error.toString());
+//             return;
+//         }
+//         res.status(201).send('เพิ่มข้อมูลคะแนนข่าวสำเร็จ');
+//     });
+// });
 
 module.exports = router;

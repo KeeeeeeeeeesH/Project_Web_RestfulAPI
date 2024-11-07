@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงหมวดหมู่ย่อย(แท็กข่าว) โดยส่งหมวดหมู่หลักมาด้วย
+//แสดงหมวดหมู่ย่อย(แท็กข่าว) โดยส่งหมวดหมู่หลักมาด้วย บนเว็บ
 router.get('/', (req, res) => {
     const { catId } = req.query;
     let query = 'SELECT * FROM Sub_Category';
@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//เพิ่มแท็กข่าว
+//เพิ่มแท็กข่าว บนเว็บ
   router.post('/', (req, res) => {
     const { Sub_Cat_Name, Cat_Id } = req.body;
     const query = 'INSERT INTO Sub_Category (Sub_Cat_Id, Sub_Cat_Name, Cat_Id) VALUES (NULL, ?, ?)';
@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//แก้ไขชื่อแท็กข่าวพร้อมกับเปลี่ยนหมวดหมู่หลัก
+//แก้ไขชื่อแท็กข่าว และเปลี่ยนหมวดหมู่หลัก บนเว็บ
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const { Sub_Cat_Name, Cat_Id } = req.body;
@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-//ลบแท็กข่าว
+//ลบแท็กข่าวบนเว็บ
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM Sub_Category WHERE Sub_Cat_Id = ?';
@@ -70,23 +70,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-// router.get('/:id', (req, res) => {
-//     const subCatId = req.params.id;
-//     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [subCatId], (error, results) => {
-//         if (error) {
-//             console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ย่อยตาม ID: ', error);
-//             res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
-//             return;
-//         }
-//         if (results.length > 0) {
-//             res.json(results[0]);
-//         } else {
-//             res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
-//         }
-//     });
-// });
-
-//ดึงชื่อของแท็กข่าว แล้วเอาไปแสดงผลบนแอป
+//ดึงชื่อของแท็กข่าวแล้วเอาไปแสดงผล บนแอป
 router.get('/tag/ids', (req, res) => {
     let ids = req.query.ids;
     // ตรวจสอบว่า ids เป็น array หรือไม่ ถ้าไม่ใช่ให้แปลงเป็น array
@@ -108,5 +92,21 @@ router.get('/tag/ids', (req, res) => {
         res.json(results);
     });
 });
+
+// router.get('/:id', (req, res) => {
+//     const subCatId = req.params.id;
+//     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id = ?', [subCatId], (error, results) => {
+//         if (error) {
+//             console.error('เกิดข้อผิดพลาดในการเรียกหมวดหมู่ย่อยตาม ID: ', error);
+//             res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+//             return;
+//         }
+//         if (results.length > 0) {
+//             res.json(results[0]);
+//         } else {
+//             res.status(404).send('ไม่พบหมวดหมู่ย่อยที่มี ID ที่ระบุ');
+//         }
+//     });
+// });
 
 module.exports = router;

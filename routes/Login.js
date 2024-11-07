@@ -5,7 +5,7 @@ const pool = require("../app");
 router.post("/login", (req, res) => {
   const { login, password } = req.body;
   
-  //select admin join กับ work_status
+  //admin join work_status และตรวจสอบเงื่อนไขต่างๆ
   let sql = `SELECT admin.*, work_status.adm_status 
             FROM admin 
             LEFT JOIN work_status ON admin.adm_id = work_status.adm_id 

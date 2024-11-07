@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงข้อมูล
+//แสดงข้อมูลบนเว็บ
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM News_Sub_Cate', (error, results) => {
         if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//แก้ไขแท็กข่าวขากไอดีข่าว
+//แก้ไขแท็กข่าวบนเว็บ
 router.put('/:id', (req, res) => {
     const { id } = req.params;
     const { News_Name, News_Details, Date_Added, Cat_Id, Sub_Cat_Ids, Major_Id } = req.body;
@@ -57,7 +57,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// ดึงแท็กตามไอดีข่าว
+// ดึงแท็กข่าวบนแอป
 router.get('/tag/:newsId', (req, res) => {
     const newsId = req.params.newsId;
     pool.query('SELECT * FROM News_Sub_Cate WHERE News_Id = ?', [newsId], (error, results) => {

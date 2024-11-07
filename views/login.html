@@ -36,12 +36,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        //ตรวจสอบสถานะ localstorage
         document.addEventListener('DOMContentLoaded', function () {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 window.location.href = '../views/dashboard.html';
             }
 
+            //รับข้อมูลที่กรอก
             document.getElementById('loginForm').addEventListener('submit', function (e) {
+                //ส่งข้อมูลแบบไม่รีเฟรชหน้า
                 e.preventDefault();
 
                 const loginData = {
@@ -49,6 +52,7 @@
                     password: document.getElementById('password').value
                 };
 
+                //ส่งไปที่ api
                 fetch('https://co-newsproject.com/api/login', {
                     method: 'POST',
                     headers: {
@@ -68,6 +72,7 @@
                         }
                         return response.json();
                     })
+                    //set true ถ้า success
                     .then(data => {
                         if (data.success) {
                             localStorage.setItem('isLoggedIn', true);

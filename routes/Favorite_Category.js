@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงข้อมูลหมวดหมู่โปรดทั้งหมด
+//แสดงข้อมูลบนเว็บ
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM Favorite_Category', (error, results) => {
       if (error) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//แสดงข่าวตามหมวดหมู่โปรด
+//ดึงรายการข่าวจากหมวดหมู่โปรดที่เลือกบนแอป
 router.get('/news', (req, res) => {
     const { memId } = req.query;
 
@@ -39,7 +39,7 @@ router.get('/news', (req, res) => {
     });
 });
 
-// API เพื่อดึงหมวดหมู่โปรดที่ผู้ใช้เลือกไว้
+// ดึงชื่อหมวดหมู่โปรดที่สมาชิกเลือกไว้บนแอป
 router.get('/:memId', (req, res) => {
     const memId = req.params.memId;
     pool.query('SELECT * FROM Favorite_Category WHERE Mem_Id = ?', [memId], (error, results) => {
@@ -52,7 +52,7 @@ router.get('/:memId', (req, res) => {
     });
 });
 
-// API เพื่ออัปเดตหมวดหมู่โปรด
+// อัปเดตหมวดหมู่โปรดบนแอป
 router.post('/update', (req, res) => {
     const { Mem_Id, Cat_Ids } = req.body;
 

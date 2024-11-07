@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../app');
 
-//แสดงข้อมูลยอดสรุป
+//แสดงข้อมูลยอดสรุปแต่ละอย่าง
 router.get('/total-news', async (req, res) => {
     try {
         const query = 'SELECT COUNT(*) AS totalNews FROM News';
