@@ -92,11 +92,14 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // ดึงข้อมูลคะแนนข่าว
       fetch('https://co-newsproject.com/api/news_rating')
         .then(response => response.json())
         .then(ratings => {
+          //เก็บข้อมูลลง tbody
           const tableBody = document.getElementById('ratingsList');
           ratings.forEach(rating => {
+            //สร้าง tr ให้แต่ละข้อมูล
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${rating.Mem_Id}</td>

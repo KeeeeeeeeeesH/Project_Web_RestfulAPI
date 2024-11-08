@@ -77,7 +77,7 @@
         <thead>
           <tr>
             <th>รหัสข่าว</th>
-            <th>รหัสหมวดหมู่ข่าวรอง</th>
+            <th>ชื่อหมวดหมู่ข่าวรอง</th>
           </tr>
         </thead>
         <tbody id="newsSubCateList">
@@ -93,36 +93,38 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      //ใช้ฟังก์ชันดึงมาแสดงทีเดียว
       fetchSubCategoriesAndNewsSubCates();
     });
 
     function fetchSubCategoriesAndNewsSubCates() {
-      const subCategoryMap = {};
+      const subCategoryMap = {}; 
 
-      // Fetch sub categories to create a map of Sub_Cat_Id to Sub_Cat_Name
+      // ดึงข้อมูลหมวดหมู่รอง
       fetch('https://co-newsproject.com/api/sub_category')
         .then(response => response.json())
         .then(subCategories => {
+          //map หมวดหมู่รอง จับคู่ id กับ name
           subCategories.forEach(subCategory => {
             subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
           });
 
-          // Fetch news sub categories
+          // ดึงหน้าแท็กข่าว
           return fetch('https://co-newsproject.com/api/news_sub_cate');
         })
         .then(response => response.json())
         .then(data => {
-          const newsSubCateList = document.getElementById('newsSubCateList');
+          //สร้างตาราง
+          const tableBody = document.getElementById('newsSubCateList');
           data.forEach(newsSubCate => {
             const row = document.createElement('tr');
-            // Use the subCategoryMap to get Sub Category Name
+            // ใช้ map ที่สร้างมาแสดงชื่อหมวดหมู่รอง
             const subCategoryName = subCategoryMap[newsSubCate.Sub_Cat_Id] || 'Unknown Subcategory';
-
             row.innerHTML = `
                       <td>${newsSubCate.News_Id}</td>
                       <td>${subCategoryName}</td>
                   `;
-            newsSubCateList.appendChild(row);
+                  tableBody.appendChild(row);
           });
         })
         .catch(error => console.error('Error loading news sub categories:', error));

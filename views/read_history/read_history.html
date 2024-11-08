@@ -92,9 +92,11 @@
   <script src="/scripts/sidebar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // ดึงข้อมูลประวัติการอ่าน
       fetch('https://co-newsproject.com/api/read_history')
         .then(response => response.json())
         .then(historyItems => {
+          //สร้างตาราง
           const tableBody = document.getElementById('readHistoryList');
           historyItems.forEach(item => {
             const row = document.createElement('tr');

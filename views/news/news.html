@@ -105,13 +105,14 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script>
+    //ดึงข้อมูล
     document.addEventListener('DOMContentLoaded', function () {
-      // Initialize maps for categories, subcategories, and majors
+      // สร้าง object map สำหรับข้อมูลที่จะแสดงชื่อ
       const categoryMap = {};
       const subCategoryMap = {};
       const majorMap = {};
 
-      // ฟังก์ชั่นตัดข้อความให้ไม่ยาวเกิน
+      // ตัดข้อความให้ไม่ยาวเกิน
       function truncateText(text, length = 100) {
         return text.length > length ? text.substring(0, length) + "..." : text;
       }
@@ -129,6 +130,7 @@
         })
         .then(response => response.json())
         .then(subCategories => {
+          //ใช้ map ที่สร้างมาแสดงชื่อหมวดหมู่รอง
           subCategories.forEach(subCategory => {
             subCategoryMap[subCategory.Sub_Cat_Id] = subCategory.Sub_Cat_Name;
           });
@@ -139,27 +141,31 @@
         .then(response => response.json())
         .then(majors => {
           majors.forEach(major => {
+            //ใช้ map ที่สร้างมาแสดงระดับความสำคัญ
             majorMap[major.Major_Id] = major.Major_Level;
           });
 
-          // ดึงข้อมูลข่าวและแสดงในตาราง
+          // ดึงข้อมูลข่าว
           return fetch('https://co-newsproject.com/api/news');
         })
         .then(response => response.json())
         .then(data => {
+          //สร้างตาราง
           const tableBody = document.getElementById('newsList');
           data.forEach(news => {
-            const row = document.createElement('tr');
-            const date = new Date(news.Date_Added);
+            const row = document.createElement('tr'); //สร้าง tr ให้แต่ละชุดข้อมูล
+            const date = new Date(news.Date_Added); //เก็บวันที่
+            //format วันที่ให้เป็นแบบไทยมาตรฐาน
             const formattedDate = date.getDate().toString().padStart(2, '0') + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getFullYear() + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
 
-            // ตรวจชื่อหมวดหมู่หลักและแปลงไอดีให้เป็นชื่อหมวดหมู่ย่อย
+            // ใช้ map แปลง id หมวดหมู่หลักเป็นชื่อ
             const categoryName = categoryMap[news.Cat_Id] || 'ไม่มีหมวดหมู่';
+            //ใช้ map แปลง id หมวดหมู่รองเป็นชื่อ และคั่นด้วยคอมม่า
             const subCategoryNames = Array.isArray(news.Sub_Cat_Names)
               ? news.Sub_Cat_Names.map(id => subCategoryMap[id] || 'ไม่มีหมวดหมู่รอง').join(', ')
               : news.Sub_Cat_Names.split(',').map(name => subCategoryMap[name.trim()] || 'ไม่มีหมวดหมู่รอง').join(', ');
 
-            // แปลงระดับความสำคัญ
+            // เปลี่ยนรูปแบบระดับความสำคัญ
             const majorLevel = majorMap[news.Major_Id] !== undefined
               ? (majorMap[news.Major_Id] === 0 ? 'ต่ำ' : 'สูง')
               : 'ไม่พบระดับความสำคัญ';
@@ -185,10 +191,12 @@
         .catch(error => console.error('Error loading data:', error));
     });
 
+    //ปุ่มแก้ไข
     function editNews(newsId) {
       window.location.href = `./edit-news.html?id=${newsId}`;
     }
 
+    //ปุ่มลบ
     function deleteNews(newsId) {
       if (confirm('ต้องการที่จะลบข่าวนี้ใช่ไหม ?')) {
         fetch(`https://co-newsproject.com/api/news/${newsId}`, {
@@ -225,20 +233,23 @@
   </script>
 
   <script>
+    //ค้นหาข่าว
     function performSearch() {
       const searchType = document.getElementById('searchType').value; // อ่านค่าจาก dropdown
-      const searchValue = document.getElementById('searchInput').value.toLowerCase(); // ค่าจาก input ที่ผู้ใช้ป้อน
-      const tableBody = document.getElementById('newsList');
-      const rows = tableBody.getElementsByTagName('tr');
+      const searchValue = document.getElementById('searchInput').value.toLowerCase(); // ค่าจาก input ที่ป้อน
+      const tableBody = document.getElementById('newsList'); //ดึง tbody
+      const rows = tableBody.getElementsByTagName('tr'); //สร้าง tr
 
-      for (let i = 0; i < rows.length; i++) {
+      for (let i = 0; i < rows.length; i++) { // loop หาข้อมูล
         let searchTarget = '';
 
         if (searchType === 'name') {
-          const newsName = rows[i].getElementsByTagName('td')[1]; // คอลัมน์ชื่อข่าว
+          // ค้นตามชื่อ
+          const newsName = rows[i].getElementsByTagName('td')[1]; 
           searchTarget = newsName ? newsName.textContent.toLowerCase() : '';
         } else if (searchType === 'date') {
-          const newsDate = rows[i].getElementsByTagName('td')[3]; // คอลัมน์วันที่ข่าว
+          // ค้นตามวันที่ลงข่าว
+          const newsDate = rows[i].getElementsByTagName('td')[3]; 
           searchTarget = newsDate ? newsDate.textContent.toLowerCase() : '';
         }
 

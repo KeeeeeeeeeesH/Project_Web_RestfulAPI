@@ -103,15 +103,18 @@
   </div>
 
   <script>
+    //ดึง id จาก form
     document.getElementById('addMemberForm').addEventListener('submit', function(event) {
       event.preventDefault();
 
+      //ตรวจสอบ format เบอร์โทร
       const phone = document.getElementById('phone').value;
       if (!/^0\d{9}$/.test(phone)) {
         document.getElementById('phoneError').textContent = 'รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง';
         return;
       }
 
+      //รับข้อมูลจากใน form
       const formData = {
         Mem_Fname: document.getElementById('fname').value,
         Mem_Lname: document.getElementById('lname').value,
@@ -121,11 +124,12 @@
         Mem_Phone: document.getElementById('phone').value,
       };
 
+      //เคลียร์ช่องเมื่อ error หลังส่งข้อมูล
       document.getElementById('usernameError').textContent = '';
       document.getElementById('emailError').textContent = '';
       document.getElementById('phoneError').textContent = '';
 
-
+      //ส่งข้อมูล
       fetch('https://co-newsproject.com/api/member', {
         method: 'POST',
         headers: {

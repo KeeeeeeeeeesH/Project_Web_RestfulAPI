@@ -94,17 +94,22 @@
   <script src="/scripts/sidebar.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
+
+    //ดึงข้อมูล
     document.addEventListener('DOMContentLoaded', function () {
       fetch('https://co-newsproject.com/api/work_status')
         .then(response => response.json())
         .then(statusItems => {
+          //เก็บข้อมูลลง tbody
           const tableBody = document.getElementById('workStatusList');
           statusItems.forEach(item => {
             const startDate = new Date(item.Start_Date).toLocaleDateString();
             const endDate = item.End_Date ? new Date(item.End_Date).toLocaleDateString() : 'N/A';
 
+            //เปลี่ยนรูปแบบ adm_status
             const statusText = item.Adm_Status === 1 ? 'กำลังทำงาน' : 'ลาออก';
 
+            //สร้าง tr
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${item.Adm_Id}</td>
@@ -121,10 +126,12 @@
         })
         .catch(error => console.error('Error loading work status:', error));
 
+        //ปุ่มแก้ไข
       window.editWorkStatus = function (admId) {
         window.location.href = `edit-work_status.html?admId=${admId}`;
       };
 
+      //ปุ่มลบ
       window.deleteWorkStatus = function (admId) {
         if (confirm('ต้องการที่จะลบข้อมูลสถานะการทำงานนี้ใช่ไหม ?')) {
           fetch(`https://co-newsproject.com/api/work_status/${admId}`, {

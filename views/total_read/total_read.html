@@ -89,9 +89,11 @@
     <script src="/scripts/sidebar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+          //ดึงข้อมูลการอ่านข่าว
             fetch('https://co-newsproject.com/api/Total_Read')
             .then(response => response.json())
             .then(data => {
+              //สร้างตาราง
                 const tableBody = document.getElementById('totalReadsTable');
                 data.forEach(item => {
                     const row = `<tr>

@@ -103,10 +103,11 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script>
+    //ดึง id จาก url
     document.addEventListener('DOMContentLoaded', function () {
       const adminId = new URLSearchParams(window.location.search).get('id');
 
-      // Load existing admin data
+      // ดึงข้อมูลที่ตรงกับ id 
       fetch(`https://co-newsproject.com/api/admin/${adminId}`)
         .then(response => response.json())
         .then(admin => {
@@ -118,7 +119,7 @@
         })
         .catch(error => console.error('Error:', error));
 
-      // Update admin data
+      // ส่วนการ update ข้อมูล
       document.getElementById('editAdminForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -140,6 +141,7 @@
         document.getElementById('emailError').textContent = '';
         document.getElementById('phoneError').textContent = '';
 
+        //ส่งข้อมูล
         fetch(`https://co-newsproject.com/api/admin/${adminId}`, {
           method: 'PUT',
           headers: {

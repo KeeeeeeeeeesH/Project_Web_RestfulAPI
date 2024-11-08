@@ -93,12 +93,14 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
+  //ดึงข้อมูล
 document.addEventListener('DOMContentLoaded', function () {
     fetch('https://co-newsproject.com/api/major')
     .then(response => response.json())
     .then(majors => {
         const tableBody = document.getElementById('majorList');
         majors.forEach(major => {
+          //สร้าง tr รับข้อมูล
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${major.Major_Id}</td>
@@ -113,10 +115,12 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Error loading majors:', error));
 });
 
+//ปุ่มแก้ไข
 function editMajor(majorId) {
     window.location.href = `edit-major.html?id=${majorId}`;
 }
 
+//ปุ่มลบ
 function deleteMajor(majorId) {
     if (confirm('ต้องการที่จะลบระดับความสำคัญนี้ใช่ไหม ?')) {
         fetch(`https://co-newsproject.com/api/major/${majorId}`, {

@@ -109,15 +109,18 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script>
+    //ดึง id จาก form
     document.getElementById('addAdminForm').addEventListener('submit', function (event) {
       event.preventDefault();
 
+      //ตรวจสอบ format เบอร์โทร
       const phone = document.getElementById('phone').value;
       if (!/^0\d{9}$/.test(phone)) {
         document.getElementById('phoneError').textContent = 'Format of Phone Number is Incorrect';
         return;
       }
 
+      //รับข้อมูลจากใน form
       const formData = {
         Adm_Fname: document.getElementById('fname').value,
         Adm_Lname: document.getElementById('lname').value,
@@ -127,10 +130,12 @@
         Adm_Phone: document.getElementById('phone').value
       };
 
+      //เคลียร์ช่องเมื่อ error หลังส่งข้อมูล
       document.getElementById('usernameError').textContent = '';
       document.getElementById('emailError').textContent = '';
       document.getElementById('phoneError').textContent = '';
 
+      //ส่งข้อมูล
       fetch('https://co-newsproject.com/api/admin', {
         method: 'POST',
         headers: {
@@ -145,6 +150,7 @@
           return response.json();
         })
         .then(data => {
+          //กลับไปที่ dashboard
           alert(data.message);
           window.location.href = '/views/admin/admin.html';
         })

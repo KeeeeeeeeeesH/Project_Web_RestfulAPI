@@ -86,9 +86,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-
+//ดึง id จาก url
 document.addEventListener('DOMContentLoaded', function () {
     const catId = new URLSearchParams(window.location.search).get('id');
+
+    // ดึงข้อมูลที่ตรงกับ id 
     fetch(`https://co-newsproject.com/api/category/${catId}`)
         .then(response => response.json())
         .then(data => {
@@ -96,12 +98,14 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error:', error));
 
+    // ส่วนการ update ข้อมูล
     document.getElementById('editCategoryForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const updatedData = {
             Cat_Name: document.getElementById('catName').value
         };
 
+        //ส่งข้อมูล
         fetch(`https://co-newsproject.com/api/category/${catId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},

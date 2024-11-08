@@ -96,12 +96,11 @@
   <script src="/scripts/sidebar.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
+    // รับค่า id จาก URL
     document.addEventListener('DOMContentLoaded', function () {
-      // รับค่า admId จาก URL
       const admId = new URLSearchParams(window.location.search).get('admId');
-      document.getElementById('admId').value = admId; // กำหนดค่า admId ในฟอร์ม
 
-      // ดึงข้อมูลสถานะการทำงานจาก API โดยใช้ admId
+      // ดึงข้อมูลที่ตรงกับ id
       fetch(`https://co-newsproject.com/api/work_status/${admId}`)
         .then(response => response.json())
         .then(data => {
@@ -111,17 +110,18 @@
         })
         .catch(error => console.error('Error fetching work status:', error));
 
-      // จัดการเมื่อกดปุ่มอัปเดต
+      // ส่วนการ update ข้อมูล
       document.getElementById('editWorkStatusForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
         const status = document.getElementById('status').value;
         const updatedData = {
           Adm_Status: status,
           Start_Date: document.getElementById('startDate').value,
           End_Date: document.getElementById('endDate').value
         };
-
-        // ส่งคำขออัปเดตข้อมูลไปยัง API
+        
+        // ส่งข้อมูล
         fetch(`https://co-newsproject.com/api/work_status/${admId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },

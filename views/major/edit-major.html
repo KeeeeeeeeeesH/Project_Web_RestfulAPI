@@ -89,7 +89,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-
+    
+//ดึง id จาก url
 document.addEventListener('DOMContentLoaded', function () {
     const majorId = new URLSearchParams(window.location.search).get('id');
     fetch(`https://co-newsproject.com/api/major/${majorId}`)
@@ -100,12 +101,14 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error:', error));
 
+    //ส่วนการ update ข้อมูล
     document.getElementById('editMajorForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const updatedData = {
             Major_Level: document.getElementById('majorLevel').value
         };
 
+        //ส่งข้อมูล
         fetch(`https://co-newsproject.com/api/major/${majorId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},

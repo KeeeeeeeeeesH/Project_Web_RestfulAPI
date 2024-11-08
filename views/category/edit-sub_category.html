@@ -89,10 +89,13 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
+  //ดึง id จาก url
 document.addEventListener('DOMContentLoaded', function () {
     const subCatId = new URLSearchParams(window.location.search).get('id');
 
+        // ดึงข้อมูลหมวดหมู่หลักเก็บลงใน select
     fetch('https://co-newsproject.com/api/category')
         .then(response => response.json())
         .then(data => {
@@ -104,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 select.appendChild(option);
             });
 
+           //ดึงข้อมูลหมวดหมู่รอง
             fetch(`https://co-newsproject.com/api/sub_category/${subCatId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -114,13 +118,17 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Failed to load categories:', error));
 
+        //ส่วนแก้ไขข้อมูล
     document.getElementById('editSubCategoryForm').addEventListener('submit', function(e) {
         e.preventDefault();
+
+        //เก็บข้อมูลที่จะแก้
         const updatedData = {
             Sub_Cat_Name: document.getElementById('subCatName').value,
             Cat_Id: document.getElementById('catId').value
         };
 
+        //ส่งข้อมูล
         fetch(`https://co-newsproject.com/api/sub_category/${subCatId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},

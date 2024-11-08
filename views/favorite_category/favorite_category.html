@@ -91,23 +91,24 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Fetch categories to create a map of Cat_Id to Cat_Name
+      // ดึงข้อมูลหมวดหมู่หลัก
       fetch('https://co-newsproject.com/api/category')
         .then(response => response.json())
         .then(categories => {
-          // Create a map of Cat_Id to Cat_Name
+          // map หมวดหมู่หลัก จับคู่ id กับ name
           const categoryMap = {};
           categories.forEach(category => {
             categoryMap[category.Cat_Id] = category.Cat_Name;
           });
   
-          // Fetch favorite categories
+          // ดึงข้อมูลหมวดหมู่โปรดของสมาชิก
           fetch('https://co-newsproject.com/api/favorite_category')
             .then(response => response.json())
             .then(data => {
+              //สร้างตาราง
               const tableBody = document.getElementById('favoriteCategoryTable');
               data.forEach(item => {
-                // Use categoryMap to display Cat_Name instead of Cat_Id
+                // ใช้ map ที่สร้างมาแสดงชื่อหมวดหมู่
                 const row = `<tr>
                               <td>${item.Mem_Id}</td>
                               <td>${categoryMap[item.Cat_Id] || 'Unknown Category'}</td>

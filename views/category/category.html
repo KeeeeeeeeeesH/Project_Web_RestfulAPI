@@ -97,12 +97,15 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
+    //ดึงข้อมูล
     document.addEventListener("DOMContentLoaded", function () {
       fetch("https://co-newsproject.com/api/category")
         .then((response) => response.json())
         .then((Categories) => {
+          //ใส่ข้อมูลลง tbody
           const tableBody = document.getElementById("category-rows");
           Categories.forEach((Category) => {
+            //สร้าง tr ให้แต่ละข้อมูล
             const row = document.createElement("tr");
             row.innerHTML = `<td>${Category.Cat_Id}</td>
                                <td>${Category.Cat_Name}</td>
@@ -121,6 +124,7 @@
         });
     });
 
+    //ปุ่มลบ
     function deleteCategory(catId) {
       if (confirm("ต้องการที่จะลบหมวดหมู่นี้ใช่ไหม ?")) {
         fetch(`https://co-newsproject.com/api/category/${catId}`, {
@@ -139,6 +143,7 @@
       }
     }
 
+    //ปุ่มแก้ไข
     function editCategory(catId) {
       window.location.href = `edit-category.html?id=${catId}`;
     }

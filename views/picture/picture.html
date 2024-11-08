@@ -99,10 +99,12 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script>
+    //ดึงข้อมูล
     document.addEventListener('DOMContentLoaded', function () {
       fetch('https://co-newsproject.com/api/picture')
         .then(response => response.json())
         .then(images => {
+          //สร้างตัวแปรมาแสดงรูป ที่ตรงกับ id ข่าว
           const gallery = document.getElementById('gallery');
           images.forEach((img) => {
             const row = `
@@ -119,6 +121,7 @@
         .catch(error => console.error('Error loading the images:', error));
     });
 
+    //ลบรูป
     function deleteImage(newsId, fileName) {
       fetch(`https://co-newsproject.com/api/picture/${newsId}/${fileName}`, {
         method: 'DELETE'

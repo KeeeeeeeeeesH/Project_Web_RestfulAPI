@@ -98,6 +98,7 @@
   <script src="/scripts/sidebar.js"></script>
 
   <script>
+    //ดึงข้อมูล
     document.addEventListener('DOMContentLoaded', function () {
       fetch('https://co-newsproject.com/api/member')
         .then(response => {
@@ -107,8 +108,10 @@
           return response.json();
         })
         .then(data => {
+          //เก็บข้อมูลลง tbody
           const tableBody = document.getElementById('member-rows');
           data.forEach(member => {
+            //สร้าง tr
             const tr = document.createElement('tr');
             tr.innerHTML = `<td>${member.Mem_Id}</td>
                                         <td>${member.Mem_Fname}</td>
@@ -126,6 +129,7 @@
         });
     });
 
+    //ปุ่มลบ
     function deleteMember(memberId, element) {
       if (confirm('ต้องการที่จะลบข้อมูลสมาชิกคนนี้ ?')) {
         fetch(`https://co-newsproject.com/api/member/${memberId}`, {
@@ -139,7 +143,7 @@
           })
           .then(data => {
             alert('ลบข้อมูลสมาชิกสำเร็จ');
-            element.parentNode.parentNode.remove(); // Removes row from table
+            element.parentNode.parentNode.remove(); // // ลบ tr ของแถวที่ลบออก
           })
           .catch(error => {
             console.error('ลบข้อมูลสมาชิกไม่สำเร็จ:', error);
@@ -148,6 +152,7 @@
       }
     }
 
+    //ปุ่มแก้ไข
     function editMember(memberId) {
       window.location.href = `./edit-member.html?id=${memberId}`;
     }

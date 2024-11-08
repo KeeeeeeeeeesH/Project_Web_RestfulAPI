@@ -86,10 +86,12 @@
 <script src="/scripts/dropdown.js"></script>
 <script src="/scripts/sidebar.js"></script>
     <script>
+      //ดึงข้อมูลข่าวอ่านภายหฟลัง
         document.addEventListener('DOMContentLoaded', function() {
             fetch('https://co-newsproject.com/api/read_later') 
             .then(response => response.json())
             .then(data => {
+              //สร้างตาราง
                 const tableBody = document.getElementById('readLaterTable');
                 data.forEach(item => {
                     const row = `<tr>

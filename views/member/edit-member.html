@@ -101,9 +101,11 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script>
+    //ดึง id จาก url
     document.addEventListener('DOMContentLoaded', function () {
       const memberId = new URLSearchParams(window.location.search).get('id');
       
+      // ดึงข้อมูลที่ตรงกับ id 
       fetch(`https://co-newsproject.com/api/member/${memberId}`)
         .then(response => response.json())
         .then(member => {
@@ -115,6 +117,7 @@
         })
         .catch(error => console.error('Error:', error));
 
+        // ส่วนการ update ข้อมูล
       document.getElementById('editMemberForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -124,6 +127,7 @@
           return;
         }
 
+        //รับข้อมูลที่จะแก้
         const formData = {
           Mem_Fname: document.getElementById('Mem_Fname').value,
           Mem_Lname: document.getElementById('Mem_Lname').value,
@@ -136,6 +140,7 @@
         document.getElementById('emailError').textContent = '';
         document.getElementById('phoneError').textContent = '';
 
+        //ส่งข้อมูล
         fetch(`https://co-newsproject.com/api/member/${memberId}`, {
           method: 'PUT',
           headers: {

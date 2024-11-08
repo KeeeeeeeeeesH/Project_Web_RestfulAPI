@@ -97,12 +97,14 @@
   <script src="/scripts/dropdown.js"></script>
   <script src="/scripts/sidebar.js"></script>
   <script>
+    //ดึงข้อมูลข่าว
     document.addEventListener('DOMContentLoaded', function () {
       fetch('https://co-newsproject.com/api/news')
         .then(response => response.json())
         .then(data => {
           const newsSelect = document.getElementById('newsId');
           data.forEach(news => {
+            //เก็บข้อมูลลง select เอามาทั้งไอดีและชื่อ
             const option = document.createElement('option');
             option.value = news.News_Id;
             option.textContent = `${news.News_Id} - ${news.News_Name}`;
@@ -111,15 +113,17 @@
         })
         .catch(error => console.error('Error loading news:', error));
 
-      document.getElementById('uploadForm').addEventListener('submit', function (event) {
+        // ส่วนการอัปโหลดรูป
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const coverFiles = document.getElementById('coverImage').files;
-        const contentFiles = document.getElementById('contentImages').files;
-        const formData = new FormData();
+        const coverFiles = document.getElementById('coverImage').files; //เก็บรูปปก
+        const contentFiles = document.getElementById('contentImages').files; //เก็บรูปเนื้อหา
+        const formData = new FormData(); //ใช้เก็บข้อมูลทั้งหมด
         const newsId = document.getElementById('newsId').value;
-        formData.append('News_Id', newsId);
+        formData.append('News_Id', newsId); //เพิ่ม id ข่าวลงไปด้วย เพื่อเชื่อมโยงกัน
 
+        //เงื่อนไขเพิ่มรูปหน้าปก
         if (coverFiles.length > 0) {
           if (coverFiles.length > 1) {
             alert('You can only upload one cover image.');
@@ -130,13 +134,15 @@
             alert('Cover image filename must start with "cover_".');
             return;
           }
-          formData.append('coverImage', coverFile);
+          formData.append('coverImage', coverFile); //เก็บลง fromData
         }
 
+        //รูปเนื้อหาเพิ่มได้หลายรูป
         for (let i = 0; i < contentFiles.length; i++) {
-          formData.append('contentImages', contentFiles[i]);
+          formData.append('contentImages', contentFiles[i]); //เก็บลง fromData
         }
 
+        //ส่งข้อมูล
         fetch('https://co-newsproject.com/api/picture/upload', {
           method: 'POST',
           body: formData

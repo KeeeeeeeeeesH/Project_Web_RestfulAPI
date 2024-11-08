@@ -63,24 +63,6 @@ router.get('/', (req, res) => {
         res.send('ลบข้อมูลหมวดหมู่สำเร็จ');
     });
   });
-  
-  //แสดงหมวดหมู่หลักพร้อมแท็กข่าวบนเว็บ
-  router.get('/categories_with_sub', (req, res) => {
-    const query = `
-    SELECT Category.Cat_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Id, Sub_Category.Sub_Cat_Name 
-    FROM Category
-    LEFT JOIN Sub_Category ON Category.Cat_Id = Sub_Category.Cat_Id
-    ORDER BY Category.Cat_Id, Sub_Category.Sub_Cat_Id`;
-
-    pool.query(query, (error, results) => {
-        if (error) {
-            console.error('เกิดข้อผิดพลาดในการเรียกข้อมูลหมวดหมู่และหมวดหมู่ย่อยที่รวมกัน: ', error);
-            res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
-            return;
-        }
-        res.json(results);
-    });
-});
 
 //แสดงชื่อหมวดหมู่จากไอดีบนแอป
   router.get('/:id', (req, res) => {
@@ -98,5 +80,22 @@ router.get('/', (req, res) => {
         }
     });
   });
+
+//   router.get('/categories_with_sub', (req, res) => {
+//     const query = `
+//     SELECT Category.Cat_Id, Category.Cat_Name, Sub_Category.Sub_Cat_Id, Sub_Category.Sub_Cat_Name 
+//     FROM Category
+//     LEFT JOIN Sub_Category ON Category.Cat_Id = Sub_Category.Cat_Id
+//     ORDER BY Category.Cat_Id, Sub_Category.Sub_Cat_Id`;
+
+//     pool.query(query, (error, results) => {
+//         if (error) {
+//             console.error('เกิดข้อผิดพลาดในการเรียกข้อมูลหมวดหมู่และหมวดหมู่ย่อยที่รวมกัน: ', error);
+//             res.status(500).send('ข้อผิดพลาดเซิร์ฟเวอร์ภายใน');
+//             return;
+//         }
+//         res.json(results);
+//     });
+// });
 
 module.exports = router;

@@ -106,11 +106,13 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // ดึงข้อมูลหมวดหมู่หลัก
             fetch('https://co-newsproject.com/api/category')
                 .then(response => response.json())
                 .then(data => {
                     const select = document.getElementById('catId');
                     data.forEach(category => {
+                        //เอามาเก็บใน select แล้วแสดงชื่อ
                         const option = document.createElement('option');
                         option.value = category.Cat_Id;
                         option.textContent = category.Cat_Name;
@@ -119,11 +121,13 @@
                 })
                 .catch(error => console.error('Error loading categories:', error));
         
+                // ดึงข้อมูลระดับความสำคัญ
             fetch('https://co-newsproject.com/api/major')
                 .then(response => response.json())
                 .then(data => {
                     const select = document.getElementById('majorId');
                     data.forEach(major => {
+                        //เอามาเก็บใน select แล้วแสดงระดับ
                         const option = document.createElement('option');
                         option.value = major.Major_Id;
                         option.textContent = major.Major_Level;
@@ -133,6 +137,7 @@
                 .catch(error => console.error('Error loading majors:', error));
         });
         
+        //ส่วนเพิ่มข้อมูล
         document.getElementById('addNewsForm').addEventListener('submit', function(event) {
             event.preventDefault();
         
@@ -142,14 +147,17 @@
             const catId = document.getElementById('catId').value;
             const majorId = document.getElementById('majorId').value;
         
-            const subCatIds = [];
+            const subCatIds = []; //เก็บแท็กข่าว มีได้หลายแท็ก
+            //เลือกหมวดหมู่รอง
             document.querySelectorAll('.subCatSelect').forEach(select => {
                 if (select.value !== '') {
-                    subCatIds.push(select.value);
+                    subCatIds.push(select.value); // push ลง array
                 }
             });
         
+            //กำหนด timezone 
             const currentTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+            //เก็บข้อมูลลง object จะได้เพิ่มทีเดียว
             const requestBody = {
                 News_Name: newsName,
                 News_Details: newsDetails,
@@ -159,6 +167,7 @@
                 Major_Id: majorId
             };
         
+            //เพิ่มข้อมูล
             fetch('https://co-newsproject.com/api/news', {
                 method: 'POST',
                 headers: {
@@ -179,22 +188,26 @@
             });
         });
         
+        //ส่วนการเพิ่มแท็กข่าว
         document.getElementById('addSubCatBtn').addEventListener('click', function() {
             addSubCategory();
         });
         
-        function addSubCategory(selectedSubCatId = '') {
+        function addSubCategory() { //ค่าเริ่มต้นของหมวดหมู่รอง
             const subCatContainer = document.getElementById('subCatsContainer');
             
+            //สร้าง select
             const subCatSelect = document.createElement('select');
             subCatSelect.className = 'form-control subCatSelect';
             subCatSelect.required = true;
             
+            // set ให้ใน select เป็น default (รอเลือก)
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'เลือกหมวดหมู่รอง';
             subCatSelect.appendChild(defaultOption);
             
+            //ดึงหมวดหมู่รองเอามาเก็บใน select
             const catId = document.getElementById('catId').value;
             fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
                 .then(response => response.json())
@@ -205,14 +218,15 @@
                         option.textContent = subCat.Sub_Cat_Name;
                         subCatSelect.appendChild(option);
                     });
-                    subCatSelect.value = selectedSubCatId;  // Set the selected value if provided
                 })
                 .catch(error => console.error('Error loading sub categories:', error));
         
+            //ลบ select
             const removeBtn = document.createElement('button');
             removeBtn.textContent = 'ลบ';
             removeBtn.className = 'btn btn-sm btn-danger ml-2 mt-2';
             removeBtn.addEventListener('click', function () {
+                //ลบทั้ง select และปุ่ม
                 subCatContainer.removeChild(subCatSelect);
                 subCatContainer.removeChild(removeBtn);
             });

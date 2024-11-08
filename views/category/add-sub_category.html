@@ -84,13 +84,21 @@
         </form>
     </div>
 
+    <script src="/scripts/dropdown.js"></script>
+    <script src="/scripts/sidebar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
+      //ดึงข้อมูลหมวดหมู่หลัก
         document.addEventListener('DOMContentLoaded', function() {
             fetch('https://co-newsproject.com/api/category')
                 .then(response => response.json())
                 .then(data => {
                     const select = document.getElementById('catId');
                     data.forEach(category => {
+                      //เอามาเก็บใน select แล้วแสดงชื่อ
                         const option = document.createElement('option');
                         option.value = category.Cat_Id;
                         option.textContent = category.Cat_Name;
@@ -100,10 +108,11 @@
                 .catch(error => console.error('Failed to load categories:', error));
         });
 
+        //ส่วนเพิ่มข้อมูล
         document.getElementById('addSubCategoryForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const subCatName = document.getElementById('subCatName').value;
-            const catId = document.getElementById('catId').value;
+            const subCatName = document.getElementById('subCatName').value; //เก็บชื่อใหม่
+            const catId = document.getElementById('catId').value; //เก็บหมวดหมู่หลักที่เลือก
             fetch('https://co-newsproject.com/api/sub_category', {
                 method: 'POST',
                 headers: {
@@ -127,11 +136,7 @@
         });
 
     </script>
-    <script src="/scripts/dropdown.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
     <script>
       $(document).ready(function () {
           if (localStorage.getItem('isLoggedIn') !== 'true') {

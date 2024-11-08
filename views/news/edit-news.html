@@ -105,21 +105,27 @@
     <script src="/scripts/dropdown.js"></script>
     <script src="/scripts/sidebar.js"></script>
     <script>
+        //ดึง id จาก url
         document.addEventListener('DOMContentLoaded', function () {
             const newsId = new URLSearchParams(window.location.search).get('id');
+
+            //ดึงข้อมูลข่าวตาม id
             if (newsId) {
                 fetch(`https://co-newsproject.com/api/news/${newsId}`)
                     .then(response => response.json())
                     .then(data => {
+                        //ข้อมูลในตารางข่าว
                         document.getElementById('newsName').value = data.News_Name;
                         document.getElementById('newsDetails').value = data.News_Details;
                         document.getElementById('newsDate').value = data.Date_Added.substr(0, 10);
         
+                        //ดึงข้อมูลในตารางหมวดหมู่หลัก
                         fetchCategories().then(() => {
                             document.getElementById('catId').value = data.Cat_Id;
                             loadSubCategories(data.Cat_Id, data.Sub_Cat_Ids);
                         });
         
+                        //ดึงข้อมูลในตารางระดับความสำคัญ
                         fetchMajors().then(() => {
                             document.getElementById('majorId').value = data.Major_Id;
                         });
@@ -128,13 +134,28 @@
             } else {
                 console.error('No news ID provided');
             }
-        
+
+            //ปุ่มเพิ่มหมวดหมู่รอง
+            document.getElementById('addSubCatBtn').addEventListener('click', function () {
+                const catId = document.getElementById('catId').value;
+                if (catId) {
+                    fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            addSubCategory('', data);
+                        })
+                        .catch(error => console.error('Error loading sub categories:', error));
+                }
+            });
+
+            //ถ้าหมวดหมู่หลักเปลี่ยน โหลดข้อมูลหมวดหมู่รองชุดใหม่
             document.getElementById('catId').addEventListener('change', function () {
                 const catId = this.value;
                 loadSubCategories(catId);
-                document.getElementById('subCatsContainer').innerHTML = ''; // Clear existing sub-categories when the main category changes
+                document.getElementById('subCatsContainer').innerHTML = ''; // ลบหมวดหมู่รอง
             });
         
+            //ดึงข้อมูลในตารางหมวดหมู่หลัก
             function fetchCategories() {
                 return fetch('https://co-newsproject.com/api/category')
                     .then(response => response.json())
@@ -151,6 +172,7 @@
                     .catch(error => console.error('Error loading categories:', error));
             }
         
+            //ดึงข้อมูลในตารางระดับความสำคัญ
             function fetchMajors() {
                 return fetch('https://co-newsproject.com/api/major')
                     .then(response => response.json())
@@ -167,6 +189,7 @@
                     .catch(error => console.error('Error loading majors:', error));
             }
         
+            //ดึงข้อมูลหมวดหมู่รอง
             function loadSubCategories(catId, selectedSubCatIds = []) {
                 const subCatContainer = document.getElementById('subCatsContainer');
                 subCatContainer.innerHTML = '';
@@ -175,6 +198,7 @@
                     fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
                         .then(response => response.json())
                         .then(data => {
+                            //เรียกฟังก์ชันเพิ่มหมวดหมู่รอง
                             selectedSubCatIds.forEach(subCatId => {
                                 addSubCategory(subCatId, data);
                             });
@@ -183,18 +207,22 @@
                 }
             }
         
-            function addSubCategory(selectedSubCatId = '', subCategories = []) {
+            //เพิ่มหมวดหมู่รอง
+            function addSubCategory(selectedSubCatId = '', subCategories = []) { //กำหนดค่าเริ่มต้นเป็นหมวดหมู่รองที่มี ถ้ามี
                 const subCatContainer = document.getElementById('subCatsContainer');
                 
+                //สร้าง select
                 const subCatSelect = document.createElement('select');
                 subCatSelect.className = 'form-control subCatSelect';
                 subCatSelect.required = true;
                 
+                //set ให้ใน select เป็น default (รอเลือก)
                 const defaultOption = document.createElement('option');
                 defaultOption.value = '';
                 defaultOption.textContent = 'เลือกหมวดหมู่รอง';
                 subCatSelect.appendChild(defaultOption);
         
+                //ดึงข้อมูลมาเก็บไว้ใน select
                 subCategories.forEach(subCat => {
                     const option = document.createElement('option');
                     option.value = subCat.Sub_Cat_Id;
@@ -202,8 +230,9 @@
                     subCatSelect.appendChild(option);
                 });
         
-                subCatSelect.value = selectedSubCatId;
+                subCatSelect.value = selectedSubCatId; //เลือกค่าตามที่กำหนดเอาไว้
         
+                //ลบ select
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'ลบ';
                 removeBtn.className = 'btn btn-sm btn-danger ml-2 mt-2';
@@ -211,11 +240,11 @@
                     subCatContainer.removeChild(subCatSelect);
                     subCatContainer.removeChild(removeBtn);
                 });
-        
                 subCatContainer.appendChild(subCatSelect);
                 subCatContainer.appendChild(removeBtn);
             }
-
+            
+            //ส่วนการ update ข้อมูล
             document.getElementById('editNewsForm').addEventListener('submit', function (event) {
                 event.preventDefault();
 
@@ -261,17 +290,6 @@
                     });
             });
 
-            document.getElementById('addSubCatBtn').addEventListener('click', function () {
-                const catId = document.getElementById('catId').value;
-                if (catId) {
-                    fetch(`https://co-newsproject.com/api/sub_category?catId=${catId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            addSubCategory('', data);
-                        })
-                        .catch(error => console.error('Error loading sub categories:', error));
-                }
-            });
         });
     </script>
     <script>
