@@ -28,7 +28,7 @@ router.get('/member/:memId', (req, res) => {
     });
 });
 
-// บันทึกการอ่านใหม่ พร้อมระบุว่าใครเป็นคนอ่าน บนแอป
+// บันทึกการอ่านใหม่ บนแอป
 router.post('/', (req, res) => {
     const { News_Id, Mem_Id } = req.body;
     const query = 'INSERT INTO Total_Read (Count_Id, News_Id, Mem_Id) VALUES (NULL, ?, ?)';

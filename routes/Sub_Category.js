@@ -79,7 +79,7 @@ router.get('/tag/ids', (req, res) => {
     } else {
         ids = ids.map(id => parseInt(id, 10)); // แปลงแต่ละค่าใน array ให้เป็นตัวเลข
     }
-    // ใช้ in ค้นหาหลายๆค่าของ sub cat id
+    // ใช้ in ค้นหาทุกค่า จะได้ไม่ต้อง where ทุกอัน
     pool.query('SELECT * FROM Sub_Category WHERE Sub_Cat_Id IN (?)', [ids], (error, results) => {
         if (error) {
             console.error('ข้อผิดพลาดของฐานข้อมูล: ', error); 
