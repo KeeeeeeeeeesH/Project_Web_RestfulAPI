@@ -8,7 +8,7 @@ const path = require('path');
 const session = require('express-session');
 const fcmNotifier = require('./fcmNotifier');
 
-// set-up local
+// set-up local pool
 // const pool = mysql.createPool({
 //     host: 'localhost',  
 //     user: 'root', 
@@ -17,7 +17,7 @@ const fcmNotifier = require('./fcmNotifier');
 //     port: 3306  
 // });
 
-// set-up host
+// set-up host pool
 const pool = mysql.createPool({
     host: '118.27.130.234',  
     user: 'zmkjqpsz_champ', 
